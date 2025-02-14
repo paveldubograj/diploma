@@ -1,0 +1,15 @@
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.Infrastructure.csproj.AssemblyReference.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.Infrastructure.AssemblyInfoInputs.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.Infrastructure.AssemblyInfo.cs
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.Infrastructure.csproj.CoreCompileInputs.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.Infrastructure.sourcelink.json
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/bin/Debug/net8.0/UserService.Infrastructure.deps.json
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/bin/Debug/net8.0/UserService.Infrastructure.runtimeconfig.json
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/bin/Debug/net8.0/UserService.Infrastructure.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/bin/Debug/net8.0/UserService.Infrastructure.pdb
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.Infrastructure.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/refint/UserService.Infrastructure.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.Infrastructure.pdb
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.Infrastructure.genruntimeconfig.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/ref/UserService.Infrastructure.dll
