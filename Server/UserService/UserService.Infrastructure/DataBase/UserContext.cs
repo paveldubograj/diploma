@@ -14,7 +14,7 @@ public class UsersContext : IdentityDbContext<User>
     public DbSet<User> Users { get; set; }
     public DbSet<IdentityRole> Roles { get; set; }
     
-    public UsersContext(DbContextOptions<UsersContext> options, IConfiguration configuration) : base(options)
+    public UsersContext(DbContextOptions<UsersContext> options) : base(options)
     {
     }
 

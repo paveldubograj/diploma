@@ -1,0 +1,15 @@
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/bin/Debug/net8.0/UserService.DataAccess.deps.json
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/bin/Debug/net8.0/UserService.DataAccess.runtimeconfig.json
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/bin/Debug/net8.0/UserService.DataAccess.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/bin/Debug/net8.0/UserService.DataAccess.pdb
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.DataAccess.csproj.AssemblyReference.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.DataAccess.AssemblyInfoInputs.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.DataAccess.AssemblyInfo.cs
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.DataAccess.csproj.CoreCompileInputs.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.DataAccess.sourcelink.json
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.DataAccess.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/refint/UserService.DataAccess.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.DataAccess.pdb
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.DataAccess.genruntimeconfig.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/ref/UserService.DataAccess.dll
