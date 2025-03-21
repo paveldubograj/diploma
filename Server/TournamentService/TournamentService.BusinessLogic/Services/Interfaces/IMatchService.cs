@@ -9,5 +9,4 @@ public interface IMatchService
     public Task<MatchDto> GetMatchById(string matchId);
     public Task<MatchDto> GetMatchByName(string name);
     public Task UpdateMatch(string matchId, MatchDto match);
-
 }

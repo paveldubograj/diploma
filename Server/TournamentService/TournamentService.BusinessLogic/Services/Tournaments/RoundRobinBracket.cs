@@ -47,12 +47,14 @@ public class RoundRobinBracket
 
         _matchService.CreateMatches(matches);
     }
-    public async Task HandleMatchResult(string matchId, string winnerId)
+    public async Task HandleMatchResult(string matchId, string winnerId, int winPoints, int loosePoints)
     {
         var match = await _matchService.GetMatchById(matchId);
         if (match == null) throw new NotFoundException(ErrorName.MatchNotFound);
         match.Status = MatchStatus.Completed;
         match.WinnerId = winnerId;
+        match.WinScore = winPoints;
+        match.LooseScore = loosePoints;
         await _participantService.UpdatePointsAsync(winnerId, 1);
         await _matchService.UpdateMatch(matchId, match);
         // 📌 Обновляем рейтинг (учет побед и поражений)

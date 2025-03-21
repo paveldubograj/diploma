@@ -22,7 +22,7 @@ public class SwissBracket
         _participantService = participantService;
     }
 
-    private async Task GenerateSwissMatches(string tournamentId)
+    public async Task GenerateSwissMatches(string tournamentId)
     {
         var res = await _tournamentService.GetByIdAsync(tournamentId);
         if(res == null){
@@ -51,12 +51,15 @@ public class SwissBracket
         _matchService.CreateMatches(matches);
     }
 
-    public async Task HandleMatchResult(string matchId, string winnerId, string loserId)
+    public async Task HandleMatchResult(string matchId, string winnerId, string loserId, int winScore, int looseScore)
     {
         var match = await _matchService.GetMatchById(matchId);
         if (match == null) throw new Exception("Матч не найден!");
 
         match.Status = MatchStatus.Completed;
+        match.WinnerId = winnerId;
+        match.WinScore = winScore;
+        match.LooseScore = looseScore;
 
         if(string.IsNullOrEmpty(winnerId)){
             await _participantService.UpdatePointsAsync(winnerId, 1); // 1 очко за ничью

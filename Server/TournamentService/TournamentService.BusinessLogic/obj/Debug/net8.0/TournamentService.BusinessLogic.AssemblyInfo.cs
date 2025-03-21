@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TournamentService.BusinessLogic")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+445280d56eaf6465dadb543cc96d0fe84019bcff")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c74e68fad0cc42aa290860a5172f62c1077455da")]
 [assembly: System.Reflection.AssemblyProductAttribute("TournamentService.BusinessLogic")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TournamentService.BusinessLogic")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

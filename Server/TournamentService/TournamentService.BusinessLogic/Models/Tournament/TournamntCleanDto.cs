@@ -1,4 +1,5 @@
 using System;
+using TournamentService.DataAccess.Entities;
 using TournamentService.Shared.Enums;
 
 namespace TournamentService.BusinessLogic.Models.Tournament;
@@ -14,4 +15,7 @@ public class TournamentCleanDto
     public int MaxParticipants { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
+    public string OwnerId {get; set;}
+    public string WinnerId {get; set;}
+    public Participant Winner {get; set;}
 }

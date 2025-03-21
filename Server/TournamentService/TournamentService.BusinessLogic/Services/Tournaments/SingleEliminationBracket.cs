@@ -22,7 +22,7 @@ public class SingleEliminationBracket
         _participantService = participantService;
     }
 
-    public async Task GenerateBracket(string tournamentId, List<string> participants)
+    public async Task GenerateBracket(string tournamentId)
     {
         var res = await _tournamentService.GetByIdAsync(tournamentId);
         if(res == null){
@@ -72,13 +72,15 @@ public class SingleEliminationBracket
         _matchService.CreateMatches(matches);
     }
 
-    public async Task HandleMatchResult(string matchId, string winnerId, string looserId)
+    public async Task HandleMatchResult(string matchId, string winnerId, string looserId, int winPoints, int loosePoints)
     {
         var match = await _matchService.GetMatchById(matchId);
         if (match == null) throw new NotFoundException(ErrorName.MatchNotFound);
 
         match.Status = MatchStatus.Completed;
         match.WinnerId = winnerId;
+        match.WinScore = winPoints;
+        match.LooseScore = loosePoints;
         await _matchService.UpdateMatch(match.Id, match);
 
         var nextMatch = await _matchService.GetMatchById(match.NextMatchId);
