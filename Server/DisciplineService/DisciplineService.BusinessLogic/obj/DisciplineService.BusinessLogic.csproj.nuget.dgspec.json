@@ -1,0 +1,190 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.BusinessLogic/DisciplineService.BusinessLogic.csproj": {}
+  },
+  "projects": {
+    "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.BusinessLogic/DisciplineService.BusinessLogic.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.BusinessLogic/DisciplineService.BusinessLogic.csproj",
+        "projectName": "DisciplineService.BusinessLogic",
+        "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.BusinessLogic/DisciplineService.BusinessLogic.csproj",
+        "packagesPath": "/home/pavel/.nuget/packages/",
+        "outputPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.BusinessLogic/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/pavel/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/DisciplineService.DataAccess.csproj": {
+                "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/DisciplineService.DataAccess.csproj"
+              },
+              "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/DisciplineService.Shared.csproj": {
+                "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/DisciplineService.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[14.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.112/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/DisciplineService.DataAccess.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/DisciplineService.DataAccess.csproj",
+        "projectName": "DisciplineService.DataAccess",
+        "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/DisciplineService.DataAccess.csproj",
+        "packagesPath": "/home/pavel/.nuget/packages/",
+        "outputPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/pavel/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.2, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.112/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/DisciplineService.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/DisciplineService.Shared.csproj",
+        "projectName": "DisciplineService.Shared",
+        "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/DisciplineService.Shared.csproj",
+        "packagesPath": "/home/pavel/.nuget/packages/",
+        "outputPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/pavel/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.112/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
