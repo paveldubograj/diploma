@@ -1,0 +1,12 @@
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/bin/Debug/net8.0/TournamentService.Shared.deps.json
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/bin/Debug/net8.0/TournamentService.Shared.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/bin/Debug/net8.0/TournamentService.Shared.pdb
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/obj/Debug/net8.0/TournamentService.Shared.GeneratedMSBuildEditorConfig.editorconfig
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/obj/Debug/net8.0/TournamentService.Shared.AssemblyInfoInputs.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/obj/Debug/net8.0/TournamentService.Shared.AssemblyInfo.cs
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/obj/Debug/net8.0/TournamentService.Shared.csproj.CoreCompileInputs.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/obj/Debug/net8.0/TournamentService.Shared.sourcelink.json
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/obj/Debug/net8.0/TournamentService.Shared.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/obj/Debug/net8.0/refint/TournamentService.Shared.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/obj/Debug/net8.0/TournamentService.Shared.pdb
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/obj/Debug/net8.0/ref/TournamentService.Shared.dll

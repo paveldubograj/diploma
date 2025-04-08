@@ -1,0 +1,6 @@
+@startuml
+class DisciplineCleanDto {
+    + Id : string <<get>> <<set>>
+    + Name : string <<get>> <<set>>
+}
+@enduml

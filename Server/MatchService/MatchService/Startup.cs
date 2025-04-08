@@ -22,7 +22,7 @@ public class Startup
     public static void ConfigureServices(IServiceCollection services)
     {
         services.AddAutoMapper(typeof(MappingProfile));
-        services.AddTransient<IMatchService, MatchService.BusinessLogic.Services.MatchService>();
+        services.AddTransient<IMatchService, BusinessLogic.Services.MatchService>();
     }
     
     public static void ConfigureRepository(IServiceCollection services)
@@ -42,7 +42,7 @@ public class Startup
     {
         var connectionString = config.GetConnectionString("DataBase");
         services.AddDbContext<MatchContext>(options =>
-            options.UseNpgsql(connectionString, b => b.MigrationsAssembly("UserService.API")));
+            options.UseNpgsql(connectionString, b => b.MigrationsAssembly("MatchService.API")));
     }
     
     public static void ConfigureMiddlewares(WebApplication app)
@@ -53,21 +53,20 @@ public class Startup
     public static void ConfigureAuth(IServiceCollection services, ConfigurationManager config)
     {
         services.AddAuthentication(x =>
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(x =>
+            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(x =>
+        {
+            x.TokenValidationParameters = new TokenValidationParameters
             {
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = config["JwtSettings:Issuer"],
-                    ValidAudience = config["JwtSettings:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"]!)),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true
-                };
-            });
-
+                ValidIssuer = config["JwtSettings:Issuer"],
+                ValidAudience = config["JwtSettings:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("12345678901234567890123456789012")),
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true
+            };
+        });
     }
 
     public static void OptionsConfigure(IServiceCollection services, ConfigurationManager config)

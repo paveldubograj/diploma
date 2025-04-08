@@ -20,7 +20,6 @@ public class Tournament
     public List<Participant> Participants { get; set; } = new List<Participant>();
 
 
-    public string WinnerId {get; set;}
-    public Participant Winner {get; set;}
+    public string? WinnerId {get; set;}
     public string OwnerId {get; set;}
 }

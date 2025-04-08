@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using NewsService.DataAccess.Entities;
 using NewsService.DataAccess.Specifications.SpecSettings;
@@ -20,7 +21,10 @@ public class NewsSpecification : BaseSpecification<News>
         if(!string.IsNullOrEmpty(CategoryId)){
             predicate = predicate.And(news => news.CategoryId.Equals(CategoryId));
         }
-        predicate.And(news => tags.Where(t => news.Tags.Contains(t)).ToList() != null);
+        if(tags.Count > 0){
+            Console.WriteLine("Tags added");
+            predicate.And(news => new HashSet<Tag>(news.Tags).SetEquals(tags));
+        }
         return new NewsSpecification(predicate);
     }
 }

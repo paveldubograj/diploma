@@ -1,0 +1,18 @@
+@startuml
+class News {
+    + News()
+    + Id : string <<get>> <<set>>
+    + Title : string <<get>> <<set>>
+    + Content : string <<get>> <<set>>
+    + PublishingDate : DateTime <<get>> <<set>>
+    + CategoryId : string <<get>> <<set>>
+    + AuthorId : string <<get>> <<set>>
+    + <<virtual>> Tags : ICollection<Tag> <<get>> <<set>>
+}
+class Tag {
+    + Tag()
+    + Id : string <<get>> <<set>>
+    + Name : string <<get>> <<set>>
+    + <<virtual>> News : ICollection<News> <<get>> <<set>>
+}
+@enduml

@@ -17,5 +17,4 @@ public class TournamentCleanDto
     public DateTime EndDate { get; set; }
     public string OwnerId {get; set;}
     public string WinnerId {get; set;}
-    public Participant Winner {get; set;}
 }

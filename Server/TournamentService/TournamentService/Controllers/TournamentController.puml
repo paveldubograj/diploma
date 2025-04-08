@@ -1,0 +1,27 @@
+@startuml
+class ParticipantController {
+    - <<readonly>> _participantService : IParticipantService
+    + ParticipantController(participantService:IParticipantService)
+    + <<async>> GetParticipantsAsync(tournamentId:string, page:int, pageSize:int) : Task<IActionResult>
+    + <<async>> UpdateParticipantAsync(id:string, dto:ParticipantDto) : Task<IActionResult>
+    + <<async>> DeleteParticipantAsync(Id:string) : Task<IActionResult>
+    + <<async>> AddParticipantAsync(tournamentId:string, dto:ParticipantDto) : Task<IActionResult>
+    + <<async>> GetByIdAsync(id:string) : Task<IActionResult>
+}
+ControllerBase <|-- ParticipantController
+class TournamentController {
+    - <<readonly>> _tournamentService : ITournamentService
+    + TournamentController(tournamentService:ITournamentService)
+    + <<async>> GetTournamentAsync(tournamentId:string, page:int, pageSize:int) : Task<IActionResult>
+    + <<async>> UpdateTournamentAsync(tournamentId:string, dto:TournamentDto) : Task<IActionResult>
+    + <<async>> DeleteTournamentAsync(tournamentId:string) : Task<IActionResult>
+    + <<async>> AddTournamentAsync(dto:TournamentDto) : Task<IActionResult>
+    + <<async>> GetByIdAsync(tournamentId:string) : Task<IActionResult>
+    + <<async>> SetNextRound(tournamentId:string) : Task<IActionResult>
+    + <<async>> SetWinnerForMatchAsync(tournamentId:string, matchId:string, \nwinnerId:string, looserId:string, winPoints:int, loosePoints:int) : Task<IActionResult>
+    + <<async>> StartTournamentAsync(tournamentId:string) : Task<IActionResult>
+    + <<async>> EndTournamentAsync(tournamentId:string) : Task<IActionResult>
+    + <<async>> GenerateBracketAsync(tournamentId:string) : Task<IActionResult>
+}
+ControllerBase <|-- TournamentController
+@enduml

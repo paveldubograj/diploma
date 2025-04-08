@@ -1,0 +1,6 @@
+@startuml
+!include ./Tournament/TournamentDto.puml
+!include ./Tournament/TournamntCleanDto.puml
+!include ./ParticipantDtos/ParticipantDto.puml
+!include ./Match/MatchDto.puml
+@enduml

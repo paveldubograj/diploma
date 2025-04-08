@@ -1,0 +1,11 @@
+@startuml
+class SingleEliminationBracket {
+    - <<readonly>> _matchService : IMatchService
+    - <<readonly>> _tournamentRepository : ITournamentRepository
+    - <<readonly>> _participantService : IParticipantService
+    + SingleEliminationBracket(matchService:IMatchService, tournamentService:ITournamentRepository, participantService:IParticipantService)
+    + <<async>> GenerateBracket(tournamentId:string) : Task
+    + <<async>> HandleMatchResult(matchId:string, winnerId:string, looserId:string, winPoints:int, loosePoints:int) : Task
+    - CreateMatch(tournamentId:string, round:string, number:int, participant1Id:string, participant2Id:string, ownerId:string, categoryId:string) : MatchDto
+}
+@enduml

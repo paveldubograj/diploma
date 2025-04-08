@@ -1,28 +1,30 @@
 using System;
 using TournamentService.BusinessLogic.Models.Match;
 using TournamentService.BusinessLogic.Services.Interfaces;
+using TournamentService.BusinessLogic.Services.Tournaments.Interfaces;
+using TournamentService.DataAccess.Repositories.Interfaces;
 using TournamentService.Shared.Constants;
 using TournamentService.Shared.Enums;
 using TournamentService.Shared.Exceptions;
 
 namespace TournamentService.BusinessLogic.Services.Tournaments;
 
-public class RoundRobinBracket
+public class RoundRobinBracket : IRoundRobinBracket
 {
     private readonly IMatchService _matchService;
-    private readonly ITournamentService _tournamentService;
+    private readonly ITournamentRepository _tournamentRepository;
     private readonly IParticipantService _participantService;
 
-    public RoundRobinBracket(IMatchService matchService, ITournamentService tournamentService, IParticipantService participantService)
+    public RoundRobinBracket(IMatchService matchService, ITournamentRepository tournamentService, IParticipantService participantService)
     {
         _matchService = matchService;
-        _tournamentService = tournamentService;
+        _tournamentRepository = tournamentService;
         _participantService = participantService;
     }
 
     public async Task GenerateBracket(string tournamentId)
     {
-        var res = await _tournamentService.GetByIdAsync(tournamentId);
+        var res = await _tournamentRepository.GetByIdAsync(tournamentId);
         if(res == null){
             throw new NotFoundException(ErrorName.TournamentNotFound);
         }
@@ -51,26 +53,25 @@ public class RoundRobinBracket
     {
         var match = await _matchService.GetMatchById(matchId);
         if (match == null) throw new NotFoundException(ErrorName.MatchNotFound);
-        match.Status = MatchStatus.Completed;
-        match.WinnerId = winnerId;
-        match.WinScore = winPoints;
-        match.LooseScore = loosePoints;
+        match.status = MatchStatus.Completed;
+        match.winnerId = winnerId;
+        match.winScore = winPoints;
+        match.looseScore = loosePoints;
         await _participantService.UpdatePointsAsync(winnerId, 1);
         await _matchService.UpdateMatch(matchId, match);
-        // 📌 Обновляем рейтинг (учет побед и поражений)
     }
 
     private MatchDto CreateMatch(string tournamentId, int round, int number, string participant1Id, string participant2Id, string ownerId, string categoryId){
         MatchDto dto = new MatchDto(){
-            Id = new Guid().ToString(),
-            TournamentId = tournamentId, 
-            Round = round.ToString(), 
-            MatchOrder = number, 
-            Participant1Id = participant1Id, 
-            Participant2Id = participant2Id,
-            OwnerId = ownerId,
-            CategoryId = categoryId,
-            Status = MatchStatus.Scheduled};
+            //Id = new Guid().ToString(),
+            tournamentId = tournamentId, 
+            round = round.ToString(), 
+            matchOrder = number, 
+            participant1Id = participant1Id, 
+            participant2Id = participant2Id,
+            ownerId = ownerId,
+            categoryId = categoryId,
+            status = MatchStatus.Scheduled};
         return dto;
     }
 }

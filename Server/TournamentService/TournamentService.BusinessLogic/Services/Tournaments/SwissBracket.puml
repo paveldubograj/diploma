@@ -1,0 +1,11 @@
+@startuml
+class SwissBracket {
+    - <<readonly>> _matchService : IMatchService
+    - <<readonly>> _tournamentRepository : ITournamentRepository
+    - <<readonly>> _participantService : IParticipantService
+    + SwissBracket(matchService:IMatchService, tournamentService:ITournamentRepository, participantService:IParticipantService)
+    + <<async>> GenerateSwissMatches(tournamentId:string) : Task
+    + <<async>> HandleMatchResult(matchId:string, winnerId:string, loserId:string, winScore:int, looseScore:int) : Task
+    - CreateMatch(tournamentId:string, round:int, number:int, participant1Id:string, participant2Id:string, ownerId:string, categoryId:string) : MatchDto
+}
+@enduml

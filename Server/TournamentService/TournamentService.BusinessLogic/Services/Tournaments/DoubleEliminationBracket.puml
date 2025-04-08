@@ -1,0 +1,11 @@
+@startuml
+class DoubleEliminationBracket {
+    - <<readonly>> _matchService : IMatchService
+    + DoubleEliminationBracket(matchService:IMatchService)
+    + <<async>> GenerateBracket(tournamentId:string, participants:List<string>) : Task
+    + <<async>> HandleMatchResult(matchId:string, winnerId:string, loserId:string) : Task
+    - <<async>> AdvanceInWinners(match:MatchDto, winnerId:string) : Task
+    - <<async>> DropToLosers(match:MatchDto, loserId:string) : Task
+    - <<async>> AdvanceInLosers(match:MatchDto, winnerId:string) : Task
+}
+@enduml

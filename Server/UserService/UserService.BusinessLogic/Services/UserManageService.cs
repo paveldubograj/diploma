@@ -19,7 +19,6 @@ public class UserManageService : IUserManageService
         _userRepository = userRepository;
         _mapper = mapper;
     }
-
     public async Task<UserDto> GetByIdAsync(string id)
     {
         var user = await _userRepository.GetByIdAsync(id);
@@ -33,18 +32,15 @@ public class UserManageService : IUserManageService
         
         return userDto;
     }
-
     public async Task<IEnumerable<UserCleanDto>> GetByNameAsync(string firstName, CancellationToken token = default)
     {
-        var spec = new UserSpecification(user => user.UserName == firstName);
+        var spec = new UserSpecification(user => user.UserName.Equals(firstName));
         var users = await _userRepository.GetBySpecAsync(spec, token);
         var userDtos = _mapper.Map<IEnumerable<UserCleanDto>>(users);
         
         return userDtos;
     }
-
-
-    public async Task<UserDto> UpdateAsync(string id, UserDto dto)
+    public async Task<UserDto> UpdateAsync(string id, UserCleanDto dto)
     {
         var user = await _userRepository.GetByIdAsync(id);
         
@@ -69,7 +65,6 @@ public class UserManageService : IUserManageService
         
         return _mapper.Map<UserDto>(userUpdated);
     }
-
     public async Task<UserCleanDto> DeleteAsync(string id)
     {
         var user = await _userRepository.GetByIdAsync(id);
@@ -94,8 +89,6 @@ public class UserManageService : IUserManageService
 
         return _mapper.Map<UserCleanDto>(user);
     }
-    
-
     public async Task<bool> IsUserExits(string id)
     {
         var user = await _userRepository.GetByIdAsync(id);

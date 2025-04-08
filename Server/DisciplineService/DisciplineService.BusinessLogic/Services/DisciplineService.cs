@@ -19,6 +19,7 @@ public class DisciplineService : IDisciplineService
     }
     public async Task<DisciplineDto> AddAsync(DisciplineDto disciplineDto)
     {
+        disciplineDto.Id = new Guid().ToString();
         var obj = _mapper.Map<Discipline>(disciplineDto);
         var res = await _disciplineRepository.AddAsync(obj);
         return _mapper.Map<DisciplineDto>(res);

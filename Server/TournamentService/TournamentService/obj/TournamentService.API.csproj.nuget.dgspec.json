@@ -4,14 +4,177 @@
     "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/TournamentService.API.csproj": {}
   },
   "projects": {
-    "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/TournamentService.API.csproj": {
+    "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.BusinessLogic/TournamentService.BusinessLogic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/TournamentService.API.csproj",
-        "projectName": "TournamentService.API",
-        "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/TournamentService.API.csproj",
+        "projectUniqueName": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.BusinessLogic/TournamentService.BusinessLogic.csproj",
+        "projectName": "TournamentService.BusinessLogic",
+        "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.BusinessLogic/TournamentService.BusinessLogic.csproj",
         "packagesPath": "/home/pavel/.nuget/packages/",
-        "outputPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/obj/",
+        "outputPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.BusinessLogic/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/pavel/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.DataAccess/TournamentService.DataAccess.csproj": {
+                "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.DataAccess/TournamentService.DataAccess.csproj"
+              },
+              "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/TournamentService.Shared.csproj": {
+                "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/TournamentService.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[14.0.0, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.11.0, )"
+            },
+            "Google.Protobuf": {
+              "target": "Package",
+              "version": "[3.30.2, )"
+            },
+            "Grpc.Net.Client": {
+              "target": "Package",
+              "version": "[2.70.0, )"
+            },
+            "Grpc.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.71.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.114/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.DataAccess/TournamentService.DataAccess.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.DataAccess/TournamentService.DataAccess.csproj",
+        "projectName": "TournamentService.DataAccess",
+        "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.DataAccess/TournamentService.DataAccess.csproj",
+        "packagesPath": "/home/pavel/.nuget/packages/",
+        "outputPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.DataAccess/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/pavel/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/TournamentService.Shared.csproj": {
+                "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/TournamentService.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.2, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.114/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/TournamentService.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/TournamentService.Shared.csproj",
+        "projectName": "TournamentService.Shared",
+        "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/TournamentService.Shared.csproj",
+        "packagesPath": "/home/pavel/.nuget/packages/",
+        "outputPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/pavel/.nuget/NuGet/NuGet.Config"
@@ -37,14 +200,99 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.114/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/TournamentService.API.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/TournamentService.API.csproj",
+        "projectName": "TournamentService.API",
+        "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/TournamentService.API.csproj",
+        "packagesPath": "/home/pavel/.nuget/packages/",
+        "outputPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/pavel/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.BusinessLogic/TournamentService.BusinessLogic.csproj": {
+                "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.BusinessLogic/TournamentService.BusinessLogic.csproj"
+              },
+              "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.DataAccess/TournamentService.DataAccess.csproj": {
+                "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.DataAccess/TournamentService.DataAccess.csproj"
+              },
+              "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/TournamentService.Shared.csproj": {
+                "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.Shared/TournamentService.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
           "dependencies": {
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.11.0, )"
+            },
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[11.3.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.13, )"
             },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.3, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.6.2, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.7.0, )"
             }
           },
           "imports": [
@@ -66,7 +314,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.113/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.114/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

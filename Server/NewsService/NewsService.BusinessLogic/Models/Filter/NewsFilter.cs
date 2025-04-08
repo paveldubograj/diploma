@@ -5,7 +5,7 @@ namespace NewsService.BusinessLogic.Models.Filter;
 
 public class NewsFilter
 {
-    public string SearchString {get; set;}
-    public List<TagDto> Tags {get; set;} = new();
-    public string CategoryId {get; set;}
+    public string? SearchString {get; set;}
+    public List<string>? Tags {get; set;} = new();
+    public string? CategoryId {get; set;}
 }

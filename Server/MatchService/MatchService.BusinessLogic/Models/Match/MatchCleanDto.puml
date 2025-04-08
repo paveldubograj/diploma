@@ -1,0 +1,12 @@
+@startuml
+class MatchCleanDto {
+    + Id : string <<get>> <<set>>
+    + Round : int <<get>> <<set>>
+    + StartTime : DateTime <<get>> <<set>>
+    + Status : MatchStatus <<get>> <<set>>
+    + MatchOrder : int <<get>> <<set>>
+    + WinScore : int <<get>> <<set>>
+    + LooseScore : int <<get>> <<set>>
+    + EndTime : DateTime <<get>> <<set>>
+}
+@enduml

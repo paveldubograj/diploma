@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchService.API", "MatchSe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchService.DataAccess", "MatchService.DataAccess\MatchService.DataAccess.csproj", "{1C1F61D5-497F-4366-958F-30098E056A04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchService.BusinessLogic", "MatchRepository.BusinessLogic\MatchService.BusinessLogic.csproj", "{62A01FF7-C673-47F4-BC58-6255D1AB4940}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchService.BusinessLogic", "MatchService.BusinessLogic\MatchService.BusinessLogic.csproj", "{62A01FF7-C673-47F4-BC58-6255D1AB4940}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchService.Shared", "MatchService.Shared\MatchService.Shared.csproj", "{ABD8567D-5DFA-47DC-8509-AADC69C278D3}"
 EndProject

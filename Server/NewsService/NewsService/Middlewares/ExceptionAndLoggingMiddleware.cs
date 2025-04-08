@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using NewsService.Shared.Exeptions;
 namespace NewsService.API.Middlewares;
 
@@ -38,12 +39,16 @@ public class ExceptionAndLoggingMiddleware
 
         switch (exception)
         {
-            // case ValidationException :
-            //     result.StatusCode = 400;
-            //     break;
+            case ValidationException :
+                result.StatusCode = 400;
+                break;
             
             case NotFoundException  :
                 result.StatusCode = 404;
+                break;
+            
+            case BadAuthorizeException  :
+                result.StatusCode = 400;
                 break;
 
         }

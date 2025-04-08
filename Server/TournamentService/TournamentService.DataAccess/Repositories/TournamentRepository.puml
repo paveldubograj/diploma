@@ -1,0 +1,44 @@
+@startuml
+interface ITournamentRepository {
+    GetByIdAsync(id:string) : Task<Tournament>
+    GetAsync(page:int, pageSize:int) : Task<List<Tournament>>
+    AddAsync(tournament:Tournament) : Task<Tournament>
+    DeleteAsync(tournament:Tournament) : Task<Tournament>
+    UpdateAsync(tournament:Tournament) : Task<Tournament>
+    GetBySpecificationAsync(spec1:TournamentSpecification, page:int, \npageSize:int, token:CancellationToken) : Task<IEnumerable<Tournament>>
+}
+class TournamentRepository {
+    - <<readonly>> _context : TournamentContext
+    + TournamentRepository(context:TournamentContext)
+    + <<async>> AddAsync(tournament:Tournament) : Task<Tournament>
+    + <<async>> DeleteAsync(tournament:Tournament) : Task<Tournament>
+    + <<async>> GetAsync(page:int, pageSize:int) : Task<List<Tournament>>
+    + <<async>> GetByIdAsync(id:string) : Task<Tournament>
+    + <<async>> GetBySpecificationAsync(spec1:TournamentSpecification, \npage:int, pageSize:int, token:CancellationToken) : Task<IEnumerable<Tournament>>
+    + <<async>> UpdateAsync(tournament:Tournament) : Task<Tournament>
+}
+ITournamentRepository <|-- TournamentRepository
+interface IParticipantRepository {
+    GetByIdAsync(id:string) : Task<Participant>
+    GetAsync(tournamentId:string, page:int, pageSize:int) : Task<List<Participant>>
+    + GetAllAsync(tournamentId:string) : Task<List<Participant>>
+    AddAsync(participant:Participant) : Task<Participant>
+    DeleteAsync(participant:Participant) : Task<Participant>
+    UpdateAsync(participant:Participant) : Task<Participant>
+    + AddParticipantToTournament(tournamentId:string, participantId:string) : Task<Participant>
+    + RemoveParticipantFromTournament(tournamentId:string, participantId:string) : Task<Participant>
+}
+class ParticipantRepository {
+    - <<readonly>> _context : TournamentContext
+    + ParticipantRepository(context:TournamentContext)
+    + <<async>> AddAsync(participant:Participant) : Task<Participant>
+    + <<async>> AddParticipantToTournament(tournamentId:string, participantId:string) : Task<Participant>
+    + <<async>> DeleteAsync(participant:Participant) : Task<Participant>
+    + <<async>> GetAsync(tournamentId:string, page:int, pageSize:int) : Task<List<Participant>>
+    + <<async>> GetAllAsync(tournamentId:string) : Task<List<Participant>>
+    + <<async>> GetByIdAsync(id:string) : Task<Participant>
+    + <<async>> RemoveParticipantFromTournament(tournamentId:string, participantId:string) : Task<Participant>
+    + <<async>> UpdateAsync(participant:Participant) : Task<Participant>
+}
+IParticipantRepository <|-- ParticipantRepository
+@enduml

@@ -1,7 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using MatchService.BusinessLogic.Models.Filter;
 using MatchService.BusinessLogic.Models.Match;
 using MatchService.BusinessLogic.Services;
+using MatchService.BusinessLogic.Services.Interfaces;
 using MatchService.Shared.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,14 +16,14 @@ namespace MatchService.API.Controllers
     [ApiController]
     public class MatchController : ControllerBase
     {
-        private readonly MatchService.BusinessLogic.Services.MatchService _matchService;
-        public MatchController(MatchService.BusinessLogic.Services.MatchService matchService){
+        private readonly IMatchService _matchService;
+        public MatchController(IMatchService matchService){
             _matchService = matchService;
         }
 
         [HttpGet]
         [Route("list/")]
-        public async Task<IActionResult> GetMatchesAsync([FromRoute]int page, [FromRoute]int pageSize)
+        public async Task<IActionResult> GetMatchesAsync(int page, int pageSize)
         {
             var list = await _matchService.GetAllByPageAsync(page, pageSize);
 
@@ -33,7 +35,7 @@ namespace MatchService.API.Controllers
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> UpdateMatchAsync([FromRoute] string id, [FromBody] MatchDto dto)
         {
-            var newsDto = await _matchService.UpdateAsync(id, dto, User.Claims.First(x => x.Type.Equals(JwtRegisteredClaimNames.Jti)).Value);
+            var newsDto = await _matchService.UpdateAsync(id, dto, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
 
             return Ok(newsDto);
         }
@@ -43,7 +45,7 @@ namespace MatchService.API.Controllers
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> DeleteMatchAsync(string Id)
         {
-            var newsDto = await _matchService.DeleteAsync(Id, User.Claims.First(x => x.Type.Equals(JwtRegisteredClaimNames.Jti)).Value);
+            var newsDto = await _matchService.DeleteAsync(Id, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
 
             return Ok(newsDto);
         }
@@ -78,7 +80,7 @@ namespace MatchService.API.Controllers
         }
 
         [HttpGet]
-        [Route("tournament/")]
+        [Route("tournament/{TournamentId}")]
         public async Task<IActionResult> GetTournamentStructureAsync([FromRoute]string TournamentId)
         {
             var newsDto = await _matchService.GetTournamentStructureAsync(TournamentId);
@@ -90,9 +92,23 @@ namespace MatchService.API.Controllers
         [Route("winner/")]
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> SetMatchWinner([FromBody]string matchId, [FromBody]string winnerId, [FromBody]int winPoints, [FromBody]int loosePoints){
-            var match = await _matchService.SetWinnerAsync(matchId, winnerId, winPoints, loosePoints, User.Claims.First(x => x.Type.Equals(JwtRegisteredClaimNames.Jti)).Value);
+            var match = await _matchService.SetWinnerAsync(matchId, winnerId, winPoints, loosePoints, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
 
             return Ok(match);
         }
+
+        [HttpGet]
+        [Route("byRound")]
+        public async Task<IActionResult> GetByRoundName(string tournamentId, string round){
+            var match = await _matchService.GetByRoundAsync(tournamentId, round);
+            return Ok(match);
+        }
+
+        // [HttpPost]
+        // [Route("list/add")]
+        // public async Task<IActionResult> AddMatchesAsync([FromBody] List<MatchDto> matches){
+        //     _matchService.AddMatchesAsync(matches);
+        //     return Ok();
+        // }
     }
 }

@@ -1,0 +1,26 @@
+@startuml
+class UserAuthorizedDto {
+    + Id : string <<get>> <<set>>
+    + UserName : string <<get>> <<set>>
+    + Email : string <<get>> <<set>>
+    + AccessToken : string <<get>> <<set>>
+}
+class LogInDto {
+    + Email : string <<get>> <<set>>
+    + Password : string <<get>> <<set>>
+}
+class UserCleanDto {
+    + Id : string <<get>> <<set>>
+    + UserName : string <<get>> <<set>>
+    + Email : string <<get>> <<set>>
+}
+class UserDto {
+    + Id : string <<get>> <<set>>
+    + UserName : string <<get>> <<set>>
+    + Email : string <<get>> <<set>>
+    + Password : string <<get>> <<set>>
+}
+class RoleDto {
+    + Name : string <<get>> <<set>>
+}
+@enduml

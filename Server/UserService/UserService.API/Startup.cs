@@ -68,20 +68,20 @@ public class Startup
     public static void ConfigureAuth(IServiceCollection services, ConfigurationManager config)
     {
         services.AddAuthentication(x =>
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(x =>
+            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(x =>
+        {
+            x.TokenValidationParameters = new TokenValidationParameters
             {
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = config["JwtSettings:Issuer"],
-                    ValidAudience = config["JwtSettings:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"]!)),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true
-                };
-            });
+                ValidIssuer = config["JwtSettings:Issuer"],
+                ValidAudience = config["JwtSettings:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"]!)),
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true
+            };
+        });
 
     }
     

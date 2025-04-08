@@ -42,4 +42,10 @@ public class TagRepository : ITagRepository
     {
         return await _context.Tags.ToListAsync();
     }
+    public async Task<List<Tag>> GetByIdsAsync(List<string> ids)
+    {
+        var res = new List<Tag>();
+        foreach(string id in ids) res.Add(await _context.Set<Tag>().FindAsync(id));
+        return res;
+    }
 }

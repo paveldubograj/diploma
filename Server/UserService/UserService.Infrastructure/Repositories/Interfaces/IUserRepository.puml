@@ -1,0 +1,14 @@
+@startuml
+interface IUserRepository {
+    GetByEmailAsync(email:string) : Task<User?>
+    AddAsync(entity:User, password:string) : Task<IdentityResult>
+    CheckPasswordAsync(entity:User, password:string) : Task<bool>
+    GetRolesAsync(user:User) : Task<IEnumerable<string>>
+    AddToRoleAsync(user:User, role:string) : Task<IdentityResult>
+    RemoveFromRolesAsync(user:User, role:string) : Task<IdentityResult>
+    GetByIdAsync(id:string) : Task<User?>
+    GetBySpecAsync(spec:UserSpecification, token:CancellationToken) : Task<IEnumerable<User>>
+    UpdateAsync(entity:User) : Task<IdentityResult>
+    DeleteAsync(entity:User) : Task<IdentityResult>
+}
+@enduml

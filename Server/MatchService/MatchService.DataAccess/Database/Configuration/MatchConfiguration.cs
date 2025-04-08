@@ -14,8 +14,7 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
 
         builder
             .Property(c => c.WinnerId)
-            .HasMaxLength(40)
-            .IsRequired();
+            .HasMaxLength(40);
 
         builder
             .Property(c => c.Participant1Id)

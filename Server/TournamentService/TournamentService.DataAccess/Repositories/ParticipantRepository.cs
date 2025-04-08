@@ -15,6 +15,9 @@ public class ParticipantRepository : IParticipantRepository
     }
     public async Task<Participant> AddAsync(Participant participant)
     {
+        var tournament = await _context.Tournaments.FindAsync(participant.TournamentId);
+        if (tournament == null) throw new NotFoundException("Tournament not found");
+        if(GetAllAsync(tournament.Id).Count >= tournament.MaxParticipants) throw new Exception("There are already max participants in tournament!");
         _context.Participants.Add(participant);
         await _context.SaveChangesAsync();
         return participant;
@@ -22,10 +25,11 @@ public class ParticipantRepository : IParticipantRepository
 
     public async Task<Participant> AddParticipantToTournament(string tournamentId, string participantId)
     {
-        var tournament = await _context.Tournaments.FindAsync(tournamentId);
+        var tournament = await _context.Tournaments.Include(p => p.Participants).Where(t => t.Id.Equals(tournamentId)).FirstOrDefaultAsync();
         var participant = await _context.Participants.FindAsync(participantId);
         
-        if (tournament == null || participant == null) throw new NotFoundException();
+        if (tournament == null) throw new NotFoundException("Tournament not found");
+        if (participant == null) throw new NotFoundException("Participant not found");
 
         tournament.Participants.Add(participant);
         await _context.SaveChangesAsync();
@@ -43,21 +47,19 @@ public class ParticipantRepository : IParticipantRepository
     {
         return await _context.Participants
             .Where(c => c.TournamentId.Equals(tournamentId))
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
+            // .Skip((page - 1) * pageSize)
+            // .Take(pageSize)
             .ToListAsync();
     }
 
-    public async Task<List<Participant>> GetAllAsync(string tournamentId)
+    public List<Participant> GetAllAsync(string tournamentId)
     {
-        return await _context.Participants
-            .Where(c => c.TournamentId.Equals(tournamentId))
-            .ToListAsync();
+        return _context.Participants.Where(c => c.TournamentId.Equals(tournamentId)).ToList();
     }
 
     public async Task<Participant> GetByIdAsync(string id)
     {
-        return await _context.Participants.Include(c => c.Tournament)
+        return await _context.Participants
         .FirstOrDefaultAsync(t => t.Id.Equals(id));
     }
 

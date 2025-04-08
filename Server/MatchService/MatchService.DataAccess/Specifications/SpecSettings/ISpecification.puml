@@ -1,0 +1,6 @@
+@startuml
+interface "ISpecification`1"<T> {
+    Criteria : Expression<Func<T, bool>> <<get>>
+    Includes : List<Expression<Func<T, object>>> <<get>>
+}
+@enduml

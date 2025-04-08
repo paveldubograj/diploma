@@ -7,7 +7,7 @@ public interface IUserManageService
 {
     Task<UserDto> GetByIdAsync(string id);
     Task<IEnumerable<UserCleanDto>> GetByNameAsync(string firstName, CancellationToken token = default);
-    Task<UserDto> UpdateAsync(string id, UserDto dto);
+    Task<UserDto> UpdateAsync(string id, UserCleanDto dto);
     Task<UserCleanDto> DeleteAsync(string id);
     Task<bool> IsUserExits(string id);
 }

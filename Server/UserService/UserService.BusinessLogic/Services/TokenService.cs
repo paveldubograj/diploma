@@ -35,8 +35,7 @@ public class TokenService : ITokenService
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Jti, user.Id),
-            new Claim(JwtRegisteredClaimNames.Sub, Guid.NewGuid().ToString()),
-            new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+            new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToUniversalTime().ToString()),
         };
 
         var roles = await _userRepository.GetRolesAsync(user);
@@ -49,17 +48,39 @@ public class TokenService : ITokenService
 
     public async Task<string> GenerateToken(string userId)
     {
-        var claims = await AddClaims(userId);
+        //var claims = await AddClaims(userId);
+        var user = await _userRepository.GetByIdAsync(userId);
+        Console.WriteLine(user.Email);
+
+        var keyBytes = Encoding.UTF8.GetBytes("12345678901234567890123456789012");
+
+        var roles = await _userRepository.GetRolesAsync(user);
+
+        List<Claim> claims = [new Claim(ClaimTypes.Name, user.Id)];
+        claims.AddRange(roles.Select(role =>
+            new Claim(ClaimsIdentity.DefaultRoleClaimType, role)));
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(claims),
+            Expires = DateTime.UtcNow.AddDays(10), // Время жизни токена
+            Issuer = "https://id.CompanyName.com",
+            Audience = "https://tournament.CompanyName.com",
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
+        };
+
+        var token = new JwtSecurityTokenHandler().CreateToken(tokenDescriptor);
+        //var token = GenerateJwtToken(request.Username, secretKey);
+        //var token1 = tokenHandler.WriteToken(token);
         
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Value.Key));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        var token = new JwtSecurityToken(
-            issuer: _options.Value.Issuer,
-            audience: _options.Value.Audience,
-            claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(30),
-            signingCredentials: creds);
-        
+        // var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("12345678901234567890123456789012"));//_options.Value.Key));
+        // var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+        // var token = new JwtSecurityToken(
+        //     issuer: "https://id.CompanyName.com",//_options.Value.Issuer,
+        //     audience: "https://tournament.CompanyName.com",//_options.Value.Audience,
+        //     claims: claims,
+        //     expires: DateTime.UtcNow.AddDays(3),
+        //     signingCredentials: creds);
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }

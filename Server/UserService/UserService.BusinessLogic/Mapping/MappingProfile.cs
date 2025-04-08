@@ -15,5 +15,8 @@ public class MappingProfile : Profile
 
         CreateMap<User, UserAuthorizedDto>().ReverseMap();
         CreateMap<User, UserCleanDto>().ReverseMap();
+        CreateMap<User, UserDto>()
+            .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash))
+            .ReverseMap();
     }
 }

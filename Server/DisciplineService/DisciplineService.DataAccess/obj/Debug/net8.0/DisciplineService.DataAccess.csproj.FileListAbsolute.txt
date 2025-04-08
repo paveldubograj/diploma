@@ -1,0 +1,13 @@
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/bin/Debug/net8.0/DisciplineService.DataAccess.deps.json
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/bin/Debug/net8.0/DisciplineService.DataAccess.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/bin/Debug/net8.0/DisciplineService.DataAccess.pdb
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/obj/Debug/net8.0/DisciplineService.DataAccess.csproj.AssemblyReference.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/obj/Debug/net8.0/DisciplineService.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/obj/Debug/net8.0/DisciplineService.DataAccess.AssemblyInfoInputs.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/obj/Debug/net8.0/DisciplineService.DataAccess.AssemblyInfo.cs
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/obj/Debug/net8.0/DisciplineService.DataAccess.csproj.CoreCompileInputs.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/obj/Debug/net8.0/DisciplineService.DataAccess.sourcelink.json
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/obj/Debug/net8.0/DisciplineService.DataAccess.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/obj/Debug/net8.0/refint/DisciplineService.DataAccess.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/obj/Debug/net8.0/DisciplineService.DataAccess.pdb
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/obj/Debug/net8.0/ref/DisciplineService.DataAccess.dll

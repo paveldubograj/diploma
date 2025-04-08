@@ -1,0 +1,6 @@
+@startuml
+!include ./TournamentRepository.puml
+!include ./ParticipantRepository.puml
+!include ./Interfaces/IParticipantRepository.puml
+!include ./Interfaces/ITournamentRepository.puml
+@enduml

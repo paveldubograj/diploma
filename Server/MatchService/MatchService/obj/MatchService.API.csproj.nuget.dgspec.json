@@ -4,14 +4,14 @@
     "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService/MatchService.API.csproj": {}
   },
   "projects": {
-    "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchRepository.BusinessLogic/MatchService.BusinessLogic.csproj": {
+    "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.BusinessLogic/MatchService.BusinessLogic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchRepository.BusinessLogic/MatchService.BusinessLogic.csproj",
+        "projectUniqueName": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.BusinessLogic/MatchService.BusinessLogic.csproj",
         "projectName": "MatchService.BusinessLogic",
-        "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchRepository.BusinessLogic/MatchService.BusinessLogic.csproj",
+        "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.BusinessLogic/MatchService.BusinessLogic.csproj",
         "packagesPath": "/home/pavel/.nuget/packages/",
-        "outputPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchRepository.BusinessLogic/obj/",
+        "outputPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.BusinessLogic/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/pavel/.nuget/NuGet/NuGet.Config"
@@ -48,6 +48,10 @@
             "AutoMapper": {
               "target": "Package",
               "version": "[14.0.0, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.11.0, )"
             }
           },
           "imports": [
@@ -66,7 +70,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.113/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.114/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
@@ -145,7 +149,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.113/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.114/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
@@ -198,7 +202,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.113/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.114/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
@@ -224,8 +228,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchRepository.BusinessLogic/MatchService.BusinessLogic.csproj": {
-                "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchRepository.BusinessLogic/MatchService.BusinessLogic.csproj"
+              "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.BusinessLogic/MatchService.BusinessLogic.csproj": {
+                "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.BusinessLogic/MatchService.BusinessLogic.csproj"
               },
               "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.Shared/MatchService.Shared.csproj": {
                 "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.Shared/MatchService.Shared.csproj"
@@ -243,6 +247,18 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.11.0, )"
+            },
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[11.3.0, )"
+            },
+            "Grpc.AspNetCore": {
+              "target": "Package",
+              "version": "[2.70.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.0, )"
@@ -250,6 +266,12 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.12, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.3, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -279,7 +301,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.113/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.114/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

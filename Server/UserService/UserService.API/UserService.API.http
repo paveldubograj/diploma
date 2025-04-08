@@ -1,6 +1,28 @@
 @UserService.API_HostAddress = http://localhost:5153
 
-GET {{UserService.API_HostAddress}}/weatherforecast/
-Accept: application/json
+curl -X 'GET' \
+  'http://localhost:5153/secure/data' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluIiwicm9sZSI6IkFkbWluIiwibmJmIjoxNzQzNTA5NzQzLCJleHAiOjE3NDM1MTMzNDMsImlhdCI6MTc0MzUwOTc0M30.RM33dVaj8XDNGsTKq9EdA3uNd2YqWU4BXHyxj8uHxbs'
 
 ###
+@token = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsInN1YiI6IjEyMzRlNmEwLTQyMzktNDhjOC04YTBhLWFmYTM3NzQ3YzBhNyIsImlhdCI6IjMvMzEvMjAyNSAxOjM0OjUyXHUyMDJGUE0iLCJleHAiOjE3NDM0Mjk4OTIsImlzcyI6Imh0dHBzOi8vaWQuQ29tcGFueU5hbWUuY29tIiwiYXVkIjoiaHR0cHM6Ly90b3VybmFtZW50LkNvbXBhbnlOYW1lLmNvbSJ9.tUhxKDf_rd_cKeQjDdBeGX6u1hAIafU7oZiXNllqxJk
+
+GET http://localhost:5153/api/user/profile 
+Authorization: Bearer {{token}}
+
+###
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluIiwicm9sZSI6IkFkbWluIiwibmJmIjoxNzQzNTA5NzQzLCJleHAiOjE3NDM1MTMzNDMsImlhdCI6MTc0MzUwOTc0M30.RM33dVaj8XDNGsTKq9EdA3uNd2YqWU4BXHyxj8uHxbs
+
+GET http://localhost:5153/secure/data
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluIiwicm9sZSI6IkFkbWluIiwibmJmIjoxNzQzNTA5NzQzLCJleHAiOjE3NDM1MTMzNDMsImlhdCI6MTc0MzUwOTc0M30.RM33dVaj8XDNGsTKq9EdA3uNd2YqWU4BXHyxj8uHxbs
+
+
+###
+
+POST http://localhost:5153/auth/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "password"
+}

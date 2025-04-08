@@ -1,0 +1,5 @@
+@startuml
+interface ITokenService {
+    GenerateToken(userId:string) : Task<string>
+}
+@enduml

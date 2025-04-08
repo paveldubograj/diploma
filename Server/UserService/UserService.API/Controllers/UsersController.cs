@@ -25,7 +25,8 @@ public class UsersController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetProfileAsync()
     {
-        var userDto = await _userManageService.GetByIdAsync(User.Claims.First(x => x.Type.Equals(JwtRegisteredClaimNames.Jti)).Value);
+        //Console.WriteLine(User.Claims.First(x => x.Type.Equals(JwtRegisteredClaimNames.Jti)).Value);
+        var userDto = await _userManageService.GetByIdAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
 
         return Ok(userDto);
     }
@@ -33,9 +34,9 @@ public class UsersController : ControllerBase
     [HttpPut]
     [Route("profile")]
     [Authorize]
-    public async Task<IActionResult> UpdateProfileAsync([FromBody] UserDto dto)
+    public async Task<IActionResult> UpdateProfileAsync([FromBody] UserCleanDto dto)
     {
-        var userDto = await _userManageService.UpdateAsync(User.Claims.First(x => x.Type.Equals(JwtRegisteredClaimNames.Jti)).Value, dto);
+        var userDto = await _userManageService.UpdateAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value, dto);
 
         return Ok(userDto);
     }
@@ -45,7 +46,7 @@ public class UsersController : ControllerBase
     [Authorize]
     public async Task<IActionResult> DeleteProfileAsync()
     {
-        var userDto = await _userManageService.DeleteAsync(User.Claims.First(x => x.Type.Equals(JwtRegisteredClaimNames.Jti)).Value);
+        var userDto = await _userManageService.DeleteAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
 
         return Ok(userDto);
     }
@@ -74,7 +75,7 @@ public class UsersController : ControllerBase
     [Authorize(Roles = RoleName.Admin)]
     [HttpPut]
     [Route("{id}")]
-    public async Task<IActionResult> EditAsync([FromRoute] string id, [FromBody] UserDto dto)
+    public async Task<IActionResult> EditAsync([FromRoute] string id, [FromBody] UserCleanDto dto)
     {
         var userDto = await _userManageService.UpdateAsync(id, dto);
         

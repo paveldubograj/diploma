@@ -1,0 +1,6 @@
+@startuml
+!include ./Tag/TagDto.puml
+!include ./News/NewsDto.puml
+!include ./News/NewsCleanDto.puml
+!include ./Filter/NewsFilter.puml
+@enduml

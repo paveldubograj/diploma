@@ -13,5 +13,6 @@ public class MappingProfile : Profile
         CreateMap<Participant, ParticipantDto>().ReverseMap();
         CreateMap<Tournament, TournamentCleanDto>().ReverseMap();
         CreateMap<Tournament, TournamentDto>().ReverseMap();
+        CreateMap<Tournament, TournamentCreateDto>().ReverseMap();
     }
 }

@@ -1,0 +1,10 @@
+@startuml
+interface ITournamentRepository {
+    GetByIdAsync(id:string) : Task<Tournament>
+    GetAsync(page:int, pageSize:int) : Task<List<Tournament>>
+    AddAsync(tournament:Tournament) : Task<Tournament>
+    DeleteAsync(tournament:Tournament) : Task<Tournament>
+    UpdateAsync(tournament:Tournament) : Task<Tournament>
+    GetBySpecificationAsync(spec1:TournamentSpecification, page:int, pageSize:int, token:CancellationToken) : Task<IEnumerable<Tournament>>
+}
+@enduml

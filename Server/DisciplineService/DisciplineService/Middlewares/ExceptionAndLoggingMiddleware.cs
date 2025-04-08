@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using DisciplineService.Shared.Exceptions;
 
 namespace DisciplineService.API.Middlewares;
@@ -39,14 +40,13 @@ public class ExceptionAndLoggingMiddleware
 
         switch (exception)
         {
-            // case ValidationException :
-            //     result.StatusCode = 400;
-            //     break;
+            case ValidationException :
+                result.StatusCode = 400;
+                break;
             
             case NotFoundException  :
                 result.StatusCode = 404;
                 break;
-
         }
         
         context.Response.StatusCode = result.StatusCode;

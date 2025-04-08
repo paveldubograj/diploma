@@ -39,7 +39,7 @@ public class Startup
     {
         var connectionString = config.GetConnectionString("DataBase");
         services.AddDbContext<DisciplineContext>(options =>
-            options.UseNpgsql(connectionString, b => b.MigrationsAssembly("UserService.API")));
+            options.UseNpgsql(connectionString, b => b.MigrationsAssembly("DisciplineService.API")));
     }
 
     
@@ -75,13 +75,13 @@ public class Startup
         app.UseCors(MyAllowSpecificOrigins);
     }
 
-    // public static void UseMigrations(WebApplication app)
-    // {
-    //     using (var scope = app.Services.CreateScope())
-    //     {
-    //         var serviceProvider = scope.ServiceProvider;
-    //         var dbContext = serviceProvider.GetService<UsersContext>();
-    //         dbContext.Database.Migrate();
-    //     }
-    // }
+    public static void UseMigrations(WebApplication app)
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            var serviceProvider = scope.ServiceProvider;
+            var dbContext = serviceProvider.GetService<DisciplineContext>();
+            dbContext.Database.Migrate();
+        }
+    }
 }

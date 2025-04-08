@@ -10,8 +10,7 @@ public class Match
         Id = new Guid().ToString();
     }
     public string Id {get; set;}
-    public string OwnerId {get; set;}
-    public int Round { get; set; }
+    public string Round { get; set; }
     public DateTime? StartTime {get; set;}
     public MatchStatus Status {get; set;}
     public int MatchOrder {get; set;}
@@ -26,4 +25,5 @@ public class Match
     public string TournamentId { get; set; }
     public string? NextMatchId {get; set;}
     public Match? NextMatch {get; set;}
+    public string OwnerId {get; set;}
 }

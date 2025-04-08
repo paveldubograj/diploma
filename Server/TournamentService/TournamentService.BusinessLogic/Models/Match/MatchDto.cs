@@ -5,21 +5,21 @@ namespace TournamentService.BusinessLogic.Models.Match;
 
 public class MatchDto
 {
-    public string Id {get; set;}
+    public string id {get; set;}
 
-    public string Round { get; set; }
-    public DateTime StartTime {get; set;}
-    public MatchStatus Status {get; set;}
-    public int MatchOrder {get; set;}
-    public int WinScore {get; set;}
-    public int LooseScore {get; set;}
-    public DateTime EndTime {get; set;}
+    public string round { get; set; }
+    public DateTime startTime {get; set;}
+    public MatchStatus status {get; set;}
+    public int matchOrder {get; set;}
+    public int winScore {get; set;}
+    public int looseScore {get; set;}
+    public DateTime endTime {get; set;}
     
-    public string CategoryId {get; set;}
-    public string WinnerId {get; set;}
-    public string Participant1Id {get; set;}
-    public string Participant2Id {get; set;}
-    public string TournamentId { get; set; }
-    public string? NextMatchId {get; set;}
-    public string OwnerId {get; set;}
+    public string categoryId {get; set;}
+    public string winnerId {get; set;}
+    public string participant1Id {get; set;}
+    public string participant2Id {get; set;}
+    public string tournamentId { get; set; }
+    public string? nextMatchId {get; set;}
+    public string ownerId {get; set;}
 }

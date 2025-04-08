@@ -30,4 +30,11 @@ public class MatchSpecification : BaseSpecification<Match>
         }
         return new MatchSpecification(predicate);
     }
+
+    public static MatchSpecification FindTournamentRound(string TournamentId, string round){
+        var predicate = PredicateBuilder.True<Match>();
+        predicate = predicate.And(match => match.TournamentId.Equals(TournamentId));
+        predicate = predicate.And(match => match.Round.Equals(round));
+        return new MatchSpecification(predicate);
+    }
 }

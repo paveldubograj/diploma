@@ -1,0 +1,9 @@
+@startuml
+class MatchFilter {
+    + CategoryId : string <<get>> <<set>>
+    + StartTime : DateTime <<get>> <<set>>
+    + EndTime : DateTime <<get>> <<set>>
+    + TournamentId : string <<get>> <<set>>
+    + Status : string <<get>> <<set>>
+}
+@enduml

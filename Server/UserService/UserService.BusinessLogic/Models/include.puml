@@ -1,0 +1,7 @@
+@startuml
+!include ./Role/RoleDto.puml
+!include ./User/LogInDto.puml
+!include ./User/UserAuthorizedDto.puml
+!include ./User/UserCleanDto.puml
+!include ./User/UserDto.puml
+@enduml

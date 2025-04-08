@@ -1,0 +1,42 @@
+@startuml
+interface IMatchRepository {
+    GetByIdAsync(id:string) : Task<Match>
+    GetTournamentStructureAsync(TournamentId:string) : Task<List<Match>>
+    GetAsync(page:int, pageSize:int) : Task<List<Match>>
+    AddAsync(Match:Match) : Task<Match>
+    DeleteAsync(Match:Match) : Task<Match>
+    UpdateAsync(Match:Match) : Task<Match>
+    GetBySpecificationAsync(spec:MatchSpecification, page:int, pageSize:int, token:CancellationToken) : Task<IEnumerable<Match>>
+}
+class MatchRepository {
+    - db : MatchContext
+    + MatchRepository(db:MatchContext)
+    + <<async>> AddAsync(Match:Match) : Task<Match>
+    + <<async>> DeleteAsync(Match:Match) : Task<Match>
+    + <<async>> GetAsync(page:int, pageSize:int) : Task<List<Match>>
+    + <<async>> GetByIdAsync(id:string) : Task<Match>
+    + <<async>> GetBySpecificationAsync(spec:MatchSpecification, page:int, pageSize:int, token:CancellationToken) : Task<IEnumerable<Match>>
+    + <<async>> GetTournamentStructureAsync(tournamentId:string) : Task<List<Match>>
+    + <<async>> UpdateAsync(Match:Match) : Task<Match>
+}
+IMatchRepository <|-- MatchRepository
+class Match {
+    + Match()
+    + Id : string <<get>> <<set>>
+    + OwnerId : string <<get>> <<set>>
+    + Round : string <<get>> <<set>>
+    + StartTime : DateTime? <<get>> <<set>>
+    + Status : MatchStatus <<get>> <<set>>
+    + MatchOrder : int <<get>> <<set>>
+    + WinScore : int? <<get>> <<set>>
+    + LooseScore : int? <<get>> <<set>>
+    + EndTime : DateTime? <<get>> <<set>>
+    + CategoryId : string <<get>> <<set>>
+    + WinnerId : string? <<get>> <<set>>
+    + Participant1Id : string <<get>> <<set>>
+    + Participant2Id : string <<get>> <<set>>
+    + TournamentId : string <<get>> <<set>>
+    + NextMatchId : string? <<get>> <<set>>
+    + NextMatch : Match? <<get>> <<set>>
+}
+@enduml

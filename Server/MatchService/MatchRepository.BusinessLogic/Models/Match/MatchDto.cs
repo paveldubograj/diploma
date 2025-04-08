@@ -6,7 +6,8 @@ namespace MatchService.BusinessLogic.Models.Match;
 public class MatchDto
 {
     public string Id {get; set;}
-    public int Round { get; set; }
+
+    public string Round { get; set; }
     public DateTime StartTime {get; set;}
     public MatchStatus Status {get; set;}
     public int MatchOrder {get; set;}

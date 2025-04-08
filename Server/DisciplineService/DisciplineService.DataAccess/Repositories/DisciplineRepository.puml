@@ -1,0 +1,27 @@
+@startuml
+interface IDisciplineRepository {
+    AddAsync(discipline:Discipline) : Task<Discipline>
+    GetAllAsync() : Task<List<Discipline>>
+    UpdateAsync(discipline:Discipline) : Task<Discipline>
+    DeleteAsync(discipline:Discipline) : Task<Discipline>
+    GetByIdAsync(id:string) : Task<Discipline>?
+}
+class DisciplineRepository {
+    - <<readonly>> _context : DisciplineContext
+    + DisciplineRepository(context:DisciplineContext)
+    + <<async>> AddAsync(discipline:Discipline) : Task<Discipline>
+    + <<async>> DeleteAsync(discipline:Discipline) : Task<Discipline>
+    + <<async>> GetAllAsync() : Task<List<Discipline>>
+    + <<async>> UpdateAsync(discipline:Discipline) : Task<Discipline>
+    + <<async>> GetByIdAsync(id:string) : Task<Discipline>?
+}
+IDisciplineRepository <|-- DisciplineRepository
+
+class Discipline {
+    + Discipline()
+    + Id : string <<get>> <<set>>
+    + Name : string <<get>> <<set>>
+    + Description : string <<get>> <<set>>
+    + CreatedAt : DateTime <<get>> <<set>>
+}
+@enduml

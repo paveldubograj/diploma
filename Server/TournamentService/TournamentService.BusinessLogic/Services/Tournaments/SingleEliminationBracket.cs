@@ -2,6 +2,8 @@ using System;
 using System.Runtime.InteropServices;
 using TournamentService.BusinessLogic.Models.Match;
 using TournamentService.BusinessLogic.Services.Interfaces;
+using TournamentService.BusinessLogic.Services.Tournaments.Interfaces;
+using TournamentService.DataAccess.Entities;
 using TournamentService.DataAccess.Repositories.Interfaces;
 using TournamentService.Shared.Constants;
 using TournamentService.Shared.Enums;
@@ -9,32 +11,33 @@ using TournamentService.Shared.Exceptions;
 
 namespace TournamentService.BusinessLogic.Services.Tournaments;
 
-public class SingleEliminationBracket
+public class SingleEliminationBracket : ISingleEliminationBracket
 {
     private readonly IMatchService _matchService;
-    private readonly ITournamentService _tournamentService;
-    private readonly IParticipantService _participantService;
+    private readonly ITournamentRepository _tournamentRepository;
+    private readonly IParticipantRepository _participantRepository;
 
-    public SingleEliminationBracket(IMatchService matchService, ITournamentService tournamentService, IParticipantService participantService)
+    public SingleEliminationBracket(IMatchService matchService, ITournamentRepository tournamentRepository, IParticipantRepository participantRepository)
     {
         _matchService = matchService;
-        _tournamentService = tournamentService;
-        _participantService = participantService;
+        _tournamentRepository = tournamentRepository;
+        _participantRepository = participantRepository;
     }
 
     public async Task GenerateBracket(string tournamentId)
     {
-        var res = await _tournamentService.GetByIdAsync(tournamentId);
+        var res = await _tournamentRepository.GetByIdAsync(tournamentId);
+        Console.WriteLine(res.Id);
         if(res == null){
             throw new NotFoundException(ErrorName.TournamentNotFound);
         }
-        var participantss = await _participantService.GetAllByTournamentAsync(tournamentId);
+        var participantss = _participantRepository.GetAllAsync(tournamentId);
         int totalPlayers = participantss.Count;
         int powerOfTwo = (int)Math.Pow(2, Math.Ceiling(Math.Log2(totalPlayers)));
 
         // Добавляем "BYE" при необходимости
         while (participantss.Count < powerOfTwo)
-            participantss.Add(null); 
+            participantss.Add(new Participant(){Id = "PASS", Name = "PASS"}); 
 
         var matches = new List<MatchDto>();
         var previousRoundMatches = new List<MatchDto>();
@@ -44,21 +47,22 @@ public class SingleEliminationBracket
         // Первый раунд
         for (int i = 0; i < participantss.Count; i += 2)
         {
-            var match = CreateMatch(tournamentId, $"1/{totalPlayers}", i / 2 + 1, participantss[i].Id, participantss[i + 1].Id, res.OwnerId, res.DisciplineId);
+            var match = CreateMatch(tournamentId, $"1/{totalPlayers/2}", i / 2 + 1, participantss[i].Id, participantss[i + 1].Id, res.OwnerId, res.DisciplineId);
             matches.Add(match);
             previousRoundMatches.Add(match);
         }
 
         // Заполняем следующими раундами
-        int round = 2;
+        int round = 1;
+        if(previousRoundMatches.Count > 1 ) round = 2;
         while (previousRoundMatches.Count > 1)
         {
             var currentRoundMatches = new List<MatchDto>();
             for (int i = 0; i < previousRoundMatches.Count; i += 2)
             {
                 var match = CreateMatch(tournamentId, $"1/{totalPlayers/Math.Pow(2,round-1)}", i / 2 + 1, string.Empty, string.Empty, res.OwnerId, res.DisciplineId);
-                matches.FirstOrDefault(c => c.Id.Equals(previousRoundMatches[i].Id)).NextMatchId = match.Id;
-                matches.FirstOrDefault(c => c.Id.Equals(previousRoundMatches[i+1].Id)).NextMatchId = match.Id;
+                matches.FirstOrDefault(c => c.id.Equals(previousRoundMatches[i].id)).nextMatchId = match.id;
+                matches.FirstOrDefault(c => c.id.Equals(previousRoundMatches[i+1].id)).nextMatchId = match.id;
                 //previousRoundMatches[i].NextMatchId = match.Id;
                 //previousRoundMatches[i + 1].NextMatchId = match.Id;
                 currentRoundMatches.Add(match);
@@ -67,7 +71,9 @@ public class SingleEliminationBracket
             previousRoundMatches = currentRoundMatches;
             round++;
         }
-        matches.Add(CreateMatch(tournamentId, "3-rd place match", 1, string.Empty, string.Empty, res.OwnerId, res.DisciplineId));
+        if(matches.Count > 1) matches.Add(CreateMatch(tournamentId, "3-rd place match", 1, string.Empty, string.Empty, res.OwnerId, res.DisciplineId));
+        res.Rounds = round;
+        await _tournamentRepository.UpdateAsync(res);
 
         _matchService.CreateMatches(matches);
     }
@@ -77,40 +83,41 @@ public class SingleEliminationBracket
         var match = await _matchService.GetMatchById(matchId);
         if (match == null) throw new NotFoundException(ErrorName.MatchNotFound);
 
-        match.Status = MatchStatus.Completed;
-        match.WinnerId = winnerId;
-        match.WinScore = winPoints;
-        match.LooseScore = loosePoints;
-        await _matchService.UpdateMatch(match.Id, match);
+        match.status = MatchStatus.Completed;
+        match.winnerId = winnerId;
+        match.winScore = winPoints;
+        match.looseScore = loosePoints;
+        await _matchService.UpdateMatch(match.id, match);
 
-        var nextMatch = await _matchService.GetMatchById(match.NextMatchId);
+        MatchDto nextMatch = new MatchDto();
 
-        if (!match.Round.Equals("1/1"))
+        if (match.nextMatchId != null) nextMatch = await _matchService.GetMatchById(match.nextMatchId);
+
+        if (!match.round.Equals("1/1"))
         {
-            if(string.IsNullOrEmpty(nextMatch.Participant1Id)) nextMatch.Participant1Id = winnerId;
-            else nextMatch.Participant2Id = winnerId;
-            await _matchService.UpdateMatch(nextMatch.Id, nextMatch);
+            if(string.IsNullOrEmpty(nextMatch.participant1Id)) nextMatch.participant1Id = winnerId;
+            else nextMatch.participant2Id = winnerId;
+            await _matchService.UpdateMatch(nextMatch.id, nextMatch);
         }
-        else await _tournamentService.EndTournamentAsync(match.TournamentId);
-
-        if(match.Round.Equals("1/2")){
-            var third = await _matchService.GetMatchByName("3-rd place match");
-            if(string.IsNullOrEmpty(third.Participant1Id)) third.Participant1Id = looserId;
-            else third.Participant2Id = looserId;
-            await _matchService.UpdateMatch(third.Id, third);
+        //else await _tournamentRepository.EndTournamentAsync(match.TournamentId);
+        else if(match.round.Equals("1/2")){
+            var third = await _matchService.GetMatchByName(match.tournamentId, "3-rd place match");
+            if(string.IsNullOrEmpty(third.participant1Id)) third.participant1Id = looserId;
+            else third.participant2Id = looserId;
+            await _matchService.UpdateMatch(third.id, third);
         }
     }
 
     private MatchDto CreateMatch(string tournamentId, string round, int number, string participant1Id, string participant2Id, string ownerId, string categoryId){
         MatchDto dto = new MatchDto(){
-            Id = new Guid().ToString(),
-            TournamentId = tournamentId, 
-            Round = round, 
-            MatchOrder = number, 
-            Participant1Id = participant1Id, 
-            Participant2Id = participant2Id,
-            OwnerId = ownerId,
-            CategoryId = categoryId};
+            id = Guid.NewGuid().ToString(),
+            tournamentId = tournamentId, 
+            round = round, 
+            matchOrder = number, 
+            participant1Id = participant1Id, 
+            participant2Id = participant2Id,
+            ownerId = ownerId,
+            categoryId = categoryId};
         return dto;
     }
 }

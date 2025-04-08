@@ -30,6 +30,7 @@ public class Startup
     public static void ConfigureRepository(IServiceCollection services)
     {
         services.AddTransient<INewsRepository, NewsRepository>();
+        services.AddTransient<ITagRepository, TagRepository>();
     }
 
     
@@ -44,7 +45,7 @@ public class Startup
     {
         var connectionString = config.GetConnectionString("DataBase");
         services.AddDbContext<NewsContext>(options =>
-            options.UseNpgsql(connectionString, b => b.MigrationsAssembly("UserService.API")));
+            options.UseNpgsql(connectionString, b => b.MigrationsAssembly("NewsService.API")));
     }
     
     public static void ConfigureMiddlewares(WebApplication app)
@@ -55,21 +56,20 @@ public class Startup
     public static void ConfigureAuth(IServiceCollection services, ConfigurationManager config)
     {
         services.AddAuthentication(x =>
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
+            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(x =>
             {
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidIssuer = config["JwtSettings:Issuer"],
                     ValidAudience = config["JwtSettings:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"]!)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("12345678901234567890123456789012")),
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true
                 };
             });
-
     }
 
     public static void OptionsConfigure(IServiceCollection services, ConfigurationManager config)

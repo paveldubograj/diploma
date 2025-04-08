@@ -21,7 +21,6 @@ public class ParticipantService : IParticipantService
     {
         var news = _mapper.Map<Participant>(newsDto);
         var result = await _participantRepository.AddAsync(news);
-        await _participantRepository.AddParticipantToTournament(result.Id, tournamentId);
         return _mapper.Map<ParticipantDto>(result);
     }
 
@@ -46,7 +45,7 @@ public class ParticipantService : IParticipantService
 
     public async Task<List<ParticipantDto>> GetAllByTournamentAsync(string tournamentId)
     {
-        var list = await _participantRepository.GetAllAsync(tournamentId);
+        var list = _participantRepository.GetAllAsync(tournamentId);
         return _mapper.Map<List<ParticipantDto>>(list);
     }
 
@@ -73,11 +72,14 @@ public class ParticipantService : IParticipantService
         return _mapper.Map<ParticipantDto>(res);
     }
 
-    public async Task<ParticipantDto> UpdatePointsAsync(string id, int points)
+    public async Task<ParticipantDto> UpdatePointsAsync(string id, int points, string userId)
     {
         var news = await _participantRepository.GetByIdAsync(id);
         if(news == null){
             throw new NotFoundException(ErrorName.ParticipantNotFound);
+        }
+        if(!news.Tournament.OwnerId.Equals(userId)){
+            throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
         }
         news.Points += points;
         var res = _participantRepository.UpdateAsync(news);

@@ -10,8 +10,9 @@ namespace MatchService.DataAccess.Database;
 
 public class MatchContext : DbContext
 {
-    public string str = "Host=localhost;Port=5432;Database=Diploma.UserService;Username=pavel;Password=1234";
+    public string str = "Host=localhost;Port=5432;Database=Diploma.MatchService;Username=pavel;Password=1234";
     public DbSet<Match> Matches {get; set;}
+    public MatchContext(DbContextOptions<MatchContext> options) : base(options){}
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

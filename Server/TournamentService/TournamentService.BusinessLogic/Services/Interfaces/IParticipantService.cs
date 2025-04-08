@@ -11,5 +11,5 @@ public interface IParticipantService
     public Task<ParticipantDto> UpdateAsync(string id, ParticipantDto newsDto, string userId);
     public Task<ParticipantDto> AddAsync(ParticipantDto newsDto, string tournamentId);
     public Task<List<ParticipantDto>> GetAllByTournamentAsync(string tournamentId);
-    public Task<ParticipantDto> UpdatePointsAsync(string id, int points);
+    public Task<ParticipantDto> UpdatePointsAsync(string id, int points, string userId);
 }

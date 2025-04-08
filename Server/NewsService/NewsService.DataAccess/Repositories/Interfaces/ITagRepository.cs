@@ -9,5 +9,6 @@ public interface ITagRepository
     Task<Tag> AddAsync(Tag tag);
     Task<Tag> DeleteAsync(Tag tag);
     Task<Tag> UpdateAsync(Tag tag);
+    Task<List<Tag>> GetByIdsAsync(List<string> ids);
     Task<List<Tag>> GetAllAsync();
 }

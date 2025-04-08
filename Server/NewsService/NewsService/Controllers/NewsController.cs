@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,9 +31,9 @@ namespace NewsService.API.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = RoleName.NewsTeller)]
-        public async Task<IActionResult> UpdateNewsAsync([FromRoute] string id, [FromBody] NewsDto dto)
+        public async Task<IActionResult> UpdateNewsAsync([FromRoute] string id, [FromBody] NewsUpdateDto dto)
         {
-            var newsDto = await _newsService.UpdateAsync(id, dto, User.Claims.First(x => x.Type.Equals(JwtRegisteredClaimNames.Jti)).Value);
+            var newsDto = await _newsService.UpdateAsync(id, dto, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
 
             return Ok(newsDto);
         }
@@ -69,10 +70,20 @@ namespace NewsService.API.Controllers
 
         [HttpGet]
         [Route("filter/")]
-        public async Task<IActionResult> GetByFilterAsync(int page, int pageSize, [FromBody] NewsFilter filter)
+        public async Task<IActionResult> GetByFilterAsync(int page, int pageSize, [FromQuery]NewsFilter filter)
         {
             var newsDto = await _newsService.GetByFilterAsync(filter, page, pageSize);
             
+            return Ok(newsDto);
+        }
+
+        [HttpPut]
+        [Route("{id}/{tagId}")]
+        [Authorize(Roles = RoleName.NewsTeller)]
+        public async Task<IActionResult> UpdateNewsAsync([FromRoute] string id, [FromRoute] string tagId)
+        {
+            var newsDto = await _newsService.AddTagAsync(id, tagId, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
+
             return Ok(newsDto);
         }
     }

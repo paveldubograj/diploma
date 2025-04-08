@@ -1,0 +1,7 @@
+@startuml
+class MatchSpecification {
+    + MatchSpecification(criteria:Expression<Func<Match, bool>>)
+    + {static} FilterMatch(CategoryId:string, StartTime:DateTime?, EndTime:DateTime?, TournamentId:string, Status:string) : MatchSpecification
+}
+"BaseSpecification`1" "<Match>" <|-- MatchSpecification
+@enduml

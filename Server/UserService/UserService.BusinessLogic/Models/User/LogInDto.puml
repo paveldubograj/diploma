@@ -1,0 +1,6 @@
+@startuml
+class LogInDto {
+    + Email : string <<get>> <<set>>
+    + Password : string <<get>> <<set>>
+}
+@enduml

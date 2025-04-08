@@ -45,19 +45,19 @@ public class RolesService : IRolesService
 
         switch (role)
         {
-            case RoleName.User:
+            case "user":
                 await _userRepository.AddToRoleAsync(user, RoleName.User);
                 break;
             
-            case RoleName.Organizer:
+            case "organizer":
                 await _userRepository.AddToRoleAsync(user, RoleName.Organizer);
                 break;
 
-            case RoleName.NewsTeller:
+            case "newsteller":
                 await _userRepository.AddToRoleAsync(user, RoleName.NewsTeller);
                 break;
             
-            case RoleName.Admin:
+            case "admin":
                 await _userRepository.AddToRoleAsync(user, RoleName.Admin);
                 break;
             
@@ -77,19 +77,19 @@ public class RolesService : IRolesService
 
         switch (role)
         {
-            case RoleName.User:
+            case "user":
                 await _userRepository.RemoveFromRolesAsync(user, RoleName.User);
                 break;
             
-            case RoleName.Organizer:
+            case "organizer":
                 await _userRepository.RemoveFromRolesAsync(user, RoleName.Organizer);
                 break;
 
-            case RoleName.NewsTeller:
+            case "newsteller":
                 await _userRepository.RemoveFromRolesAsync(user, RoleName.NewsTeller);
                 break;
             
-            case RoleName.Admin:
+            case "admin":
                 await _userRepository.RemoveFromRolesAsync(user, RoleName.Admin);
                 break;
             

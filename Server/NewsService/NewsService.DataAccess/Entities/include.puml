@@ -1,0 +1,4 @@
+@startuml
+!include ./News.puml
+!include ./Tag.puml
+@enduml

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "yrShaRBZ7UkInymRbEjDgnordoJp97gOvMnQ9/mjpDCPX2YzRqZTMaU5ZFCu3sMWqqEmn1/9ArdQ6U3MtAuwcQ==",
+  "dgSpecHash": "SZeze/2mHNKA+OjX/nlEmJESfqF3CnkRN6EjBLZ9eEbVCj8xcU9gOnsQ90ju0PIsrHsG80RNNxfs8LaZg98NJw==",
   "success": true,
   "projectFilePath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService.DataAccess/TournamentService.DataAccess.csproj",
   "expectedPackageFiles": [

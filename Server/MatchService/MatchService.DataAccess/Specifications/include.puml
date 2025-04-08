@@ -1,0 +1,7 @@
+@startuml
+!include ./BaseSpecification.puml
+!include ./MatchSpecification.puml
+!include ./SpecSettings/ISpecification.puml
+!include ./SpecSettings/PredicateBuilder.puml
+!include ./SpecSettings/SpecificationEvaluator.puml
+@enduml

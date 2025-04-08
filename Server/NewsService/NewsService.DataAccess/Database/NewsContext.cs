@@ -10,6 +10,7 @@ public class NewsContext : DbContext
     public string str = "Host=localhost;Port=5432;Database=Diploma.NewsService;Username=pavel;Password=1234";
     public DbSet<News> News {get; set;}
     public DbSet<Tag> Tags {get; set;}
+    public NewsContext(DbContextOptions<NewsContext> options) : base(options){}
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

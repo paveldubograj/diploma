@@ -1,0 +1,9 @@
+@startuml
+interface IDisciplineService {
+    + GetAllAsync() : Task<List<DisciplineCleanDto>>
+    + DeleteAsync(id:string) : Task<DisciplineCleanDto>
+    + UpdateAsync(id:string, disciplineDto:DisciplineDto) : Task<DisciplineDto>
+    + AddAsync(disciplineDto:DisciplineDto) : Task<DisciplineDto>
+    + GetByIdAsync(id:string) : Task<DisciplineDto>
+}
+@enduml

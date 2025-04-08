@@ -10,8 +10,9 @@ public class Participant
     }
     public string Id { get; set; }
     public string Name { get; set; }
-    public string TournamentId {get; set;}
     public int Points {get; set;}
     public ParticipantStatus Status {get; set;}
+
+    public string TournamentId {get; set;}
     public Tournament Tournament {get; set;}
 }

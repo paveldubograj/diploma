@@ -16,7 +16,7 @@ public class TournamentRepository : ITournamentRepository
     }
     public async Task<Tournament> AddAsync(Tournament tournament)
     {
-        _context.Tournaments.Add(tournament);
+        _context.Set<Tournament>().Add(tournament);
         await _context.SaveChangesAsync();
         return tournament;
     }
@@ -32,16 +32,16 @@ public class TournamentRepository : ITournamentRepository
     {
         return await _context.Tournaments
             .OrderByDescending(n => n.StartDate)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
+            //.Skip((page - 1) * pageSize)
+            //.Take(pageSize)
             .ToListAsync();
     }
 
     public async Task<Tournament> GetByIdAsync(string id)
     {
-        return await _context.Tournaments
-        .Include(t => t.Participants)
-        .FirstOrDefaultAsync(t => t.Id.Equals(id));
+        return _context.Tournaments.Find(id);
+            //.Include(t => t.Participants)
+            //.FirstOrDefaultAsync(t => t.Id.Equals(id));
     }
 
     public async Task<IEnumerable<Tournament>> GetBySpecificationAsync(TournamentSpecification spec1, int page, int pageSize, CancellationToken token = default)
@@ -56,6 +56,7 @@ public class TournamentRepository : ITournamentRepository
     public async Task<Tournament> UpdateAsync(Tournament tournament)
     {
         _context.Entry(tournament).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
         return tournament;
     }
 }

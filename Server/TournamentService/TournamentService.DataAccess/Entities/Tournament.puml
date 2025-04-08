@@ -1,0 +1,27 @@
+@startuml
+class Tournament {
+    + Tournament()
+    + Id : string <<get>> <<set>>
+    + Name : string <<get>> <<set>>
+    + DisciplineId : string <<get>> <<set>>
+    + Status : TournamentStatus <<get>> <<set>>
+    + Format : TournamentFormat <<get>> <<set>>
+    + Rounds : int <<get>> <<set>>
+    + MaxParticipants : int <<get>> <<set>>
+    + StartDate : DateTime <<get>> <<set>>
+    + EndDate : DateTime <<get>> <<set>>
+    + Participants : List<Participant> <<get>> <<set>>
+    + WinnerId : string <<get>> <<set>>
+    + Winner : Participant <<get>> <<set>>
+    + OwnerId : string <<get>> <<set>>
+}
+class Participant {
+    + Participant()
+    + Id : string <<get>> <<set>>
+    + Name : string <<get>> <<set>>
+    + TournamentId : string <<get>> <<set>>
+    + Points : int <<get>> <<set>>
+    + Status : ParticipantStatus <<get>> <<set>>
+    + Tournament : Tournament <<get>> <<set>>
+}
+@enduml

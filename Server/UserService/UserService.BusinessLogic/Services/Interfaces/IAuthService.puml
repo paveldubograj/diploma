@@ -1,0 +1,6 @@
+@startuml
+interface IAuthService {
+    LogInAsync(dto:LogInDto) : Task<UserAuthorizedDto>
+    RegistrationAsync(dto:UserDto) : Task
+}
+@enduml

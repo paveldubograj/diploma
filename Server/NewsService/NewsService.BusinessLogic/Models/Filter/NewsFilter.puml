@@ -1,0 +1,7 @@
+@startuml
+class NewsFilter {
+    + SearchString : string <<get>> <<set>>
+    + Tags : List<TagDto> <<get>> <<set>>
+    + CategoryId : string <<get>> <<set>>
+}
+@enduml

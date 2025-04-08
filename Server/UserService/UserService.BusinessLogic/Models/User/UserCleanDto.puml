@@ -1,0 +1,7 @@
+@startuml
+class UserCleanDto {
+    + Id : string <<get>> <<set>>
+    + UserName : string <<get>> <<set>>
+    + Email : string <<get>> <<set>>
+}
+@enduml
