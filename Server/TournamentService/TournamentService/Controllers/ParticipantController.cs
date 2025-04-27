@@ -19,7 +19,7 @@ namespace TournamentService.API.Controllers
         }
         [HttpGet]
         [Route("list/")]
-        public async Task<IActionResult> GetParticipantsAsync([FromRoute]string tournamentId, [FromRoute]int page, [FromRoute]int pageSize)
+        public async Task<IActionResult> GetParticipantsAsync([FromRoute]string tournamentId, int page, int pageSize)
         {
             var list = await _participantService.GetAllByPageAsync(tournamentId, page, pageSize);
 
@@ -31,7 +31,7 @@ namespace TournamentService.API.Controllers
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> UpdateParticipantAsync([FromRoute] string id, [FromBody] ParticipantDto dto)
         {
-            var newsDto = await _participantService.UpdateAsync(id, dto, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
+            ParticipantDto newsDto = await _participantService.UpdateAsync(id, dto, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
 
             return Ok(newsDto);
         }
@@ -41,7 +41,7 @@ namespace TournamentService.API.Controllers
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> DeleteParticipantAsync(string Id)
         {
-            var newsDto = await _participantService.DeleteAsync(Id, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
+            ParticipantDto newsDto = await _participantService.DeleteAsync(Id, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
 
             return Ok(newsDto);
         }
@@ -50,8 +50,9 @@ namespace TournamentService.API.Controllers
         [HttpPost]
         [Route("")]
         [Authorize(Roles = RoleName.Organizer)]
-        public async Task<IActionResult> AddParticipantAsync([FromRoute]string tournamentId, [FromBody] ParticipantDto dto)
+        public async Task<IActionResult> AddParticipantAsync([FromRoute]string tournamentId, [FromBody] ParticipantAddDto dto)
         {
+
             var newsDto = await _participantService.AddAsync(dto, tournamentId);
             
             return Ok(newsDto);

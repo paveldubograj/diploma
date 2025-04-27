@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TournamentService.BusinessLogic.Models.Filters;
 using TournamentService.BusinessLogic.Models.Request;
 using TournamentService.BusinessLogic.Models.Tournament;
 using TournamentService.BusinessLogic.Services.Interfaces;
@@ -22,9 +23,9 @@ namespace TournamentService.API.Controllers
         }
         [HttpGet]
         [Route("list/")]
-        public async Task<IActionResult> GetTournamentsAsync(int page, int pageSize)
+        public async Task<IActionResult> GetTournamentsAsync(int page, int pageSize, [FromQuery] TournamentFilter filter)
         {
-            var list = await _tournamentService.GetAllByPageAsync(page, pageSize);
+            List<TournamentCleanDto> list = await _tournamentService.GetByFilterAsync(filter, page, pageSize);
 
             return Ok(list);
         }
@@ -34,7 +35,7 @@ namespace TournamentService.API.Controllers
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> UpdateTournamentAsync([FromRoute] string tournamentId, [FromBody] TournamentDto dto)
         {
-            var newsDto = await _tournamentService.UpdateAsync(tournamentId, dto, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
+            TournamentDto newsDto = await _tournamentService.UpdateAsync(tournamentId, dto, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
 
             return Ok(newsDto);
         }
@@ -44,7 +45,7 @@ namespace TournamentService.API.Controllers
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> DeleteTournamentAsync(string tournamentId)
         {
-            var newsDto = await _tournamentService.DeleteAsync(tournamentId, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
+            TournamentDto newsDto = await _tournamentService.DeleteAsync(tournamentId, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
 
             return Ok(newsDto);
         }
@@ -55,7 +56,7 @@ namespace TournamentService.API.Controllers
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> AddTournamentAsync([FromBody] TournamentCreateDto dto)
         {
-            var newsDto = await _tournamentService.AddAsync(dto);
+            TournamentDto newsDto = await _tournamentService.AddAsync(dto, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
             
             return Ok(newsDto);
         }
@@ -64,17 +65,18 @@ namespace TournamentService.API.Controllers
         [Route("{tournamentId}")]
         public async Task<IActionResult> GetByIdAsync([FromRoute] string tournamentId)
         {
-            var newsDto = await _tournamentService.GetByIdAsync(tournamentId);
+            TournamentDto newsDto = await _tournamentService.GetByIdAsync(tournamentId);
             newsDto.Participants = await _participantService.GetAllByTournamentAsync(tournamentId);
             
             return Ok(newsDto);
         }
+
         [HttpPut]
         [Route("{tournamentId}/round")]
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> SetNextRound([FromRoute] string tournamentId)
         {
-            _tournamentService.SetNextRound(tournamentId);
+            _tournamentService.SetNextRound(tournamentId, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
             return Ok();
         }
         [HttpPut]
@@ -82,7 +84,7 @@ namespace TournamentService.API.Controllers
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> SetWinnerForMatchAsync([FromRoute] string tournamentId, [FromRoute] string matchId, [FromBody]WinRequest request)
         {
-            _tournamentService.SetWinnerForMatchAsync(tournamentId, matchId, request.WinnerId, request.LooserId, request.WinPoints, request.LoosePoints);
+            _tournamentService.SetWinnerForMatchAsync(tournamentId, matchId, request.WinnerId, request.LooserId, request.WinPoints, request.LoosePoints, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
             return Ok();
         }
         [HttpPut]
@@ -90,7 +92,7 @@ namespace TournamentService.API.Controllers
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> StartTournamentAsync([FromRoute] string tournamentId)
         {
-            var res = await _tournamentService.StartTournamentAsync(tournamentId);
+            var res = await _tournamentService.StartTournamentAsync(tournamentId, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
             return Ok(res);
         }
         [HttpPut]
@@ -98,15 +100,15 @@ namespace TournamentService.API.Controllers
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> EndTournamentAsync([FromRoute] string tournamentId)
         {
-            var res = await _tournamentService.EndTournamentAsync(tournamentId);
+            var res = await _tournamentService.EndTournamentAsync(tournamentId, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
             return Ok(res);
         }
-        [HttpGet]
+        [HttpPut]
         [Route("{tournamentId}/bracket")]
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> GenerateBracketAsync([FromRoute] string tournamentId)
         {
-            _tournamentService.GenerateBracketAsync(tournamentId);
+            _tournamentService.GenerateBracketAsync(tournamentId, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
             return Ok();
         }
     }

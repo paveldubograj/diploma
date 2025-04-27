@@ -209,6 +209,7 @@
       "NewsService.DataAccess/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "9.0.2",
+          "NewsService.Shared": "1.0.0",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.3"
         },
         "runtime": {

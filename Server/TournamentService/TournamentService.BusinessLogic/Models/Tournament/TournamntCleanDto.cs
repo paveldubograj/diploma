@@ -13,8 +13,6 @@ public class TournamentCleanDto
     public TournamentFormat Format { get; set; } 
     public int Rounds {get; set;}
     public int MaxParticipants { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
     public string OwnerId {get; set;}
-    public string WinnerId {get; set;}
+    public string? WinnerId {get; set;}
 }

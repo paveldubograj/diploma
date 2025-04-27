@@ -1,8 +1,0 @@
-@startuml
-class NewsCleanDto {
-    + Id : string <<get>> <<set>>
-    + Title : string <<get>> <<set>>
-    + PublishingDate : DateTime <<get>> <<set>>
-    + AuthorId : string <<get>> <<set>>
-}
-@enduml

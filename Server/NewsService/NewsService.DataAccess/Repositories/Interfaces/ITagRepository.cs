@@ -11,4 +11,5 @@ public interface ITagRepository
     Task<Tag> UpdateAsync(Tag tag);
     Task<List<Tag>> GetByIdsAsync(List<string> ids);
     Task<List<Tag>> GetAllAsync();
+    public Task<List<Tag>> GetAllByNameAsync(string str);
 }

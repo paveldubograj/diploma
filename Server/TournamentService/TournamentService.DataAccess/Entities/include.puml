@@ -1,4 +1,0 @@
-@startuml
-!include ./Tournament.puml
-!include ./Participant.puml
-@enduml

@@ -41,5 +41,17 @@ public class TournamentConfiguration : IEntityTypeConfiguration<Tournament>
         builder
             .Property(c => c.Format)
             .HasConversion<int>();
+
+        builder
+            .Property(c => c.StartDate)
+            .HasConversion(
+                v => v.ToUniversalTime(),
+                v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+
+        builder
+            .Property(c => c.EndDate)
+            .HasConversion(
+                v => v.ToUniversalTime(),
+                v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
     }
 }

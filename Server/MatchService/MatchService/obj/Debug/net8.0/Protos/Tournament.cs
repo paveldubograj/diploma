@@ -29,23 +29,21 @@ namespace MatchService.API.Protos {
             "b3RvGh5nb29nbGUvcHJvdG9idWYvd3JhcHBlcnMucHJvdG8iHAoOR2V0QnlJ",
             "ZFJlcXVlc3QSCgoCSWQYASABKAkiNwoRR2V0QnlSb3VuZFJlcXVlc3QSDAoE",
             "TmFtZRgBIAEoCRIUCgx0b3VybmFtZW50SWQYAiABKAkiMQoRQWRkTWF0Y2hl",
-            "c1JlcXVlc3QSHAoHbWF0Y2hlcxgBIAMoCzILLmdycGMuTWF0Y2gilgMKBU1h",
+            "c1JlcXVlc3QSHAoHbWF0Y2hlcxgBIAMoCzILLmdycGMuTWF0Y2gi2gIKBU1h",
             "dGNoEgoKAmlkGAEgASgJEg0KBXJvdW5kGAIgASgJEi0KCXN0YXJ0VGltZRgD",
             "IAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDgoGc3RhdHVzGAQg",
             "ASgFEhIKCm1hdGNoT3JkZXIYBSABKAUSEAoId2luU2NvcmUYBiABKAUSEgoK",
             "bG9vc2VTY29yZRgHIAEoBRIrCgdlbmRUaW1lGAggASgLMhouZ29vZ2xlLnBy",
-            "b3RvYnVmLlRpbWVzdGFtcBISCgpjYXRlZ29yeUlkGAkgASgJEi4KCHdpbm5l",
-            "cklkGAogASgLMhwuZ29vZ2xlLnByb3RvYnVmLlN0cmluZ1ZhbHVlEhYKDnBh",
-            "cnRpY2lwYW50MUlkGAsgASgJEhYKDnBhcnRpY2lwYW50MklkGAwgASgJEhQK",
-            "DHRvdXJuYW1lbnRJZBgNIAEoCRIxCgtuZXh0TWF0Y2hJZBgOIAEoCzIcLmdv",
-            "b2dsZS5wcm90b2J1Zi5TdHJpbmdWYWx1ZRIPCgdvd25lcklkGA8gASgJMvUB",
-            "ChFUb3VybmFtZW50U2VydmljZRJACg1DcmVhdGVNYXRjaGVzEhcuZ3JwYy5B",
-            "ZGRNYXRjaGVzUmVxdWVzdBoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eRIxCgxH",
-            "ZXRNYXRjaEJ5SWQSFC5ncnBjLkdldEJ5SWRSZXF1ZXN0GgsuZ3JwYy5NYXRj",
-            "aBI3Cg9HZXRNYXRjaEJ5Um91bmQSFy5ncnBjLkdldEJ5Um91bmRSZXF1ZXN0",
-            "GgsuZ3JwYy5NYXRjaBIyCgtVcGRhdGVNYXRjaBILLmdycGMuTWF0Y2gaFi5n",
-            "b29nbGUucHJvdG9idWYuRW1wdHlCGqoCF01hdGNoU2VydmljZS5BUEkuUHJv",
-            "dG9zYgZwcm90bzM="));
+            "b3RvYnVmLlRpbWVzdGFtcBISCgpjYXRlZ29yeUlkGAkgASgJEhAKCHdpbm5l",
+            "cklkGAogASgJEhYKDnBhcnRpY2lwYW50MUlkGAsgASgJEhYKDnBhcnRpY2lw",
+            "YW50MklkGAwgASgJEhQKDHRvdXJuYW1lbnRJZBgNIAEoCRITCgtuZXh0TWF0",
+            "Y2hJZBgOIAEoCRIPCgdvd25lcklkGA8gASgJMvUBChFUb3VybmFtZW50U2Vy",
+            "dmljZRJACg1DcmVhdGVNYXRjaGVzEhcuZ3JwYy5BZGRNYXRjaGVzUmVxdWVz",
+            "dBoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eRIxCgxHZXRNYXRjaEJ5SWQSFC5n",
+            "cnBjLkdldEJ5SWRSZXF1ZXN0GgsuZ3JwYy5NYXRjaBI3Cg9HZXRNYXRjaEJ5",
+            "Um91bmQSFy5ncnBjLkdldEJ5Um91bmRSZXF1ZXN0GgsuZ3JwYy5NYXRjaBIy",
+            "CgtVcGRhdGVNYXRjaBILLmdycGMuTWF0Y2gaFi5nb29nbGUucHJvdG9idWYu",
+            "RW1wdHlCGqoCF01hdGNoU2VydmljZS5BUEkuUHJvdG9zYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -723,11 +721,11 @@ namespace MatchService.API.Protos {
       looseScore_ = other.looseScore_;
       endTime_ = other.endTime_ != null ? other.endTime_.Clone() : null;
       categoryId_ = other.categoryId_;
-      WinnerId = other.WinnerId;
+      winnerId_ = other.winnerId_;
       participant1Id_ = other.participant1Id_;
       participant2Id_ = other.participant2Id_;
       tournamentId_ = other.tournamentId_;
-      NextMatchId = other.NextMatchId;
+      nextMatchId_ = other.nextMatchId_;
       ownerId_ = other.ownerId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -848,17 +846,15 @@ namespace MatchService.API.Protos {
 
     /// <summary>Field number for the "winnerId" field.</summary>
     public const int WinnerIdFieldNumber = 10;
-    private static readonly pb::FieldCodec<string> _single_winnerId_codec = pb::FieldCodec.ForClassWrapper<string>(82);
-    private string winnerId_;
+    private string winnerId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string WinnerId {
       get { return winnerId_; }
       set {
-        winnerId_ = value;
+        winnerId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
-
 
     /// <summary>Field number for the "participant1Id" field.</summary>
     public const int Participant1IdFieldNumber = 11;
@@ -898,17 +894,15 @@ namespace MatchService.API.Protos {
 
     /// <summary>Field number for the "nextMatchId" field.</summary>
     public const int NextMatchIdFieldNumber = 14;
-    private static readonly pb::FieldCodec<string> _single_nextMatchId_codec = pb::FieldCodec.ForClassWrapper<string>(114);
-    private string nextMatchId_;
+    private string nextMatchId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string NextMatchId {
       get { return nextMatchId_; }
       set {
-        nextMatchId_ = value;
+        nextMatchId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
-
 
     /// <summary>Field number for the "ownerId" field.</summary>
     public const int OwnerIdFieldNumber = 15;
@@ -968,11 +962,11 @@ namespace MatchService.API.Protos {
       if (LooseScore != 0) hash ^= LooseScore.GetHashCode();
       if (endTime_ != null) hash ^= EndTime.GetHashCode();
       if (CategoryId.Length != 0) hash ^= CategoryId.GetHashCode();
-      if (winnerId_ != null) hash ^= WinnerId.GetHashCode();
+      if (WinnerId.Length != 0) hash ^= WinnerId.GetHashCode();
       if (Participant1Id.Length != 0) hash ^= Participant1Id.GetHashCode();
       if (Participant2Id.Length != 0) hash ^= Participant2Id.GetHashCode();
       if (TournamentId.Length != 0) hash ^= TournamentId.GetHashCode();
-      if (nextMatchId_ != null) hash ^= NextMatchId.GetHashCode();
+      if (NextMatchId.Length != 0) hash ^= NextMatchId.GetHashCode();
       if (OwnerId.Length != 0) hash ^= OwnerId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1028,8 +1022,9 @@ namespace MatchService.API.Protos {
         output.WriteRawTag(74);
         output.WriteString(CategoryId);
       }
-      if (winnerId_ != null) {
-        _single_winnerId_codec.WriteTagAndValue(output, WinnerId);
+      if (WinnerId.Length != 0) {
+        output.WriteRawTag(82);
+        output.WriteString(WinnerId);
       }
       if (Participant1Id.Length != 0) {
         output.WriteRawTag(90);
@@ -1043,8 +1038,9 @@ namespace MatchService.API.Protos {
         output.WriteRawTag(106);
         output.WriteString(TournamentId);
       }
-      if (nextMatchId_ != null) {
-        _single_nextMatchId_codec.WriteTagAndValue(output, NextMatchId);
+      if (NextMatchId.Length != 0) {
+        output.WriteRawTag(114);
+        output.WriteString(NextMatchId);
       }
       if (OwnerId.Length != 0) {
         output.WriteRawTag(122);
@@ -1096,8 +1092,9 @@ namespace MatchService.API.Protos {
         output.WriteRawTag(74);
         output.WriteString(CategoryId);
       }
-      if (winnerId_ != null) {
-        _single_winnerId_codec.WriteTagAndValue(ref output, WinnerId);
+      if (WinnerId.Length != 0) {
+        output.WriteRawTag(82);
+        output.WriteString(WinnerId);
       }
       if (Participant1Id.Length != 0) {
         output.WriteRawTag(90);
@@ -1111,8 +1108,9 @@ namespace MatchService.API.Protos {
         output.WriteRawTag(106);
         output.WriteString(TournamentId);
       }
-      if (nextMatchId_ != null) {
-        _single_nextMatchId_codec.WriteTagAndValue(ref output, NextMatchId);
+      if (NextMatchId.Length != 0) {
+        output.WriteRawTag(114);
+        output.WriteString(NextMatchId);
       }
       if (OwnerId.Length != 0) {
         output.WriteRawTag(122);
@@ -1155,8 +1153,8 @@ namespace MatchService.API.Protos {
       if (CategoryId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(CategoryId);
       }
-      if (winnerId_ != null) {
-        size += _single_winnerId_codec.CalculateSizeWithTag(WinnerId);
+      if (WinnerId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(WinnerId);
       }
       if (Participant1Id.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Participant1Id);
@@ -1167,8 +1165,8 @@ namespace MatchService.API.Protos {
       if (TournamentId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(TournamentId);
       }
-      if (nextMatchId_ != null) {
-        size += _single_nextMatchId_codec.CalculateSizeWithTag(NextMatchId);
+      if (NextMatchId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(NextMatchId);
       }
       if (OwnerId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(OwnerId);
@@ -1218,10 +1216,8 @@ namespace MatchService.API.Protos {
       if (other.CategoryId.Length != 0) {
         CategoryId = other.CategoryId;
       }
-      if (other.winnerId_ != null) {
-        if (winnerId_ == null || other.WinnerId != "") {
-          WinnerId = other.WinnerId;
-        }
+      if (other.WinnerId.Length != 0) {
+        WinnerId = other.WinnerId;
       }
       if (other.Participant1Id.Length != 0) {
         Participant1Id = other.Participant1Id;
@@ -1232,10 +1228,8 @@ namespace MatchService.API.Protos {
       if (other.TournamentId.Length != 0) {
         TournamentId = other.TournamentId;
       }
-      if (other.nextMatchId_ != null) {
-        if (nextMatchId_ == null || other.NextMatchId != "") {
-          NextMatchId = other.NextMatchId;
-        }
+      if (other.NextMatchId.Length != 0) {
+        NextMatchId = other.NextMatchId;
       }
       if (other.OwnerId.Length != 0) {
         OwnerId = other.OwnerId;
@@ -1302,10 +1296,7 @@ namespace MatchService.API.Protos {
             break;
           }
           case 82: {
-            string value = _single_winnerId_codec.Read(input);
-            if (winnerId_ == null || value != "") {
-              WinnerId = value;
-            }
+            WinnerId = input.ReadString();
             break;
           }
           case 90: {
@@ -1321,10 +1312,7 @@ namespace MatchService.API.Protos {
             break;
           }
           case 114: {
-            string value = _single_nextMatchId_codec.Read(input);
-            if (nextMatchId_ == null || value != "") {
-              NextMatchId = value;
-            }
+            NextMatchId = input.ReadString();
             break;
           }
           case 122: {
@@ -1393,10 +1381,7 @@ namespace MatchService.API.Protos {
             break;
           }
           case 82: {
-            string value = _single_winnerId_codec.Read(ref input);
-            if (winnerId_ == null || value != "") {
-              WinnerId = value;
-            }
+            WinnerId = input.ReadString();
             break;
           }
           case 90: {
@@ -1412,10 +1397,7 @@ namespace MatchService.API.Protos {
             break;
           }
           case 114: {
-            string value = _single_nextMatchId_codec.Read(ref input);
-            if (nextMatchId_ == null || value != "") {
-              NextMatchId = value;
-            }
+            NextMatchId = input.ReadString();
             break;
           }
           case 122: {

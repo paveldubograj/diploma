@@ -9,7 +9,7 @@ Startup.OptionsConfigure(builder.Services, config);
 Startup.ConfigureDataBase(builder.Services, config);
 
 builder.Services.AddControllers();
-//Startup.ConfigureCors(builder.Services);
+Startup.ConfigureCors(builder.Services);
 Startup.ConfigureSwagger(builder.Services);
 Startup.ConfigureRepository(builder.Services);
 Startup.ConfigureServices(builder.Services);
@@ -32,7 +32,7 @@ builder.Services.AddAuthentication(x =>
 
 var app = builder.Build();
 //Startup.UseMigrations(app);
-//Startup.ConfigureCors(app);
+
 Startup.ConfigureMiddlewares(app);
 if (app.Environment.IsDevelopment())
 {
@@ -41,7 +41,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+Startup.ConfigureCors(app);
 app.UseAuthentication();
 app.UseAuthorization();
 

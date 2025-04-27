@@ -13,3 +13,6 @@
 /home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.DataAccess/obj/Debug/net8.0/NewsService.DataAccess.pdb
 /home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.DataAccess/obj/Debug/net8.0/NewsService.DataAccess.genruntimeconfig.cache
 /home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.DataAccess/obj/Debug/net8.0/ref/NewsService.DataAccess.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.DataAccess/bin/Debug/net8.0/NewsService.Shared.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.DataAccess/bin/Debug/net8.0/NewsService.Shared.pdb
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.DataAccess/obj/Debug/net8.0/NewsService.DataAccess.csproj.CopyComplete

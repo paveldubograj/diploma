@@ -87,8 +87,8 @@ public class Startup
                 {
                     policy.WithOrigins("http://localhost:3000")
                         .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
+                        .AllowAnyMethod();
+                        //.AllowCredentials();
                 });
         });
     }
@@ -98,13 +98,13 @@ public class Startup
         app.UseCors(MyAllowSpecificOrigins);
     }
 
-    // public static void UseMigrations(WebApplication app)
-    // {
-    //     using (var scope = app.Services.CreateScope())
-    //     {
-    //         var serviceProvider = scope.ServiceProvider;
-    //         var dbContext = serviceProvider.GetService<UsersContext>();
-    //         dbContext.Database.Migrate();
-    //     }
-    // }
+    public static void UseMigrations(WebApplication app)
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            var serviceProvider = scope.ServiceProvider;
+            var dbContext = serviceProvider.GetService<NewsContext>();
+            dbContext.Database.Migrate();
+        }
+    }
 }

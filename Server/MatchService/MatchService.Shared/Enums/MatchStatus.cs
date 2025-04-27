@@ -9,5 +9,4 @@ public enum MatchStatus
     Completed,     // Завершен
     Cancelled,     // Отменен
     Postponed,     // Перенесен
-    TechnicalWin   // Техническая победа
 }

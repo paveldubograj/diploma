@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -52,7 +53,9 @@ private static string MyAllowSpecificOrigins { get; set; }
     {
         var connectionString = config.GetConnectionString("DataBase");
         services.AddDbContext<TournamentContext>(options =>
-            options.UseNpgsql(connectionString, b => b.MigrationsAssembly("TournamentService.API")));
+            options.UseNpgsql(connectionString, b => b.MigrationsAssembly("TournamentService.API")), 
+            ServiceLifetime.Singleton, 
+            ServiceLifetime.Singleton);
     }
     
     public static void ConfigureMiddlewares(WebApplication app)
@@ -95,8 +98,7 @@ private static string MyAllowSpecificOrigins { get; set; }
                 {
                     policy.WithOrigins("http://localhost:3000")
                         .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
+                        .AllowAnyMethod();
                 });
         });
     }
@@ -106,13 +108,13 @@ private static string MyAllowSpecificOrigins { get; set; }
         app.UseCors(MyAllowSpecificOrigins);
     }
 
-    // public static void UseMigrations(WebApplication app)
-    // {
-    //     using (var scope = app.Services.CreateScope())
-    //     {
-    //         var serviceProvider = scope.ServiceProvider;
-    //         var dbContext = serviceProvider.GetService<UsersContext>();
-    //         dbContext.Database.Migrate();
-    //     }
-    // }
+    public static void UseMigrations(WebApplication app)
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            var serviceProvider = scope.ServiceProvider;
+            var dbContext = serviceProvider.GetService<TournamentContext>();
+            dbContext.Database.Migrate();
+        }
+    }
 }

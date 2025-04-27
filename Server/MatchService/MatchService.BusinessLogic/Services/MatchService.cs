@@ -86,6 +86,20 @@ public class MatchService : IMatchService
         return _mapper.Map<MatchDto>(res);
     }
 
+    public async Task<MatchDto> UpdateForUserAsync(string id, MatchUpdateDto newsDto, string userId)
+    {
+        var news = await _matchRepository.GetByIdAsync(id);
+        if(news == null){
+            throw new NotFoundException(ErrorName.MatchNotFound);
+        }
+        if(!news.OwnerId.Equals(userId)){
+            throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
+        }
+        var newsUp = _mapper.Map(newsDto, news);
+        var res = await _matchRepository.UpdateAsync(newsUp);
+        return _mapper.Map<MatchDto>(res);
+    }
+
     public async Task<MatchDto> SetWinnerAsync(string matchId, string winnerId, int winScore, int looseScore, string userId){
         var news = await _matchRepository.GetByIdAsync(matchId);
         if(news == null){

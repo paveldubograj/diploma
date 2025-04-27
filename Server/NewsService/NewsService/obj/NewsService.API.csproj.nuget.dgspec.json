@@ -95,7 +95,11 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.Shared/NewsService.Shared.csproj": {
+                "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.Shared/NewsService.Shared.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

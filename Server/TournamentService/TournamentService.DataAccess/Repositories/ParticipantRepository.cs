@@ -46,7 +46,7 @@ public class ParticipantRepository : IParticipantRepository
     public async Task<List<Participant>> GetAsync(string tournamentId, int page, int pageSize)
     {
         return await _context.Participants
-            .Where(c => c.TournamentId.Equals(tournamentId))
+            .Where(c => c.TournamentId.Equals(tournamentId)).AsNoTracking()
             // .Skip((page - 1) * pageSize)
             // .Take(pageSize)
             .ToListAsync();
@@ -59,8 +59,14 @@ public class ParticipantRepository : IParticipantRepository
 
     public async Task<Participant> GetByIdAsync(string id)
     {
-        return await _context.Participants
-        .FirstOrDefaultAsync(t => t.Id.Equals(id));
+        return await _context.Set<Participant>().FindAsync(id);
+       // .FirstOrDefaultAsync(t => t.Id.Equals(id));
+    }
+
+    public Participant GetById(string id)
+    {
+        return _context.Set<Participant>().Find(id);
+       // .FirstOrDefaultAsync(t => t.Id.Equals(id));
     }
 
     public async Task<Participant> RemoveParticipantFromTournament(string tournamentId, string participantId)
@@ -78,6 +84,23 @@ public class ParticipantRepository : IParticipantRepository
     public async Task<Participant> UpdateAsync(Participant participant)
     {
         _context.Entry(participant).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
         return participant;
+    }
+
+    public Participant Update(Participant participant)
+    {
+        _context.Entry(participant).State = EntityState.Modified;
+        _context.SaveChanges();
+        return participant;
+    }
+
+    public async Task<Participant> UpdatePointsAsync(string id, int points)
+    {
+        var p = await _context.Set<Participant>().FindAsync(id);
+        p.Points += points;
+        _context.Entry(p).Property(p => p.Points).IsModified = true;
+        await _context.SaveChangesAsync();
+        return p;
     }
 }

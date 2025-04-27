@@ -8,5 +8,6 @@ public interface ITagsService
     public Task<List<TagDto>> GetAllAsync();
     public Task<TagDto> DeleteAsync(string id);
     public Task<TagDto> UpdateAsync(string id, TagDto tagDto);
-    public Task<TagDto> AddAsync(TagDto tagDto);
+    public Task<TagDto> AddAsync(string tagDto);
+    public Task<List<TagDto>> GetByStrAsync(string str);
 }

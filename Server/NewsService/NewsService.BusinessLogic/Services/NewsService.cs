@@ -21,9 +21,12 @@ public class NewsService : INewsService
         _tagRepository = tagRepository;
         _mapper = mapper;
     }
-    public async Task<NewsDto> AddAsync(NewsDto newsDto)
+    public async Task<NewsDto> AddAsync(NewsUpdateDto newsDto, string userId)
     {
         var news = _mapper.Map<News>(newsDto);
+        news.AuthorId = userId;
+        news.PublishingDate = DateTime.Now;
+        news.CategoryId = "test";
         var result = await _newsRepository.AddAsync(news);
         return _mapper.Map<NewsDto>(result);
     }
@@ -46,12 +49,10 @@ public class NewsService : INewsService
 
     public async Task<List<NewsCleanDto>> GetByFilterAsync(NewsFilter filter, int page, int pageSize)
     {
-        var tags = await _tagRepository.GetByIdsAsync(filter.Tags);
-        // foreach(var el in tags){
-        //     Console.WriteLine(el.Name);
-        // }
-        NewsSpecification specification = NewsSpecification.FilterNews(filter.SearchString, filter.CategoryId, tags);
-        var result = await _newsRepository.GetBySpecificationAsync(specification, page, pageSize);
+        var tags = new List<Tag>();
+        if(filter.Tags is not null && filter.Tags.Count > 0) tags = await _tagRepository.GetByIdsAsync(filter.Tags);
+        NewsSpecification specification = NewsSpecification.FilterNews(filter.SearchString, filter.CategoryId);
+        var result = await _newsRepository.GetBySpecificationAsync(specification, tags, page, pageSize, filter.sortOptions);
         return _mapper.Map<List<NewsCleanDto>>(result);
     }
 
@@ -62,6 +63,10 @@ public class NewsService : INewsService
             throw new NotFoundException(ErrorName.NewsNotFound);
         }
         return _mapper.Map<NewsDto>(res);
+    }
+
+    public async Task<int> GetTotalAsync(){
+        return await _newsRepository.GetTotalAsync();
     }
 
     public async Task<NewsDto> UpdateAsync(string id, NewsUpdateDto newsDto, string userId)

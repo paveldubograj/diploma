@@ -154,3 +154,6 @@
 /home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/Grpc.Core.Api.dll
 /home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/Grpc.Net.Client.dll
 /home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/Grpc.Net.Common.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/FluentValidation.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/FluentValidation.AspNetCore.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/FluentValidation.DependencyInjectionExtensions.dll

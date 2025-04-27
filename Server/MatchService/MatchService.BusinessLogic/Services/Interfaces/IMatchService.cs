@@ -12,6 +12,7 @@ public interface IMatchService
     public Task<MatchDto> GetByIdAsync(string id);
     public Task<MatchDto> DeleteAsync(string matchId, string userId);
     public Task<MatchDto> UpdateAsync(string id, MatchDto newsDto, string userId);
+    public Task<MatchDto> UpdateForUserAsync(string id, MatchUpdateDto newsDto, string userId);
     public Task<MatchDto> AddAsync(MatchDto newsDto);
     public Task<MatchDto> SetWinnerAsync(string matchId, string winnerId, int winScore, int looseScore, string userId);
     Task<MatchDto> GetByRoundAsync(string tournamentId, string round);

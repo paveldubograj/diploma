@@ -19,7 +19,7 @@ public class UserManageService : IUserManageService
         _userRepository = userRepository;
         _mapper = mapper;
     }
-    public async Task<UserDto> GetByIdAsync(string id)
+    public async Task<UserCleanDto> GetByIdAsync(string id)
     {
         var user = await _userRepository.GetByIdAsync(id);
         
@@ -28,15 +28,16 @@ public class UserManageService : IUserManageService
             throw new NotFoundException(ErrorName.UserNotFound);
         }
         
-        var userDto = _mapper.Map<UserDto>(user);
+        var userDto = _mapper.Map<UserCleanDto>(user);
         
         return userDto;
     }
-    public async Task<IEnumerable<UserCleanDto>> GetByNameAsync(string firstName, CancellationToken token = default)
+    public async Task<IEnumerable<UserCleanDto>> GetByNameAsync(int page, int pageSize, string firstName, CancellationToken token = default)
     {
-        var spec = new UserSpecification(user => user.UserName.Equals(firstName));
-        var users = await _userRepository.GetBySpecAsync(spec, token);
-        var userDtos = _mapper.Map<IEnumerable<UserCleanDto>>(users);
+        UserSpecification spec = new UserSpecification(user => true);
+        if(!string.IsNullOrEmpty(firstName)) spec = new UserSpecification(user => user.UserName.Contains(firstName));
+        var users = await _userRepository.GetBySpecAsync(page, pageSize, spec, token);
+        var userDtos = _mapper.Map<List<UserCleanDto>>(users);
         
         return userDtos;
     }
@@ -94,5 +95,9 @@ public class UserManageService : IUserManageService
         var user = await _userRepository.GetByIdAsync(id);
         
         return user != null;
+    }
+
+    public async Task<int> GetTotalAsync(){
+        return await _userRepository.GetTotalAsync();
     }
 }

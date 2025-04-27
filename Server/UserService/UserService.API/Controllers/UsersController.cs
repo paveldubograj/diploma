@@ -25,8 +25,7 @@ public class UsersController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetProfileAsync()
     {
-        //Console.WriteLine(User.Claims.First(x => x.Type.Equals(JwtRegisteredClaimNames.Jti)).Value);
-        var userDto = await _userManageService.GetByIdAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
+        UserCleanDto userDto = await _userManageService.GetByIdAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
 
         return Ok(userDto);
     }
@@ -36,7 +35,7 @@ public class UsersController : ControllerBase
     [Authorize]
     public async Task<IActionResult> UpdateProfileAsync([FromBody] UserCleanDto dto)
     {
-        var userDto = await _userManageService.UpdateAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value, dto);
+        UserDto userDto = await _userManageService.UpdateAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value, dto);
 
         return Ok(userDto);
     }
@@ -46,7 +45,7 @@ public class UsersController : ControllerBase
     [Authorize]
     public async Task<IActionResult> DeleteProfileAsync()
     {
-        var userDto = await _userManageService.DeleteAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
+        UserCleanDto userDto = await _userManageService.DeleteAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
 
         return Ok(userDto);
     }
@@ -54,20 +53,18 @@ public class UsersController : ControllerBase
 
     [HttpGet]
     [Route("{id}")]
-    [Authorize(Roles = RoleName.Admin)]
     public async Task<IActionResult> GetAsync([FromRoute] string id)
     {
-        var userDto = await _userManageService.GetByIdAsync(id);
+        UserCleanDto userDto = await _userManageService.GetByIdAsync(id);
         
         return Ok(userDto);
     }
 
     [HttpGet]
     [Route("")]
-    [Authorize(Roles = RoleName.Admin)]
-    public async Task<IActionResult> GetByNameAsync([FromQuery] string userName, CancellationToken token = default)
+    public async Task<IActionResult> GetByNameAsync(int page, int pageSize, [FromQuery] string? userName, CancellationToken token = default)
     {
-        var result = await _userManageService.GetByNameAsync(userName, token);
+        IEnumerable<UserCleanDto> result = await _userManageService.GetByNameAsync(page, pageSize, userName, token);
         
         return Ok(result);
     }
@@ -77,7 +74,7 @@ public class UsersController : ControllerBase
     [Route("{id}")]
     public async Task<IActionResult> EditAsync([FromRoute] string id, [FromBody] UserCleanDto dto)
     {
-        var userDto = await _userManageService.UpdateAsync(id, dto);
+        UserDto userDto = await _userManageService.UpdateAsync(id, dto);
         
         return Ok(userDto);
     }
@@ -87,7 +84,7 @@ public class UsersController : ControllerBase
     [Route("{id}")]
     public async Task<IActionResult> DeleteAsync([FromRoute]string id)
     {
-        var deletedUser = await _userManageService.DeleteAsync(id);
+        UserCleanDto deletedUser = await _userManageService.DeleteAsync(id);
         
         return Ok(deletedUser);
     }

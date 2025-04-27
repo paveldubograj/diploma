@@ -54,12 +54,12 @@ public class TournamentGrpcService : TournamentService.TournamentServiceBase
             participant1Id = match.Participant1Id,
             participant2Id = match.Participant2Id,
             tournamentId = match.TournamentId,
-            nextMatchId = match.NextMatchId,
+            nextMatchId = match.NextMatchId.Equals(" ") ? null : match.NextMatchId,
             ownerId = match.OwnerId
         };
     }
 
-        private Match DtoToMatch(MatchDto match){
+    private Match DtoToMatch(MatchDto match){
         return new Match(){
             Id = match.id,
             Round = match.round,
@@ -74,7 +74,7 @@ public class TournamentGrpcService : TournamentService.TournamentServiceBase
             Participant1Id = match.participant1Id,
             Participant2Id = match.participant2Id,
             TournamentId = match.tournamentId,
-            NextMatchId = match.nextMatchId,
+            NextMatchId = string.IsNullOrEmpty(match.nextMatchId) ? " " : match.nextMatchId ,
             OwnerId = match.ownerId
         };
     }

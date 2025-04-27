@@ -38,7 +38,7 @@ public class MatchRepository : IMatchRepository
         if (page < 1) page = 1;
 
         var query = await _context.Set<Match>()
-            .OrderByDescending(n => n.StartTime)
+            .OrderByDescending(n => n.Round).ThenBy(n => n.MatchOrder)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();

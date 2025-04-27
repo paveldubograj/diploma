@@ -38,10 +38,10 @@ message Match {
     int32 looseScore = 7;
     google.protobuf.Timestamp endTime = 8;
     string categoryId = 9;
-    google.protobuf.StringValue winnerId = 10;
+    string winnerId = 10;
     string participant1Id = 11;
     string participant2Id = 12;
     string tournamentId = 13;
-    google.protobuf.StringValue nextMatchId = 14;
+    string nextMatchId = 14;
     string ownerId = 15;
 }

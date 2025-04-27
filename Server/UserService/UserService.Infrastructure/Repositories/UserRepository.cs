@@ -30,10 +30,10 @@ public class UserRepository : IUserRepository
         return await _userManager.FindByIdAsync(id);
     }
 
-    public async Task<IEnumerable<User>> GetBySpecAsync(UserSpecification spec, CancellationToken token = default)
+    public async Task<IEnumerable<User>> GetBySpecAsync(int page, int pageSize, UserSpecification spec, CancellationToken token = default)
     {
         IQueryable<User> query = db.Users;
-        query = query.ApplySpecification(spec);
+        query = query.ApplySpecification(spec).Skip((page-1)*pageSize).Take(pageSize);
         
         return await query.ToListAsync(cancellationToken: token);
     }
@@ -71,5 +71,9 @@ public class UserRepository : IUserRepository
     public async Task<IdentityResult> RemoveFromRolesAsync(User user, string role)
     {
         return await _userManager.RemoveFromRoleAsync(user, role);
+    }
+
+    public async Task<int> GetTotalAsync(){
+        return await db.Users.CountAsync();
     }
 }

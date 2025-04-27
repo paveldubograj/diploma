@@ -57,7 +57,7 @@ public class RoundRobinBracket : IRoundRobinBracket
         match.winnerId = winnerId;
         match.winScore = winPoints;
         match.looseScore = loosePoints;
-        await _participantService.UpdatePointsAsync(winnerId, 1);
+        await _participantService.UpdatePointsAsync(winnerId, 1, match.ownerId);
         await _matchService.UpdateMatch(matchId, match);
     }
 

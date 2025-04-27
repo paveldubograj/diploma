@@ -15,7 +15,6 @@ public class Tag
         if(obj is null) return false;
         if(obj.GetType() !=  this.GetType()) return false;
         if(!(obj as Tag).Id.Equals(Id)) return false;
-        if(!(obj as Tag).Name.Equals(Name)) return false;
         return true;
     }
 }

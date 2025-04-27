@@ -1,7 +1,0 @@
-@startuml
-interface IRolesService {
-    GetUserRolesAsync(id:string) : Task<IEnumerable<RoleDto>>
-    AddUserRoleAsync(id:string, role:string) : Task
-    RemoveUserRoleAsync(id:string, role:string) : Task
-}
-@enduml

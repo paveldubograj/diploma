@@ -1,4 +1,0 @@
-@startuml
-!include ./TournamentController.puml
-!include ./ParticipantController.puml
-@enduml

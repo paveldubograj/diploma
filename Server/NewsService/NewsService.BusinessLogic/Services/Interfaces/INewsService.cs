@@ -12,5 +12,6 @@ public interface INewsService
     public Task<NewsCleanDto> DeleteAsync(string id);
     public Task<NewsDto> UpdateAsync(string id, NewsUpdateDto newsDto, string userId);
     public Task<NewsDto> AddTagAsync(string id, string tagId, string userId);
-    public Task<NewsDto> AddAsync(NewsDto newsDto);
+    public Task<int> GetTotalAsync();
+    public Task<NewsDto> AddAsync(NewsUpdateDto newsDto, string userId);
 }

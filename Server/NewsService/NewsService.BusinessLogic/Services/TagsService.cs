@@ -18,9 +18,10 @@ public class TagsService : ITagsService
         _tagRepository = tagRepository;
         _mapper = mapper;
     }
-    public async Task<TagDto> AddAsync(TagDto tagDto)
+    public async Task<TagDto> AddAsync(string tagDto)
     {
-        var obj = _mapper.Map<Tag>(tagDto);
+        TagDto dto = new TagDto(){Name = tagDto};
+        var obj = _mapper.Map<Tag>(dto);
         var res = await _tagRepository.AddAsync(obj);
         return _mapper.Map<TagDto>(res);
     }
@@ -38,6 +39,12 @@ public class TagsService : ITagsService
     public async Task<List<TagDto>> GetAllAsync()
     {
         var res = await _tagRepository.GetAllAsync();
+        return _mapper.Map<List<TagDto>>(res);
+    }
+
+    public async Task<List<TagDto>> GetByStrAsync(string str)
+    {
+        var res = await _tagRepository.GetAllByNameAsync(str);
         return _mapper.Map<List<TagDto>>(res);
     }
 

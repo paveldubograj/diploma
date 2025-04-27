@@ -84,8 +84,7 @@ public class Startup
                 {
                     policy.WithOrigins("http://localhost:3000")
                         .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
+                        .AllowAnyMethod();
                 });
         });
     }

@@ -7,7 +7,9 @@ namespace TournamentService.DataAccess.Repositories.Interfaces;
 public interface ITournamentRepository
 {
     Task<Tournament> GetByIdAsync(string id);
+    public Tournament GetById(string id);
     Task<List<Tournament>> GetAsync(int page, int pageSize);
+    Participant GetParticipantById(string id);
     Task<Tournament> AddAsync(Tournament tournament);
     Task<Tournament> DeleteAsync(Tournament tournament);
     Task<Tournament> UpdateAsync(Tournament tournament);

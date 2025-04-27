@@ -1,8 +1,0 @@
-@startuml
-abstract class "BaseSpecification`1"<T> {
-    + BaseSpecification(criteria:Expression<Func<T, bool>>)
-    + Criteria : Expression<Func<T, bool>> <<get>>
-    + Includes : List<Expression<Func<T, object>>> <<get>>
-}
-"ISpecification`1" "<T>" <|-- "BaseSpecification`1"
-@enduml

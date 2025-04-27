@@ -1,9 +1,0 @@
-@startuml
-interface IUserManageService {
-    GetByIdAsync(id:string) : Task<UserDto>
-    GetByNameAsync(firstName:string, token:CancellationToken) : Task<IEnumerable<UserCleanDto>>
-    UpdateAsync(id:string, dto:UserDto) : Task<UserDto>
-    DeleteAsync(id:string) : Task<UserCleanDto>
-    IsUserExits(id:string) : Task<bool>
-}
-@enduml

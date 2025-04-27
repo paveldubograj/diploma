@@ -36,5 +36,11 @@ public class NewsConfiguration : IEntityTypeConfiguration<News>
             .HasMany(c => c.Tags)
             .WithMany(d => d.News)
             .UsingEntity(j => j.ToTable("NewsTags"));
+
+        builder
+            .Property(c => c.PublishingDate)
+            .HasConversion(
+                v => v.ToUniversalTime(),
+                v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
     }
 }

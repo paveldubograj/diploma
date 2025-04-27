@@ -17,9 +17,12 @@ public class ParticipantService : IParticipantService
         _participantRepository = participantRepository;
         _mapper = mapper;
     }
-    public async Task<ParticipantDto> AddAsync(ParticipantDto newsDto, string tournamentId)
+    public async Task<ParticipantDto> AddAsync(ParticipantAddDto newsDto, string tournamentId)
     {
         var news = _mapper.Map<Participant>(newsDto);
+        news.Id = Guid.NewGuid().ToString();
+        news.TournamentId = tournamentId;
+        news.Status = Shared.Enums.ParticipantStatus.Play;
         var result = await _participantRepository.AddAsync(news);
         return _mapper.Map<ParticipantDto>(result);
     }
@@ -74,15 +77,16 @@ public class ParticipantService : IParticipantService
 
     public async Task<ParticipantDto> UpdatePointsAsync(string id, int points, string userId)
     {
-        var news = await _participantRepository.GetByIdAsync(id);
-        if(news == null){
-            throw new NotFoundException(ErrorName.ParticipantNotFound);
-        }
-        if(!news.Tournament.OwnerId.Equals(userId)){
-            throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
-        }
-        news.Points += points;
-        var res = _participantRepository.UpdateAsync(news);
+        //Thread.Sleep(3000);
+        //var news = _participantRepository.GetById(id);
+        // if(news == null){
+        //     throw new NotFoundException(ErrorName.ParticipantNotFound);
+        // }
+        // if(!news.Tournament.OwnerId.Equals(userId)){
+        //     throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
+        // }
+        // news.Points += points;
+        var res = await _participantRepository.UpdatePointsAsync(id, points);
         return _mapper.Map<ParticipantDto>(res);
     }
 }

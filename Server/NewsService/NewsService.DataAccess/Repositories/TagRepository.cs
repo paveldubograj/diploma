@@ -42,6 +42,10 @@ public class TagRepository : ITagRepository
     {
         return await _context.Tags.ToListAsync();
     }
+    public async Task<List<Tag>> GetAllByNameAsync(string str)
+    {
+        return await _context.Tags.Where(c => c.Name.Contains(str)).ToListAsync();
+    }
     public async Task<List<Tag>> GetByIdsAsync(List<string> ids)
     {
         var res = new List<Tag>();

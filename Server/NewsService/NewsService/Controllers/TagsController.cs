@@ -24,6 +24,15 @@ namespace NewsService.API.Controllers
             return Ok(list);
         }
 
+        [HttpGet]
+        [Route("list/{str}")]
+        public async Task<IActionResult> GetTagsByStrAsync([FromRoute] string str)
+        {
+            var list = await _tagsService.GetByStrAsync(str);
+
+            return Ok(list);
+        }
+
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = RoleName.Admin)]
@@ -47,10 +56,10 @@ namespace NewsService.API.Controllers
 
         [HttpPost]
         [Route("")]
-        [Authorize(Roles = "admin, newsTeller")]
-        public async Task<IActionResult> AddTagAsync([FromBody] TagDto dto)
+        [Authorize(Roles = $"{RoleName.Admin}, {RoleName.NewsTeller}")]
+        public async Task<IActionResult> AddTagAsync(string tagName)
         {
-            var newsDto = await _tagsService.AddAsync(dto);
+            var newsDto = await _tagsService.AddAsync(tagName);
             
             return Ok(newsDto);
         }

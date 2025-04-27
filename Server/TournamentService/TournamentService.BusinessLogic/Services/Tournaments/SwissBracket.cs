@@ -63,19 +63,19 @@ public class SwissBracket : ISwissBracket
         match.looseScore = looseScore;
 
         if(string.IsNullOrEmpty(winnerId)){
-            await _participantService.UpdatePointsAsync(winnerId, 1); // 1 очко за ничью
-            await _participantService.UpdatePointsAsync(loserId, 1); // 1 очко за ничью
+            await _participantService.UpdatePointsAsync(winnerId, 1, match.ownerId); // 1 очко за ничью
+            await _participantService.UpdatePointsAsync(loserId, 1, match.ownerId); // 1 очко за ничью
         }
         else{
             match.winnerId = winnerId;
-            await _participantService.UpdatePointsAsync(winnerId, 3); // 3 очка за победу
+            await _participantService.UpdatePointsAsync(winnerId, 3, match.ownerId); // 3 очка за победу
         }
         await _matchService.UpdateMatch(match.id, match);        
     }
 
     private MatchDto CreateMatch(string tournamentId, int round, int number, string participant1Id, string participant2Id, string ownerId, string categoryId){
         MatchDto dto = new MatchDto(){
-            id = new Guid().ToString(),
+            //id = new Guid().ToString(),
             tournamentId = tournamentId, 
             round = round.ToString(), 
             matchOrder = number, 

@@ -25,7 +25,7 @@ namespace MatchService.API.Controllers
         [Route("list/")]
         public async Task<IActionResult> GetMatchesAsync(int page, int pageSize)
         {
-            var list = await _matchService.GetAllByPageAsync(page, pageSize);
+            List<MatchListDto> list = await _matchService.GetAllByPageAsync(page, pageSize);
 
             return Ok(list);
         }
@@ -35,7 +35,7 @@ namespace MatchService.API.Controllers
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> UpdateMatchAsync([FromRoute] string id, [FromBody] MatchDto dto)
         {
-            var newsDto = await _matchService.UpdateAsync(id, dto, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
+            MatchDto newsDto = await _matchService.UpdateAsync(id, dto, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
 
             return Ok(newsDto);
         }
@@ -45,7 +45,7 @@ namespace MatchService.API.Controllers
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> DeleteMatchAsync(string Id)
         {
-            var newsDto = await _matchService.DeleteAsync(Id, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
+            MatchDto newsDto = await _matchService.DeleteAsync(Id, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
 
             return Ok(newsDto);
         }
@@ -56,7 +56,7 @@ namespace MatchService.API.Controllers
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> AddMatchAsync([FromBody] MatchDto dto)
         {
-            var newsDto = await _matchService.AddAsync(dto);
+            MatchDto newsDto = await _matchService.AddAsync(dto);
             
             return Ok(newsDto);
         }
@@ -65,44 +65,44 @@ namespace MatchService.API.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetByIdAsync(string id)
         {
-            var newsDto = await _matchService.GetByIdAsync(id);
+            MatchDto newsDto = await _matchService.GetByIdAsync(id);
             
             return Ok(newsDto);
         }
 
         [HttpGet]
         [Route("filter/")]
-        public async Task<IActionResult> GetByFilterAsync(int page, int pageSize, [FromBody] MatchFilter filter)
+        public async Task<IActionResult> GetByFilterAsync(int page, int pageSize, [FromQuery] MatchFilter filter)
         {
-            var newsDto = await _matchService.GetByFilterAsync(filter, page, pageSize);
+            List<MatchListDto> newsDto = await _matchService.GetByFilterAsync(filter, page, pageSize);
             
             return Ok(newsDto);
         }
 
-        [HttpGet]
-        [Route("tournament/{TournamentId}")]
-        public async Task<IActionResult> GetTournamentStructureAsync([FromRoute]string TournamentId)
-        {
-            var newsDto = await _matchService.GetTournamentStructureAsync(TournamentId);
+        // [HttpGet]
+        // [Route("tournament/{TournamentId}")]
+        // public async Task<IActionResult> GetByTournamentAsync([FromRoute]string TournamentId)
+        // {
+        //     var newsDto = await _matchService.GetTournamentStructureAsync(TournamentId);
             
-            return Ok(newsDto);
-        }
+        //     return Ok(newsDto);
+        // }
 
-        [HttpPost]
-        [Route("winner/")]
-        [Authorize(Roles = RoleName.Organizer)]
-        public async Task<IActionResult> SetMatchWinner([FromBody]string matchId, [FromBody]string winnerId, [FromBody]int winPoints, [FromBody]int loosePoints){
-            var match = await _matchService.SetWinnerAsync(matchId, winnerId, winPoints, loosePoints, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
+        // [HttpPost]
+        // [Route("winner/")]
+        // [Authorize(Roles = RoleName.Organizer)]
+        // public async Task<IActionResult> SetMatchWinner([FromBody]string matchId, [FromBody]string winnerId, [FromBody]int winPoints, [FromBody]int loosePoints){
+        //     var match = await _matchService.SetWinnerAsync(matchId, winnerId, winPoints, loosePoints, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
 
-            return Ok(match);
-        }
+        //     return Ok(match);
+        // }
 
-        [HttpGet]
-        [Route("byRound")]
-        public async Task<IActionResult> GetByRoundName(string tournamentId, string round){
-            var match = await _matchService.GetByRoundAsync(tournamentId, round);
-            return Ok(match);
-        }
+        // [HttpGet]
+        // [Route("byRound")]
+        // public async Task<IActionResult> GetByRoundName(string tournamentId, string round){
+        //     var match = await _matchService.GetByRoundAsync(tournamentId, round);
+        //     return Ok(match);
+        // }
 
         // [HttpPost]
         // [Route("list/add")]
