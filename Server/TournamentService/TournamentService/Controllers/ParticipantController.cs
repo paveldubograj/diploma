@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using TournamentService.BusinessLogic.Models.ParticipantDtos;
 using TournamentService.BusinessLogic.Services.Interfaces;
 using TournamentService.Shared.Constants;
+using TournamentService.Shared.Enums;
 
 namespace TournamentService.API.Controllers
 {
@@ -19,9 +20,18 @@ namespace TournamentService.API.Controllers
         }
         [HttpGet]
         [Route("list/")]
-        public async Task<IActionResult> GetParticipantsAsync([FromRoute]string tournamentId, int page, int pageSize)
+        public async Task<IActionResult> GetParticipantsAsync([FromRoute]string tournamentId, ParticipantSortOptions? options, int page, int pageSize)
         {
-            var list = await _participantService.GetAllByPageAsync(tournamentId, page, pageSize);
+            var list = await _participantService.GetAllByPageAsync(tournamentId, options, page, pageSize);
+
+            return Ok(list);
+        }
+
+        [HttpGet]
+        [Route("plays/")]
+        public async Task<IActionResult> GetPlayingParticipantsAsync([FromRoute]string tournamentId)
+        {
+            var list = await _participantService.GetPlayingByTournamentAsync(tournamentId);
 
             return Ok(list);
         }
@@ -54,6 +64,17 @@ namespace TournamentService.API.Controllers
         {
 
             var newsDto = await _participantService.AddAsync(dto, tournamentId);
+            
+            return Ok(newsDto);
+        }
+
+        [HttpPost]
+        [Route("register")]
+        [Authorize(Roles = RoleName.Organizer)]
+        public async Task<IActionResult> RegisterForTournamentAsync([FromRoute]string tournamentId, [FromBody] string userName)
+        {
+            RegisterForTournamentDto dto = new RegisterForTournamentDto(){UserId = User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value, Name = userName};
+            var newsDto = await _participantService.RegisterAsync(dto, tournamentId);
             
             return Ok(newsDto);
         }

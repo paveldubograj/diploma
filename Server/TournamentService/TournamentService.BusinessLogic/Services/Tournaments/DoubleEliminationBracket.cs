@@ -1,137 +1,194 @@
 using System;
+using System.Runtime.InteropServices;
 using TournamentService.BusinessLogic.Models.Match;
 using TournamentService.BusinessLogic.Services.Interfaces;
+using TournamentService.BusinessLogic.Services.Tournaments.Interfaces;
+using TournamentService.DataAccess.Repositories.Interfaces;
 using TournamentService.Shared.Constants;
 using TournamentService.Shared.Enums;
 using TournamentService.Shared.Exceptions;
 
 namespace TournamentService.BusinessLogic.Services.Tournaments;
 
-public class DoubleEliminationBracket
+public class DoubleEliminationBracket : IDoubleEliminationBracket
 {
-    // private readonly IMatchService _matchService;
+    private readonly IMatchService _matchService;
+    private readonly ITournamentRepository _tournamentRepository;
+    private readonly IParticipantService _participantService;
+    private readonly ISingleEliminationBracket _singleEliminationBracket;
 
-    // public DoubleEliminationBracket(IMatchService matchService)
-    // {
-    //     _matchService = matchService;
-    // }
+    public DoubleEliminationBracket(IMatchService matchService, ITournamentRepository tournamentRepository, IParticipantService participantService, ISingleEliminationBracket singleEliminationBracket)
+    {
+        _matchService = matchService;
+        _tournamentRepository = tournamentRepository;
+        _participantService = participantService;
+        _singleEliminationBracket = singleEliminationBracket;
+    }
 
-    // public async Task GenerateBracket(string tournamentId, List<string> participants)
-    // {
-    //     if (participants.Count < 2) throw new Exception("Недостаточно участников!");
+    public async Task GenerateBracket(string tournamentId)
+    {
+        await _singleEliminationBracket.GenerateBracket(tournamentId);
+        var t = _tournamentRepository.GetById(tournamentId);
+        _matchService.CreateMatches(new List<MatchDto>()
+        {CreateMatch(
+            tournamentId,
+            "Final",
+            1,
+            string.Empty,
+            string.Empty,
+            t.OwnerId,
+            t.DisciplineId,
+            string.Empty,
+            string.Empty,
+            t.Name)});
+    }
 
-    //     int totalRounds = (int)Math.Ceiling(Math.Log2(participants.Count)); // Количество раундов в верхней сетке
-    //     int totalMatches = (int)(Math.Pow(2, totalRounds) - 1); // Всего матчей в верхней сетке
+    public async Task GenerateLowerBracket(string tournamentId)
+    {
+        var res = await _tournamentRepository.GetByIdAsync(tournamentId);
+        if (res == null) throw new NotFoundException(ErrorName.TournamentNotFound);
+        var participantss = await _participantService.GetAllFromLowerAsync(tournamentId);
+        var upper = (await _participantService.GetAllFromUpperAsync(tournamentId)).Count;
+        var matches = new List<MatchDto>();
 
-    //     List<MatchDto> matches = new List<MatchDto>();
+        Random.Shared.Shuffle(CollectionsMarshal.AsSpan(participantss));
 
-    //     // 📌 Генерация первой стадии (Winners Bracket - Верхняя сетка)
-    //     for (int i = 0; i < participants.Count / 2; i++)
-    //     {
-    //         matches.Add(new MatchDto
-    //         {
-    //             TournamentId = tournamentId,
-    //             Round = "1",
-    //             Bracket = "Winners",
-    //             Participant1Id = participants[i * 2],
-    //             Participant2Id = participants[i * 2 + 1],
-    //             Status = MatchStatus.Scheduled
-    //         });
-    //     }
+        for (int i = 0; i < participantss.Count; i += 2)
+        {
+            var match = CreateMatch(
+                tournamentId,
+                $"Lower bracket round with {upper}/{participantss.Count} participants",
+                i / 2 + 1,
+                participantss[i].Id,
+                participantss[i + 1].Id,
+                res.OwnerId,
+                res.DisciplineId,
+                participantss[i].Name,
+                participantss[i + 1].Name,
+                res.Name);
+            matches.Add(match);
+        }
+        _matchService.CreateMatches(matches);
+    }
 
-    //     _matchService.CreateMatches(matches);
-    // }
+    public async Task HandleMatchResult(string matchId, string winnerId, string looserId, int winPoints, int loosePoints)
+    {
+        var match = await _matchService.GetMatchById(matchId);
+        if (match == null) throw new NotFoundException(ErrorName.MatchNotFound);
+        var winner = await _participantService.GetByIdAsync(winnerId);
+        var looser = await _participantService.GetByIdAsync(looserId);
 
-    // public async Task HandleMatchResult(string matchId, string winnerId, string loserId)
-    // {
-    //     var match = await _matchService.GetMatchById(matchId);
-    //     if (match == null) throw new NotFoundException(ErrorName.MatchNotFound);
+        match.status = MatchStatus.Completed;
+        match.winnerId = winnerId;
+        match.winScore = winPoints;
+        match.looseScore = loosePoints;
 
-    //     match.Status = MatchStatus.Completed;
-    //     match.WinnerId = winnerId;
-    //     match.LoserId = loserId;
+        await _matchService.UpdateMatch(match.id, match);
 
-    //     await _matchService.UpdateMatch(match);
+        if (winner.Status == ParticipantStatus.PlayWin)
+        {
+            await AdvanceInWinners(matchId, winnerId);
+            await DropToLosers(looserId, match.ownerId);
+        }
+        else if (winner.Status == ParticipantStatus.PlayLoose)
+        {
+            await AdvanceInLosers(winnerId);
+            await DropInLoosers(looserId, match.ownerId);
+        }
+    }
 
-    //     // 📌 Проверяем, куда идет победитель и проигравший
-    //     if (match.Bracket == "Winners")
-    //     {
-    //         await AdvanceInWinners(match, winnerId);
-    //         await DropToLosers(match, loserId);
-    //     }
-    //     else if (match.Bracket == "Losers")
-    //     {
-    //         await AdvanceInLosers(match, winnerId);
-    //     }
-    // }
+    private async Task AdvanceInWinners(string matchId, string winnerId)
+    {
+        var match = await _matchService.GetMatchById(matchId);
+        if (match == null) throw new NotFoundException(ErrorName.MatchNotFound);
+        var winner = await _participantService.GetByIdAsync(winnerId);
 
-    // private async Task AdvanceInWinners(MatchDto match, string winnerId)
-    // {
-    //     int nextRound = int.Parse(match.Round) + 1;
+        await _participantService.UpdatePointsAsync(winnerId, 1);
 
-    //     var nextMatch = await _matchService.FindMatchByRound(match.TournamentId, nextRound, "Winners");
-    //     if (nextMatch != null)
-    //     {
-    //         nextMatch.Participants.Add(winnerId);
-    //         await _matchService.UpdateMatch(nextMatch);
-    //     }
-    //     else
-    //     {
-    //         // Создаем новый матч
-    //         await _matchService.CreateMatch(new MatchDto
-    //         {
-    //             TournamentId = match.TournamentId,
-    //             Round = nextRound.ToString(),
-    //             Bracket = "Winners",
-    //             Participant1Id = winnerId,
-    //             Status = MatchStatus.Scheduled
-    //         });
-    //     }
-    // }
+        MatchDto nextMatch = new MatchDto();
 
-    // private async Task DropToLosers(MatchDto match, string loserId)
-    // {
-    //     int round = int.Parse(match.Round) * 2 - 1; // В нижней сетке раунды идут быстрее
+        if (!string.IsNullOrEmpty(match.nextMatchId))
+        {
+            nextMatch = await _matchService.GetMatchById(match.nextMatchId);
 
-    //     var nextMatch = await _matchService.FindMatchByRound(match.TournamentId, round, "Losers");
-    //     if (nextMatch != null)
-    //     {
-    //         nextMatch.Participants.Add(loserId);
-    //         await _matchService.UpdateMatch(nextMatch);
-    //     }
-    //     else
-    //     {
-    //         await _matchService.CreateMatch(new MatchDto
-    //         {
-    //             TournamentId = match.TournamentId,
-    //             Round = round.ToString(),
-    //             Bracket = "Losers",
-    //             Participant1Id = loserId,
-    //             Status = MatchStatus.Scheduled
-    //         });
-    //     }
-    // }
+            if (!match.round.Equals("1/1"))
+            {
+                if (string.IsNullOrEmpty(nextMatch.participant1Id))
+                {
+                    nextMatch.participant1Id = winnerId;
+                    nextMatch.participant1Name = winner.Name;
+                }
+                else
+                {
+                    nextMatch.participant2Id = winnerId;
+                    nextMatch.participant2Name = winner.Name;
+                }
+                await _matchService.UpdateMatch(nextMatch.id, nextMatch);
+            }
+            else{
+                nextMatch = await _matchService.GetMatchByName(match.tournamentId, "Final");
+                if (string.IsNullOrEmpty(nextMatch.participant1Id))
+                {
+                    nextMatch.participant1Id = winnerId;
+                    nextMatch.participant1Name = winner.Name;
+                }
+                else
+                {
+                    nextMatch.participant2Id = winnerId;
+                    nextMatch.participant2Name = winner.Name;
+                }
+                await _matchService.UpdateMatch(nextMatch.id, nextMatch);
+            }
+        }
+    }
 
-    // private async Task AdvanceInLosers(MatchDto match, string winnerId)
-    // {
-    //     int nextRound = int.Parse(match.Round) + 1;
+    private async Task DropToLosers(string loserId, string ownerId)
+    {
+        var participant = await _participantService.GetByIdAsync(loserId);
+        participant.Status = ParticipantStatus.PlayLoose;
+        await _participantService.UpdateAsync(participant.Id, participant, ownerId);
+    }
 
-    //     var nextMatch = await _matchService.FindMatchByRound(match.TournamentId, nextRound, "Losers");
-    //     if (nextMatch != null)
-    //     {
-    //         nextMatch.Participants.Add(winnerId);
-    //         await _matchService.UpdateMatch(nextMatch);
-    //     }
-    //     else
-    //     {
-    //         await _matchService.CreateMatch(new MatchDto
-    //         {
-    //             TournamentId = match.TournamentId,
-    //             Round = nextRound.ToString(),
-    //             Bracket = "Losers",
-    //             Participant1Id = winnerId,
-    //             Status = MatchStatus.Scheduled
-    //         });
-    //     }
-    // }
+    private async Task AdvanceInLosers(string winnerId)
+    {
+        await _participantService.UpdatePointsAsync(winnerId, 1);
+    }
+
+    private async Task DropInLoosers(string looserId, string ownerId)
+    {
+        var looser = await _participantService.GetByIdAsync(looserId);
+        looser.Status = ParticipantStatus.Left;
+        await _participantService.UpdateAsync(looser.Id, looser, ownerId);
+    }
+
+    private MatchDto CreateMatch(string tournamentId,
+        string round,
+        int number,
+        string participant1Id,
+        string participant2Id,
+        string ownerId,
+        string categoryId,
+        string participant1Name,
+        string participant2Name,
+        string tournamentName)
+    {
+        MatchDto dto = new MatchDto()
+        {
+            id = Guid.NewGuid().ToString(),
+            tournamentId = tournamentId,
+            round = round,
+            matchOrder = number,
+            participant1Id = participant1Id,
+            participant2Id = participant2Id,
+            winnerId = string.Empty,
+            winScore = 0,
+            ownerId = ownerId,
+            categoryId = categoryId,
+            nextMatchId = string.Empty,
+            participant1Name = participant1Name,
+            participant2Name = participant2Name,
+            tournamentName = tournamentName
+        };
+        return dto;
+    }
 }

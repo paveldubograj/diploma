@@ -11,6 +11,8 @@ public class MatchUpdateDto
     public int winScore {get; set;}
     public int looseScore {get; set;}
     public DateTime endTime {get; set;}
+    public string Participant1Name {get; set;}
+    public string Participant2Name {get; set;}
     
     public string categoryId {get; set;}
     public string winnerId {get; set;}

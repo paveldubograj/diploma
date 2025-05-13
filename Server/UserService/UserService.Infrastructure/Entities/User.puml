@@ -1,6 +1,0 @@
-@startuml
-class User {
-    + Image : string <<get>> <<set>>
-}
-IdentityUser <|-- User
-@enduml

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { getMatchById, updateMatch, deleteMatch } from "../../api/matchApi";
-import { MatchDto, MatchStatus } from "../../types";
+import { MatchDto, MatchStatus, ParticipantSListDto } from "../../types";
 import { Container, Form, Button, Row, Col, Card, Alert, Modal } from "react-bootstrap";
-import { handleSetWinner } from "../../api/tournamentApi"
+import { fetchPlayingParticipants, handleSetWinner } from "../../api/tournamentApi"
 import { toast } from "react-toastify";
 
 
@@ -13,7 +13,11 @@ const MatchDetails = () => {
   const [match, setMatch] = useState<MatchDto | null>(null);
   const [formData, setFormData] = useState<MatchDto | null>(null);
   const [error, setError] = useState<string | null>(null);
-
+  const [participants, setParticipants] = useState<ParticipantSListDto[]>([]);
+  const [participant1Id, setParticipant1Id] = useState<string>("");
+  const [participant2Id, setParticipant2Id] = useState<string>("");
+  const [participant1Name, setParticipant1Name] = useState<string>("");
+  const [participant2Name, setParticipant2Name] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
   const [winnerId, setWinnerId] = useState<string>('');
   const [looserId, setLooserId] = useState('');
@@ -31,6 +35,20 @@ const MatchDetails = () => {
         .catch((err) => setError("Ошибка при загрузке матча"));
     }
   }, [id]);
+
+  useEffect(() => {
+    const selected = participants.find(p => p.id === participant1Id);
+    if (selected) {
+      setParticipant1Name(selected.name);
+    }
+  }, [participant1Id, participants]);
+
+  useEffect(() => {
+    const selected = participants.find(p => p.id === participant2Id);
+    if (selected) {
+      setParticipant2Name(selected.name);
+    }
+  }, [participant2Id, participants]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -79,6 +97,18 @@ const MatchDetails = () => {
   };
 
   if (!match) return <p>Загрузка...</p>;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    const loadParticipants = async () => {
+      try {
+        const data = await fetchPlayingParticipants(match.tournamentId);
+        setParticipants(data);
+      } catch (error) {
+        console.error("Ошибка загрузки участников", error);
+      }
+    };
+    loadParticipants();
+  }, [match.tournamentId]);
   if (!formData) {
     return <p>Загрузка...</p>;
   }
@@ -130,13 +160,10 @@ const MatchDetails = () => {
                 </Form.Select>
               </Col>
               <Col>
-                <Form.Label>ID турнира</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="tournamentId"
-                  value={formData.tournamentId}
-                  disabled
-                />
+                Турнир:{" "}
+                <Link to={`/tournaments/${match.tournamentId}`}>
+                  {match.tournamentName}
+                </Link>
               </Col>
             </Row>
 
@@ -167,22 +194,35 @@ const MatchDetails = () => {
 
             <Row className="mb-3">
               <Col>
-                <Form.Label>ID участника 1</Form.Label>
-                <Form.Control
-                  type="text"
+              <Form.Label>Участник 1</Form.Label>
+                <Form.Select
                   name="participant1Id"
-                  value={formData.participant1Id}
-                  onChange={handleInputChange}
-                />
+                  value={match.participant1Id}
+                  onChange={handleSelectChange}
+                >
+                  <option value="">Не выбран</option>
+                  {participants.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.name}
+                    </option>
+                  ))}
+                </Form.Select>
               </Col>
               <Col>
-                <Form.Label>ID участника 2</Form.Label>
-                <Form.Control
-                  type="text"
+              <Form.Label>Участник 2</Form.Label>
+                <Form.Select
                   name="participant2Id"
-                  value={formData.participant2Id}
-                  onChange={handleInputChange}
-                />
+                  value={match.participant2Id}
+                  onChange={handleSelectChange}
+                >
+                  <option value="">Не выбран</option>
+                  {participants.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.name}
+                    </option>
+                  ))}
+                </Form.Select>
+
               </Col>
             </Row>
 
@@ -194,16 +234,6 @@ const MatchDetails = () => {
                   name="winnerId"
                   value={formData.winnerId}
                   onChange={handleInputChange}
-                />
-              </Col>
-              <Col>
-                <Form.Label>ID следующего матча</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="nextMatchId"
-                  value={formData.nextMatchId ?? ""}
-                  onChange={handleInputChange}
-                  disabled
                 />
               </Col>
             </Row>
@@ -227,6 +257,9 @@ const MatchDetails = () => {
                   onChange={handleInputChange}
                 />
               </Col>
+              <Col>
+                <Link to={`/matches/${match.nextMatchId}`} style={{ textDecoration: "none" }}>Следующий матч</Link>
+              </Col>
             </Row>
 
             <div className="d-flex gap-2">
@@ -241,7 +274,7 @@ const MatchDetails = () => {
         </Card.Body>
       </Card>
 
-      { (match.status !== 2) && (<Button variant="success" onClick={() => setShowModal(true)}>
+      {(match.status !== 2) && (<Button variant="success" onClick={() => setShowModal(true)}>
         Назначить победителя
       </Button>)}
 
@@ -279,7 +312,7 @@ const MatchDetails = () => {
           <Button variant="secondary" onClick={() => setShowModal(false)}>
             Отмена
           </Button>
-          <Button variant="primary" onClick={() => {if(winnerId !== '')handleWinnerSet(winnerId, looserId, winPoints, loosePoints); else {toast.error("давай смени значение");}}}>
+          <Button variant="primary" onClick={() => { if (winnerId !== '') handleWinnerSet(winnerId, looserId, winPoints, loosePoints); else { toast.error("давай смени значение"); } }}>
             Подтвердить
           </Button>
         </Modal.Footer>

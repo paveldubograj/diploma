@@ -5,6 +5,7 @@ using TournamentService.BusinessLogic.Services.Interfaces;
 using TournamentService.DataAccess.Entities;
 using TournamentService.DataAccess.Repositories.Interfaces;
 using TournamentService.Shared.Constants;
+using TournamentService.Shared.Enums;
 using TournamentService.Shared.Exceptions;
 
 namespace TournamentService.BusinessLogic.Services;
@@ -12,81 +13,101 @@ namespace TournamentService.BusinessLogic.Services;
 public class ParticipantService : IParticipantService
 {
     private readonly IParticipantRepository _participantRepository;
+    private readonly ITournamentRepository _tournamentRepository;
     private readonly IMapper _mapper;
-    public ParticipantService(IParticipantRepository participantRepository, IMapper mapper){
+    public ParticipantService(IParticipantRepository participantRepository, ITournamentRepository tournamentRepository, IMapper mapper){
         _participantRepository = participantRepository;
+        _tournamentRepository = tournamentRepository;
         _mapper = mapper;
     }
     public async Task<ParticipantDto> AddAsync(ParticipantAddDto newsDto, string tournamentId)
     {
-        var news = _mapper.Map<Participant>(newsDto);
-        news.Id = Guid.NewGuid().ToString();
-        news.TournamentId = tournamentId;
-        news.Status = Shared.Enums.ParticipantStatus.Play;
-        var result = await _participantRepository.AddAsync(news);
+        var participant = _mapper.Map<Participant>(newsDto);
+        participant.Id = Guid.NewGuid().ToString();
+        participant.TournamentId = tournamentId;
+        participant.Status = ParticipantStatus.PlayWin;
+        var result = await _participantRepository.AddAsync(participant);
+        return _mapper.Map<ParticipantDto>(result);
+    }
+
+    public async Task<ParticipantDto> RegisterAsync(RegisterForTournamentDto registerDto, string tournamentId)
+    {
+        if(!await _tournamentRepository.IsRegistrationAllowed(tournamentId)) throw new WrongCallException(ErrorName.RegistrationNotAllowed);
+        var participant = _mapper.Map<Participant>(registerDto);
+        participant.Id = Guid.NewGuid().ToString();
+        participant.TournamentId = tournamentId;
+        participant.Status = ParticipantStatus.PlayWin;
+        var result = await _participantRepository.AddAsync(participant);
         return _mapper.Map<ParticipantDto>(result);
     }
 
     public async Task<ParticipantDto> DeleteAsync(string id, string userId)
     {
-        var obj = await _participantRepository.GetByIdAsync(id);
-        if(obj == null){
+        var participant = await _participantRepository.GetByIdAsync(id);
+        if(participant == null){
             throw new NotFoundException(ErrorName.ParticipantNotFound);
         }
-        if(!obj.Tournament.OwnerId.Equals(userId)){
+        if(!participant.Tournament.OwnerId.Equals(userId)){
             throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
         }
-        var result = _participantRepository.DeleteAsync(obj);
+        var result = _participantRepository.RemoveParticipantFromTournament(participant.TournamentId, participant.Id);
         return _mapper.Map<ParticipantDto>(result);
     }
 
-    public async Task<List<ParticipantDto>> GetAllByPageAsync(string tournamentId, int page, int pageSize)
+    public async Task<List<ParticipantDto>> GetAllByPageAsync(string tournamentId, ParticipantSortOptions? options, int page, int pageSize)
     {
-        var list = await _participantRepository.GetAsync(tournamentId, page, pageSize);
+        var list = await _participantRepository.GetAsync(tournamentId, options, page, pageSize);
         return _mapper.Map<List<ParticipantDto>>(list);
     }
 
     public async Task<List<ParticipantDto>> GetAllByTournamentAsync(string tournamentId)
     {
-        var list = _participantRepository.GetAllAsync(tournamentId);
+        var list = await _participantRepository.GetAllAsync(tournamentId);
         return _mapper.Map<List<ParticipantDto>>(list);
+    }
+
+    public async Task<List<ParticipantSListDto>> GetPlayingByTournamentAsync(string tournamentId)
+    {
+        var list = await _participantRepository.GetAllPlayingAsync(tournamentId);
+        return _mapper.Map<List<ParticipantSListDto>>(list);
     }
 
     public async Task<ParticipantDto> GetByIdAsync(string id)
     {
-        var res = await _participantRepository.GetByIdAsync(id);
-        if(res == null){
+        var participant = await _participantRepository.GetByIdAsync(id);
+        if(participant == null){
             throw new NotFoundException(ErrorName.ParticipantNotFound);
         }
-        return _mapper.Map<ParticipantDto>(res);
+        return _mapper.Map<ParticipantDto>(participant);
     }
 
     public async Task<ParticipantDto> UpdateAsync(string id, ParticipantDto newsDto, string userId)
     {
-        var news = await _participantRepository.GetByIdAsync(id);
-        if(news == null){
+        var participant = await _participantRepository.GetByIdWithToutnamentAsync(id);
+        if(participant == null){
             throw new NotFoundException(ErrorName.ParticipantNotFound);
         }
-        if(!news.Tournament.OwnerId.Equals(userId)){
+        if(!participant.Tournament.OwnerId.Equals(userId)){
             throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
         }
-        var newsUp = _mapper.Map(newsDto, news);
+        var newsUp = _mapper.Map(newsDto, participant);
         var res = _participantRepository.UpdateAsync(newsUp);
         return _mapper.Map<ParticipantDto>(res);
     }
 
-    public async Task<ParticipantDto> UpdatePointsAsync(string id, int points, string userId)
+    public async Task<List<ParticipantDto>> GetAllFromLowerAsync(string tournamentId)
     {
-        //Thread.Sleep(3000);
-        //var news = _participantRepository.GetById(id);
-        // if(news == null){
-        //     throw new NotFoundException(ErrorName.ParticipantNotFound);
-        // }
-        // if(!news.Tournament.OwnerId.Equals(userId)){
-        //     throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
-        // }
-        // news.Points += points;
-        var res = await _participantRepository.UpdatePointsAsync(id, points);
-        return _mapper.Map<ParticipantDto>(res);
+        return _mapper.Map<List<ParticipantDto>>(await _participantRepository.GetAllFromLowerAsync(tournamentId));
+    }
+
+    public async Task<List<ParticipantDto>> GetAllFromUpperAsync(string tournamentId)
+    {
+        return _mapper.Map<List<ParticipantDto>>(await _participantRepository.GetAllFromUpperAsync(tournamentId));
+    }
+
+    public async Task<ParticipantDto> UpdatePointsAsync(string id, int points)
+    {
+        var participant = await _participantRepository.UpdatePointsAsync(id, points);
+        return _mapper.Map<ParticipantDto>(participant);
     }
 }

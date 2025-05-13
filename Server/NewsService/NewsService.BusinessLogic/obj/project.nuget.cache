@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "+mLUNEMQYPfzMZXFKSXrKUexWU4M1zcPCG5WO0NRqAHMOWRA+kVH8Ych5V2OYogZ2DMaI0Df3C9k4Im6d7SZsA==",
+  "dgSpecHash": "xAY6reohlbsDhRqUe7AX21hjBGTbW+QbfW4X98MewbtZC54Csz2J0lu7yyiXxLRUF9PnMjtburr8fvI+cwVeeA==",
   "success": true,
   "projectFilePath": "/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.BusinessLogic/NewsService.BusinessLogic.csproj",
   "expectedPackageFiles": [

@@ -8,4 +8,5 @@ public class NewsCleanDto
     public string Title { get; set; }
     public DateTime PublishingDate { get; set; } 
     public string AuthorId { get; set; } 
+    public string AuthorName { get; set; }
 }

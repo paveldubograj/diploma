@@ -20,6 +20,7 @@ export interface DetailNews {
   publishingDate: Date;
   content: string;
   categoryId: string;
+  authorName: string;
   tags: Tag[];
 }
 
@@ -46,6 +47,9 @@ export interface MatchList {
   winScore: number;
   looseScore: number;
   endTime: string;
+  participant1Name: string;
+  participant2Name: string;
+  tournamentName: string;
   categoryId: string;
   winnerId: string;
   participant1Id: string;
@@ -63,6 +67,9 @@ export interface MatchDto {
   winScore: number;
   looseScore: number;
   endTime: string;
+  participant1Name: string;
+  participant2Name: string;
+  tournamentName: string;
   categoryId: string;
   winnerId: string;
   participant1Id: string;
@@ -129,6 +136,7 @@ export interface TournamentDto {
   ownerId: string;
   winnerId: string;
   participants: ParticipantDto[];
+  isRegistrationAllowed: boolean;
 }
 
 export interface TournamentCreateDto {
@@ -136,6 +144,7 @@ export interface TournamentCreateDto {
   disciplineId: string;
   format: number;
   maxParticipants: number;
+  isRegistrationAllowed: boolean;
   startDate: string;
   endDate: string;
 }
@@ -149,6 +158,11 @@ export interface ParticipantDto{
   status: number;
 }
 
+export interface ParticipantSListDto{   
+  id: string;   
+  name: string; 
+}
+
 export interface ParticipantCreateDto {
   name: string;
 }
@@ -159,33 +173,36 @@ export const ParticipantStatus = [
   {id:1, name:"Не участвует"},
 ];
 
-export interface ParticipantDto {
-  id: string;
-  name: string;
-  userId: string | null;
-  points: number;
-  tournamentId: string;
-  status: number;
-}
-// MatchStatus.set(0, "Scheduled");
-// MatchStatus.set(1, "InProgress");
-// MatchStatus.set(2, "Completed");
-// MatchStatus.set(3, "Cancelled");
-// MatchStatus.set(4, "Postponed");
-// [
-//   [0, "Scheduled"],
-//   [1, "InProgress"],
-//   [2, "Completed"],
-//   [3, "Cancelled"],
-//   [4, "Postponed"]
-// ]
+export const NewsSortOptions = [
+  {id: 0, name:"По названию"},
+  {id: 1, name:"По убыванию названия"},
+  {id: 2, name:"По дате"},
+  {id: 3, name:"По убыванию даты"},
+];
 
-// const MatchStatus = new Map<string, string>([
-//   ["0", "Scheduled"],
-//   ["1", "InProgress"],
-//   ["2", "Completed"],
-//   ["3", "Cancelled"],
-//   ["4", "Postponed"]
-// ]);
+export const MatchSortOptions = [
+  {id: 0, name:"По раунду"},
+  {id: 1, name:"По убыванию раунда"},
+  {id: 2, name:"По очереди"},
+  {id: 3, name:"По убыванию очереди"},
+  {id: 4, name:"По дате"},
+  {id: 5, name:"По убыванию даты"},
+];
+
+export const TournamentSortOptions = [
+  {id: 0, name:"По названию"},
+  {id: 1, name:"По убыванию названия"},
+  {id: 2, name:"По дате"},
+  {id: 3, name:"По убыванию даты"},
+  {id: 4, name:"По кол-ву участников"},
+  {id: 5, name:"По убыванию кол-ва участников"},
+];
+
+export const ParticipantSortOptions = [
+  {id: 0, name:"По имени"},
+  {id: 1, name:"По убыванию имени"},
+  {id: 2, name:"По очкам"},
+  {id: 3, name:"По убыванию очков"},
+];
 
 

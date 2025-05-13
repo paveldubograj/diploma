@@ -8,6 +8,7 @@ import {
     Discipline,
     TournamentCleanDto,
     TournamentFormat,
+    TournamentSortOptions,
     TournamentStatus,
 } from "../../types";
 import {
@@ -37,6 +38,7 @@ const TournamentList = () => {
     const [total, setTotal] = useState(1);
     const [page, setPage] = useState(1);
     const [error, setError] = useState<string | null>("");
+    const [sortOption, setSortOption] = useState<string>("0");
 
     useEffect(() => {
         try {
@@ -71,6 +73,10 @@ const TournamentList = () => {
                 page: page.toString(),
                 pageSize: pageSize.toString(),
             });
+            if (sortOption) {
+                filter.append('options', sortOption);
+            }
+
             if (searchString) {
                 filter.append('SearchString', searchString);
             }
@@ -96,14 +102,15 @@ const TournamentList = () => {
             }
             try {
                 var result = await fetchTournaments(filter.toString())
-                setTournaments(result);
+                setTournaments(result.tournaments);
+                setTotal(result.total);
             } catch (err) {
                 setError("Ошибка загрузки турниров:");
             }
         };
 
         loadTournaments();
-    }, [selectedDisciplineId, status, format, startDate, endDate, searchString, page]);
+    }, [selectedDisciplineId, status, format, startDate, endDate, searchString, page, sortOption]);
 
     return (
         <Container>
@@ -171,6 +178,22 @@ const TournamentList = () => {
                     <Form.Control type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                 </Col>
             </Row>
+            <Col md={4}>
+            <Form.Group>
+                <Form.Label>Сортировка</Form.Label>
+                <Form.Select
+                value={sortOption}
+                onChange={(e) => {
+                    setSortOption(e.target.value);
+                    setPage(1);
+                }}
+                >
+                {TournamentSortOptions.map((d) => (
+                    <option value={d.id}>{d.name}</option>
+                ))}
+                </Form.Select>
+            </Form.Group>
+            </Col>
             {hasRole("organizer") && (
               <Link to={`/tournaments/create`}>
                 <Button variant="success" className="mb-3">Создать турнир</Button>
@@ -197,6 +220,20 @@ const TournamentList = () => {
                     </Link>
                 ))}
             </Row>
+            <div className="d-flex justify-content-between align-items-center my-3">
+                <Button disabled={page === 1} onClick={() => setPage(page - 1)}>
+                Назад
+                </Button>
+                <span>
+                Страница {page} из {Math.ceil(total / pageSize)}
+                </span>
+                <Button
+                disabled={page >= Math.ceil(total / pageSize)}
+                onClick={() => setPage(page + 1)}
+                >
+                Вперёд
+                </Button>
+            </div>
         </Container>
     );
 };

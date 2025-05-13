@@ -18,13 +18,11 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
 
         builder
             .Property(c => c.Participant1Id)
-            .HasMaxLength(40)
-            .IsRequired();
+            .HasMaxLength(40);
 
         builder
             .Property(c => c.Participant2Id)
-            .HasMaxLength(40)
-            .IsRequired();
+            .HasMaxLength(40);
 
         builder
             .Property(c => c.TournamentId)
@@ -39,5 +37,18 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
         builder
             .Property(c => c.Status)
             .HasConversion<int>();
+
+        builder
+            .Property(c => c.Participant1Name)
+            .HasMaxLength(40);
+        
+        builder
+            .Property(c => c.Participant2Name)
+            .HasMaxLength(40);
+
+        builder
+            .Property(c => c.TournamentName)
+            .HasMaxLength(40)
+            .IsRequired();
     }
 }

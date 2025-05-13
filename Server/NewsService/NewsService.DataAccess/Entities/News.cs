@@ -13,6 +13,7 @@ public class News
     public DateTime PublishingDate { get; set; }
     public string CategoryId { get; set; } 
     public string AuthorId { get; set; } 
+    public string AuthorName { get; set; }
 
     public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
 }

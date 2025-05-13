@@ -53,7 +53,17 @@ namespace MatchService.API.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");
 
+                    b.Property<string>("Participant1Name")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
                     b.Property<string>("Participant2Id")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<string>("Participant2Name")
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");
@@ -69,6 +79,11 @@ namespace MatchService.API.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("TournamentId")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<string>("TournamentName")
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");

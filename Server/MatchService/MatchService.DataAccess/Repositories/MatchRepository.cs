@@ -4,6 +4,7 @@ using MatchService.DataAccess.Entities;
 using MatchService.DataAccess.Repositories.Interfaces;
 using MatchService.DataAccess.Specifications;
 using MatchService.DataAccess.Specifications.SpecSettings;
+using MatchService.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace MatchService.DataAccess.Repositories;
@@ -50,11 +51,37 @@ public class MatchRepository : IMatchRepository
         var entity = await _context.Matches.Where(t => t.Id.Equals(id)).FirstOrDefaultAsync();
         return entity;
     }
-    public async Task<IEnumerable<Match>> GetBySpecificationAsync(MatchSpecification spec, int page, int pageSize, CancellationToken token = default)
+    public async Task<IEnumerable<Match>> GetBySpecificationAsync(MatchSpecification spec, SortOptions? options, int page, int pageSize, CancellationToken token = default)
     {
-        IQueryable<Match> query = _context.Matches.OrderByDescending(n => n.StartTime);
+        IQueryable<Match> query = _context.Matches
+            .OrderByDescending(n => n.StartTime)
+            .ApplySpecification(spec)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize);
 
-        query = query.ApplySpecification(spec).Skip((page - 1) * pageSize).Take(pageSize);
+        switch (options){
+            case SortOptions.ByRound:
+                query = query.OrderBy(c => c.Round);
+                break;
+            case SortOptions.ByRoundDesc:
+                query = query.OrderByDescending(c => c.Round);
+                break;
+            case SortOptions.ByOrder:
+                query = query.OrderBy(c => c.MatchOrder);
+                break;
+            case SortOptions.ByOrderDesc:
+                query = query.OrderByDescending(c => c.MatchOrder);
+                break;
+            case SortOptions.ByDate:
+                query = query.OrderBy(c => c.StartTime);
+                break;
+            case SortOptions.ByDateDesc:
+                query = query.OrderByDescending(c => c.StartTime);
+                break;
+            default:
+                query = query.OrderBy(c => c.Round);
+                break;
+        }
 
         return await query.ToListAsync(cancellationToken: token);
     }
@@ -80,5 +107,8 @@ public class MatchRepository : IMatchRepository
         var res = query.ApplySpecification(spec).FirstOrDefault();
 
         return res;
+    }
+    public async Task<int> GetTotalAsync(){
+        return await _context.Matches.CountAsync();
     }
 }

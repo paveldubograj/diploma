@@ -17,6 +17,7 @@ public class TournamentDto
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public List<ParticipantDto> Participants { get; set; } = new List<ParticipantDto>();
+    public bool IsRegistrationAllowed {get; set;}
     
     public string OwnerId {get; set;}
     public string WinnerId {get; set;}

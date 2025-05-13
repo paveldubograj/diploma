@@ -29,24 +29,20 @@ public class RoundRobinBracket : IRoundRobinBracket
             throw new NotFoundException(ErrorName.TournamentNotFound);
         }
         var participants = await _participantService.GetAllByTournamentAsync(tournamentId);
-        if (participants.Count < 2) throw new Exception("Недостаточно участников!");
+        if (participants.Count < 2) throw new ParticipantAmountException(ErrorName.NotEnoughParticipants);
         int totalPlayers = participants.Count;
         var matches = new List<MatchDto>();
 
-        for (int round = 1; round < totalPlayers; round++)
+        for (int round = 0; round < totalPlayers - 1; round++)
         {
-            for (int i = 0; i < totalPlayers / 2; i++)
+            for (int i = 1; i < totalPlayers; i++)
             {
-                var p1 = participants[i];
-                var p2 = participants[totalPlayers - 1 - i];
-                matches.Add(CreateMatch(tournamentId, round, i + 1, p1.Id, p2.Id, res.OwnerId, res.DisciplineId));
+                var p1 = participants[0];
+                var p2 = participants[i];
+                matches.Add(CreateMatch(tournamentId, $"{round + 1}", i + 1, p1.Id, p2.Id, res.OwnerId, res.DisciplineId, p1.Name, p2.Name, res.Name));
             }
-
-            // Циклический сдвиг для следующего раунда
-            participants.Insert(1, participants.Last());
-            participants.RemoveAt(participants.Count - 1);
+            participants.RemoveAt(0);
         }
-
         _matchService.CreateMatches(matches);
     }
     public async Task HandleMatchResult(string matchId, string winnerId, int winPoints, int loosePoints)
@@ -57,21 +53,38 @@ public class RoundRobinBracket : IRoundRobinBracket
         match.winnerId = winnerId;
         match.winScore = winPoints;
         match.looseScore = loosePoints;
-        await _participantService.UpdatePointsAsync(winnerId, 1, match.ownerId);
+        await _participantService.UpdatePointsAsync(winnerId, 1);
         await _matchService.UpdateMatch(matchId, match);
     }
 
-    private MatchDto CreateMatch(string tournamentId, int round, int number, string participant1Id, string participant2Id, string ownerId, string categoryId){
-        MatchDto dto = new MatchDto(){
-            //Id = new Guid().ToString(),
-            tournamentId = tournamentId, 
-            round = round.ToString(), 
-            matchOrder = number, 
-            participant1Id = participant1Id, 
+    private MatchDto CreateMatch(string tournamentId, 
+        string round, 
+        int number, 
+        string participant1Id, 
+        string participant2Id, 
+        string ownerId, 
+        string categoryId, 
+        string participant1Name, 
+        string participant2Name, 
+        string tournamentName)
+    {
+        MatchDto dto = new MatchDto()
+        {
+            id = Guid.NewGuid().ToString(),
+            tournamentId = tournamentId,
+            round = round,
+            matchOrder = number,
+            participant1Id = participant1Id,
             participant2Id = participant2Id,
+            winnerId = string.Empty,
+            winScore = 0,
             ownerId = ownerId,
             categoryId = categoryId,
-            status = MatchStatus.Scheduled};
+            nextMatchId = string.Empty,
+            participant1Name = participant1Name,
+            participant2Name = participant2Name,
+            tournamentName = tournamentName
+        };
         return dto;
     }
 }

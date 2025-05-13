@@ -9,6 +9,7 @@ public class TournamentCreateDto
     public string DisciplineId { get; set; }
     public TournamentFormat Format { get; set; } 
     public int MaxParticipants { get; set; }
+    public bool IsRegistrationAllowed {get; set;}
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
 }

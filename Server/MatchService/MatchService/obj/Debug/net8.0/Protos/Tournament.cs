@@ -29,7 +29,7 @@ namespace MatchService.API.Protos {
             "b3RvGh5nb29nbGUvcHJvdG9idWYvd3JhcHBlcnMucHJvdG8iHAoOR2V0QnlJ",
             "ZFJlcXVlc3QSCgoCSWQYASABKAkiNwoRR2V0QnlSb3VuZFJlcXVlc3QSDAoE",
             "TmFtZRgBIAEoCRIUCgx0b3VybmFtZW50SWQYAiABKAkiMQoRQWRkTWF0Y2hl",
-            "c1JlcXVlc3QSHAoHbWF0Y2hlcxgBIAMoCzILLmdycGMuTWF0Y2gi2gIKBU1h",
+            "c1JlcXVlc3QSHAoHbWF0Y2hlcxgBIAMoCzILLmdycGMuTWF0Y2gipgMKBU1h",
             "dGNoEgoKAmlkGAEgASgJEg0KBXJvdW5kGAIgASgJEi0KCXN0YXJ0VGltZRgD",
             "IAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDgoGc3RhdHVzGAQg",
             "ASgFEhIKCm1hdGNoT3JkZXIYBSABKAUSEAoId2luU2NvcmUYBiABKAUSEgoK",
@@ -37,20 +37,22 @@ namespace MatchService.API.Protos {
             "b3RvYnVmLlRpbWVzdGFtcBISCgpjYXRlZ29yeUlkGAkgASgJEhAKCHdpbm5l",
             "cklkGAogASgJEhYKDnBhcnRpY2lwYW50MUlkGAsgASgJEhYKDnBhcnRpY2lw",
             "YW50MklkGAwgASgJEhQKDHRvdXJuYW1lbnRJZBgNIAEoCRITCgtuZXh0TWF0",
-            "Y2hJZBgOIAEoCRIPCgdvd25lcklkGA8gASgJMvUBChFUb3VybmFtZW50U2Vy",
-            "dmljZRJACg1DcmVhdGVNYXRjaGVzEhcuZ3JwYy5BZGRNYXRjaGVzUmVxdWVz",
-            "dBoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eRIxCgxHZXRNYXRjaEJ5SWQSFC5n",
-            "cnBjLkdldEJ5SWRSZXF1ZXN0GgsuZ3JwYy5NYXRjaBI3Cg9HZXRNYXRjaEJ5",
-            "Um91bmQSFy5ncnBjLkdldEJ5Um91bmRSZXF1ZXN0GgsuZ3JwYy5NYXRjaBIy",
-            "CgtVcGRhdGVNYXRjaBILLmdycGMuTWF0Y2gaFi5nb29nbGUucHJvdG9idWYu",
-            "RW1wdHlCGqoCF01hdGNoU2VydmljZS5BUEkuUHJvdG9zYgZwcm90bzM="));
+            "Y2hJZBgOIAEoCRIPCgdvd25lcklkGA8gASgJEhgKEHBhcnRpY2lwYW50MU5h",
+            "bWUYECABKAkSGAoQcGFydGljaXBhbnQyTmFtZRgRIAEoCRIWCg50b3VybmFt",
+            "ZW50TmFtZRgSIAEoCTL1AQoRVG91cm5hbWVudFNlcnZpY2USQAoNQ3JlYXRl",
+            "TWF0Y2hlcxIXLmdycGMuQWRkTWF0Y2hlc1JlcXVlc3QaFi5nb29nbGUucHJv",
+            "dG9idWYuRW1wdHkSMQoMR2V0TWF0Y2hCeUlkEhQuZ3JwYy5HZXRCeUlkUmVx",
+            "dWVzdBoLLmdycGMuTWF0Y2gSNwoPR2V0TWF0Y2hCeVJvdW5kEhcuZ3JwYy5H",
+            "ZXRCeVJvdW5kUmVxdWVzdBoLLmdycGMuTWF0Y2gSMgoLVXBkYXRlTWF0Y2gS",
+            "Cy5ncnBjLk1hdGNoGhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5QhqqAhdNYXRj",
+            "aFNlcnZpY2UuQVBJLlByb3Rvc2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::MatchService.API.Protos.GetByIdRequest), global::MatchService.API.Protos.GetByIdRequest.Parser, new[]{ "Id" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::MatchService.API.Protos.GetByRoundRequest), global::MatchService.API.Protos.GetByRoundRequest.Parser, new[]{ "Name", "TournamentId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::MatchService.API.Protos.AddMatchesRequest), global::MatchService.API.Protos.AddMatchesRequest.Parser, new[]{ "Matches" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::MatchService.API.Protos.Match), global::MatchService.API.Protos.Match.Parser, new[]{ "Id", "Round", "StartTime", "Status", "MatchOrder", "WinScore", "LooseScore", "EndTime", "CategoryId", "WinnerId", "Participant1Id", "Participant2Id", "TournamentId", "NextMatchId", "OwnerId" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::MatchService.API.Protos.Match), global::MatchService.API.Protos.Match.Parser, new[]{ "Id", "Round", "StartTime", "Status", "MatchOrder", "WinScore", "LooseScore", "EndTime", "CategoryId", "WinnerId", "Participant1Id", "Participant2Id", "TournamentId", "NextMatchId", "OwnerId", "Participant1Name", "Participant2Name", "TournamentName" }, null, null, null, null)
           }));
     }
     #endregion
@@ -727,6 +729,9 @@ namespace MatchService.API.Protos {
       tournamentId_ = other.tournamentId_;
       nextMatchId_ = other.nextMatchId_;
       ownerId_ = other.ownerId_;
+      participant1Name_ = other.participant1Name_;
+      participant2Name_ = other.participant2Name_;
+      tournamentName_ = other.tournamentName_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -916,6 +921,42 @@ namespace MatchService.API.Protos {
       }
     }
 
+    /// <summary>Field number for the "participant1Name" field.</summary>
+    public const int Participant1NameFieldNumber = 16;
+    private string participant1Name_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Participant1Name {
+      get { return participant1Name_; }
+      set {
+        participant1Name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "participant2Name" field.</summary>
+    public const int Participant2NameFieldNumber = 17;
+    private string participant2Name_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Participant2Name {
+      get { return participant2Name_; }
+      set {
+        participant2Name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "tournamentName" field.</summary>
+    public const int TournamentNameFieldNumber = 18;
+    private string tournamentName_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string TournamentName {
+      get { return tournamentName_; }
+      set {
+        tournamentName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -946,6 +987,9 @@ namespace MatchService.API.Protos {
       if (TournamentId != other.TournamentId) return false;
       if (NextMatchId != other.NextMatchId) return false;
       if (OwnerId != other.OwnerId) return false;
+      if (Participant1Name != other.Participant1Name) return false;
+      if (Participant2Name != other.Participant2Name) return false;
+      if (TournamentName != other.TournamentName) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -968,6 +1012,9 @@ namespace MatchService.API.Protos {
       if (TournamentId.Length != 0) hash ^= TournamentId.GetHashCode();
       if (NextMatchId.Length != 0) hash ^= NextMatchId.GetHashCode();
       if (OwnerId.Length != 0) hash ^= OwnerId.GetHashCode();
+      if (Participant1Name.Length != 0) hash ^= Participant1Name.GetHashCode();
+      if (Participant2Name.Length != 0) hash ^= Participant2Name.GetHashCode();
+      if (TournamentName.Length != 0) hash ^= TournamentName.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1046,6 +1093,18 @@ namespace MatchService.API.Protos {
         output.WriteRawTag(122);
         output.WriteString(OwnerId);
       }
+      if (Participant1Name.Length != 0) {
+        output.WriteRawTag(130, 1);
+        output.WriteString(Participant1Name);
+      }
+      if (Participant2Name.Length != 0) {
+        output.WriteRawTag(138, 1);
+        output.WriteString(Participant2Name);
+      }
+      if (TournamentName.Length != 0) {
+        output.WriteRawTag(146, 1);
+        output.WriteString(TournamentName);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1116,6 +1175,18 @@ namespace MatchService.API.Protos {
         output.WriteRawTag(122);
         output.WriteString(OwnerId);
       }
+      if (Participant1Name.Length != 0) {
+        output.WriteRawTag(130, 1);
+        output.WriteString(Participant1Name);
+      }
+      if (Participant2Name.Length != 0) {
+        output.WriteRawTag(138, 1);
+        output.WriteString(Participant2Name);
+      }
+      if (TournamentName.Length != 0) {
+        output.WriteRawTag(146, 1);
+        output.WriteString(TournamentName);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1170,6 +1241,15 @@ namespace MatchService.API.Protos {
       }
       if (OwnerId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(OwnerId);
+      }
+      if (Participant1Name.Length != 0) {
+        size += 2 + pb::CodedOutputStream.ComputeStringSize(Participant1Name);
+      }
+      if (Participant2Name.Length != 0) {
+        size += 2 + pb::CodedOutputStream.ComputeStringSize(Participant2Name);
+      }
+      if (TournamentName.Length != 0) {
+        size += 2 + pb::CodedOutputStream.ComputeStringSize(TournamentName);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1233,6 +1313,15 @@ namespace MatchService.API.Protos {
       }
       if (other.OwnerId.Length != 0) {
         OwnerId = other.OwnerId;
+      }
+      if (other.Participant1Name.Length != 0) {
+        Participant1Name = other.Participant1Name;
+      }
+      if (other.Participant2Name.Length != 0) {
+        Participant2Name = other.Participant2Name;
+      }
+      if (other.TournamentName.Length != 0) {
+        TournamentName = other.TournamentName;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1319,6 +1408,18 @@ namespace MatchService.API.Protos {
             OwnerId = input.ReadString();
             break;
           }
+          case 130: {
+            Participant1Name = input.ReadString();
+            break;
+          }
+          case 138: {
+            Participant2Name = input.ReadString();
+            break;
+          }
+          case 146: {
+            TournamentName = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -1402,6 +1503,18 @@ namespace MatchService.API.Protos {
           }
           case 122: {
             OwnerId = input.ReadString();
+            break;
+          }
+          case 130: {
+            Participant1Name = input.ReadString();
+            break;
+          }
+          case 138: {
+            Participant2Name = input.ReadString();
+            break;
+          }
+          case 146: {
+            TournamentName = input.ReadString();
             break;
           }
         }

@@ -31,6 +31,11 @@ public class NewsConfiguration : IEntityTypeConfiguration<News>
             .Property(c => c.AuthorId)
             .HasMaxLength(40)
             .IsRequired();
+
+         builder
+            .Property(c => c.AuthorName)
+            .HasMaxLength(50)
+            .IsRequired();
         
         builder
             .HasMany(c => c.Tags)

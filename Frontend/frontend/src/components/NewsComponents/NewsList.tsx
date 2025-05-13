@@ -7,7 +7,7 @@ import {
   fetchDisciplines,
   fetchDisciplineById,
 } from "../../api/disciplineApi"
-import { ListNews, Discipline, Tag } from "../../types";
+import { ListNews, Discipline, Tag, NewsSortOptions } from "../../types";
 import { Container, Row, Col, Form, Button, Card, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -24,6 +24,7 @@ const NewsList = () => {
   const [selectedDisciplineId, setSelectedDisciplineId] = useState<string | null>(null);
   const [selectedDiscipline, setSelectedDiscipline] = useState<Discipline | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [sortOption, setSortOption] = useState<string>("0");
 
   // Загрузка тегов и дисциплин при первом рендере
   useEffect(() => {
@@ -76,6 +77,9 @@ const NewsList = () => {
       if (selectedDisciplineId) {
         filter.append('CategoryId', selectedDisciplineId);
       }
+      if (sortOption !== null) {
+        filter.append("sortOptions", sortOption.toString());
+      }
 
       try {
         const result = await fetchNews(filter.toString());
@@ -87,7 +91,7 @@ const NewsList = () => {
     };
 
     loadNews();
-  }, [page, searchString, selectedTags, selectedDisciplineId]);
+  }, [page, searchString, selectedTags, selectedDisciplineId, sortOption]);
 
   const handleDisciplineChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedDisciplineId(e.target.value || null);
@@ -131,6 +135,23 @@ const NewsList = () => {
                 setPage(1);
               }}
             />
+          </Form.Group>
+        </Col>
+
+        <Col md={4}>
+          <Form.Group>
+            <Form.Label>Сортировка</Form.Label>
+            <Form.Select
+              value={sortOption}
+              onChange={(e) => {
+                setSortOption(e.target.value);
+                setPage(1);
+              }}
+            >
+              {NewsSortOptions.map((d) => (
+                <option value={d.id}>{d.name}</option>
+              ))}
+            </Form.Select>
           </Form.Group>
         </Col>
 

@@ -12,8 +12,9 @@ Startup.ConfigureDataBase(builder.Services, config);
 
 builder.Services.AddControllers();
 builder.Services.AddGrpc();
-builder.Services.AddValidatorsFromAssemblyContaining<MatchValidator>();
 builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<MatchValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<MatchUpdateDtoValidator>();
 Startup.ConfigureCors(builder.Services);
 Startup.ConfigureSwagger(builder.Services);
 Startup.ConfigureAuth(builder.Services, config);

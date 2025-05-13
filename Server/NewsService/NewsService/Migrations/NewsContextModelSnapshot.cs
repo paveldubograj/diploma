@@ -32,6 +32,11 @@ namespace NewsService.API.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");
 
+                    b.Property<string>("AuthorName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
                     b.Property<string>("CategoryId")
                         .IsRequired()
                         .HasMaxLength(40)

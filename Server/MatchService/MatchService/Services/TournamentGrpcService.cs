@@ -17,25 +17,25 @@ public class TournamentGrpcService : TournamentService.TournamentServiceBase
     public override async Task<Empty> CreateMatches(AddMatchesRequest request, ServerCallContext context)
     {
         List<MatchDto> matchDtos = request.Matches.Select(m => MatchToDto(m)).ToList();
-        _matchService.AddMatchesAsync(matchDtos);
+        await _matchService.AddMatchesAsync(matchDtos);
         return new Empty();
     }
 
     public override async Task<Match> GetMatchById(GetByIdRequest request, ServerCallContext context)
     {
-        var newsDto = await _matchService.GetByIdAsync(request.Id);
-        return DtoToMatch(newsDto);
+        var matchDto = await _matchService.GetByIdAsync(request.Id);
+        return DtoToMatch(matchDto);
     }
 
     public override async Task<Match> GetMatchByRound(GetByRoundRequest request, ServerCallContext context)
     {
-        var newsDto = await _matchService.GetByRoundAsync(request.TournamentId, request.Name);
-        return DtoToMatch(newsDto);
+        var matchDto = await _matchService.GetByRoundAsync(request.TournamentId, request.Name);
+        return DtoToMatch(matchDto);
     }
 
     public override async Task<Empty> UpdateMatch(Match request, ServerCallContext context)
     {
-        var newsDto = await _matchService.UpdateAsync(request.Id, MatchToDto(request), request.OwnerId);
+        var matchDto = await _matchService.UpdateAsync(request.Id, MatchToDto(request), request.OwnerId);
         return new Empty();
     }
 
@@ -55,7 +55,10 @@ public class TournamentGrpcService : TournamentService.TournamentServiceBase
             participant2Id = match.Participant2Id,
             tournamentId = match.TournamentId,
             nextMatchId = match.NextMatchId.Equals(" ") ? null : match.NextMatchId,
-            ownerId = match.OwnerId
+            ownerId = match.OwnerId,
+            participant1Name = match.Participant1Name,
+            participant2Name = match.Participant2Name,
+            tournamentName = match.TournamentName
         };
     }
 
@@ -75,7 +78,10 @@ public class TournamentGrpcService : TournamentService.TournamentServiceBase
             Participant2Id = match.participant2Id,
             TournamentId = match.tournamentId,
             NextMatchId = string.IsNullOrEmpty(match.nextMatchId) ? " " : match.nextMatchId ,
-            OwnerId = match.ownerId
+            OwnerId = match.ownerId,
+            Participant1Name = match.participant1Name,
+            Participant2Name = match.participant2Name,
+            TournamentName = match.tournamentName
         };
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using MatchService.DataAccess.Entities;
 using MatchService.DataAccess.Specifications;
+using MatchService.Shared.Enums;
 
 namespace MatchService.DataAccess.Repositories.Interfaces;
 
@@ -13,6 +14,7 @@ public interface IMatchRepository
     Task<List<Match>> AddRange(List<Match> matches);
     Task<Match> DeleteAsync(Match Match);
     Task<Match> UpdateAsync(Match Match);
-    Task<IEnumerable<Match>> GetBySpecificationAsync(MatchSpecification spec, int page, int pageSize, CancellationToken token = default);
+    Task<IEnumerable<Match>> GetBySpecificationAsync(MatchSpecification spec, SortOptions? options, int page, int pageSize, CancellationToken token = default);
     Task<Match> GetOneBySpecificationAsync(MatchSpecification spec, CancellationToken token = default);
+    Task<int> GetTotalAsync();
 }

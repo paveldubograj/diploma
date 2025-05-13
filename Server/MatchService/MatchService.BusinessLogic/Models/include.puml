@@ -1,6 +1,0 @@
-@startuml
-!include ./Match/MatchDto.puml
-!include ./Match/MatchCleanDto.puml
-!include ./Match/MatchListDto.puml
-!include ./Filter/MatchFilter.puml
-@enduml

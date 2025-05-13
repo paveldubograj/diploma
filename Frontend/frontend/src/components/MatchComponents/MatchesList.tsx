@@ -6,20 +6,12 @@ import {
   fetchDisciplines,
   fetchDisciplineById,
 } from "../../api/disciplineApi"
-import { MatchList, Discipline, MatchStatus } from "../../types";
+import { MatchList, Discipline, MatchStatus, MatchSortOptions } from "../../types";
 import { Container, Row, Col, Form, Button, Card, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ErrorBoundary from "../ErrorBoundary";
 
 const pageSize = 10;
-
-// const MatchStatus = [
-//     {id: 0, name:"Запланирован"},
-//     {id: 1, name:"Идёт"},
-//     {id: 2, name:"Завершен"},
-//     {id: 3, name:"Отменён"},
-//     {id: 4, name:"Перенесён"}
-//   ];
 
 const MatchesList = () => {
   const [matches, setMatches] = useState<MatchList[]>([]);
@@ -32,6 +24,7 @@ const MatchesList = () => {
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [sortOption, setSortOption] = useState<string>("0");
 
   // Загрузка тегов и дисциплин при первом рендере
   useEffect(() => {
@@ -70,16 +63,20 @@ const MatchesList = () => {
         pageSize: pageSize.toString(),
       });
 
+      if(sortOption){
+        filter.append('options', sortOption)
+      }
+
       if (selectedDisciplineId) {
         filter.append('CategoryId', selectedDisciplineId);
       }
 
       if (startDate) {
-        filter.append('StartDate', startDate);
+        filter.append('StartTime', startDate);
       }
 
       if (endDate) {
-        filter.append('EndDate', endDate);
+        filter.append('EndTime', endDate);
       }
 
       if (status) {
@@ -88,8 +85,8 @@ const MatchesList = () => {
 
       try {
         const result = await fetchMatches(filter.toString());
-        setMatches(result);
-        //setTotal(result.total);
+        setMatches(result.matches);
+        setTotal(result.total);
       } catch (err) {
         console.error("Ошибка загрузки матчей:", err);
         setError("Ошибка загрузки матчей");
@@ -97,11 +94,11 @@ const MatchesList = () => {
     };
 
     loadNews();
-  }, [page, selectedDisciplineId, status, startDate, endDate]);
+  }, [page, selectedDisciplineId, status, startDate, endDate, sortOption]);
 
   const handleDisciplineChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedDisciplineId(e.target.value || null);
-    setPage(1); // сброс страницы при смене дисциплины
+    setPage(1); 
   };
 
   return (
@@ -153,6 +150,23 @@ const MatchesList = () => {
         </Col>
       </Row>
 
+      <Col md={4}>
+          <Form.Group>
+            <Form.Label>Сортировка</Form.Label>
+            <Form.Select
+              value={sortOption}
+              onChange={(e) => {
+                setSortOption(e.target.value);
+                setPage(1);
+              }}
+            >
+              {MatchSortOptions.map((d) => (
+                <option value={d.id}>{d.name}</option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+        </Col>
+
       {error && <Alert variant="danger">{error}</Alert>}
 
       <Row>
@@ -171,12 +185,13 @@ const MatchesList = () => {
                     <Card.Title>{match.round} (#{match.matchOrder})</Card.Title>
                     <Card.Text>
                       Участники: <br />
-                      {match.participant1Id}<br />
-                      {match.participant2Id}
+                      {match.participant1Name}<br />
+                      {match.participant2Name}
                       {isCompleted && (
                         <>
                           <br />
-                          <span style={{ color: winnerColor[match.participant1Id] }}>Счет: {match.winScore}</span> -
+                          <span>Счет:</span>
+                          <span style={{ color: winnerColor[match.participant1Id] }}> {match.winScore}</span> -
                           <span style={{ color: winnerColor[match.participant2Id] }}> {match.looseScore}</span>
                         </>
                       )}
@@ -188,6 +203,20 @@ const MatchesList = () => {
           );
         })}
       </Row>
+      <div className="d-flex justify-content-between align-items-center my-3">
+        <Button disabled={page === 1} onClick={() => setPage(page - 1)}>
+          Назад
+        </Button>
+        <span>
+          Страница {page} из {Math.ceil(total / pageSize)}
+        </span>
+        <Button
+          disabled={page >= Math.ceil(total / pageSize)}
+          onClick={() => setPage(page + 1)}
+        >
+          Вперёд
+        </Button>
+      </div>
     </Container>
   );
 };

@@ -1,5 +1,0 @@
-@startuml
-class RoleDto {
-    + Name : string <<get>> <<set>>
-}
-@enduml

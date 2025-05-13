@@ -47,7 +47,7 @@ public class NewsRepository : INewsRepository
     }
     public async Task<IEnumerable<News>> GetBySpecificationAsync(NewsSpecification spec, List<Tag> tags, int page, int pageSize, SortOptions? options, CancellationToken token = default)
     {
-        IQueryable<News> query = db.News.OrderByDescending(n => n.PublishingDate).Include(n => n.Tags);
+        IQueryable<News> query = db.News.OrderByDescending(n => n.PublishingDate).AsNoTracking().Include(n => n.Tags);
 
         query = query.ApplySpecification(spec);
         IQueryable<News> r = Enumerable.Empty<News>().AsQueryable();
@@ -64,7 +64,7 @@ public class NewsRepository : INewsRepository
                         break;
                     }
                 }
-                if(i)r.Append(elem);
+                if(i) r.Append(elem);
                 i = true;
             }
         }

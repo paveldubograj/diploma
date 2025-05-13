@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { UserCleanDto } from "../types";
 
-// ✅ Интерфейс контекста
 interface AuthContextType {
   user: UserCleanDto | null;
   token: string | null;
@@ -9,7 +8,6 @@ interface AuthContextType {
   logout: () => void;
 }
 
-// ✅ Создание самого контекста
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   token: null,
@@ -17,7 +15,6 @@ export const AuthContext = createContext<AuthContextType>({
   logout: () => {},
 });
 
-// ✅ Провайдер
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserCleanDto | null>(null);
   const [token, setToken] = useState<string | null>(null);

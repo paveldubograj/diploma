@@ -65,6 +65,9 @@ namespace TournamentService.API.Migrations
                     b.Property<int>("Format")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("IsRegistrationAllowed")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("MaxParticipants")
                         .HasColumnType("integer");
 
@@ -88,7 +91,6 @@ namespace TournamentService.API.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("WinnerId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

@@ -33,6 +33,7 @@ private static string MyAllowSpecificOrigins { get; set; }
         services.AddTransient<ISingleEliminationBracket, SingleEliminationBracket>();
         services.AddTransient<IRoundRobinBracket, RoundRobinBracket>();
         services.AddTransient<ISwissBracket, SwissBracket>();
+        services.AddTransient<IDoubleEliminationBracket, DoubleEliminationBracket>();
     }
     
     public static void ConfigureRepository(IServiceCollection services)

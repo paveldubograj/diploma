@@ -1,4 +1,5 @@
 using System;
+using TournamentService.Shared.Enums;
 
 namespace TournamentService.BusinessLogic.Models.Filters;
 

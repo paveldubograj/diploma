@@ -8,6 +8,7 @@ using TournamentService.BusinessLogic.Models.Request;
 using TournamentService.BusinessLogic.Models.Tournament;
 using TournamentService.BusinessLogic.Services.Interfaces;
 using TournamentService.Shared.Constants;
+using TournamentService.Shared.Enums;
 
 namespace TournamentService.API.Controllers
 {
@@ -23,11 +24,14 @@ namespace TournamentService.API.Controllers
         }
         [HttpGet]
         [Route("list/")]
-        public async Task<IActionResult> GetTournamentsAsync(int page, int pageSize, [FromQuery] TournamentFilter filter)
+        public async Task<IActionResult> GetTournamentsAsync(int page, int pageSize, TournamentSortOptions? options, [FromQuery] TournamentFilter filter)
         {
-            List<TournamentCleanDto> list = await _tournamentService.GetByFilterAsync(filter, page, pageSize);
+            TournamentPagedResponse response = new TournamentPagedResponse(){
+                Tournaments = await _tournamentService.GetByFilterAsync(filter, options, page, pageSize),
+                Total = await _tournamentService.GetTotalAsync()
+            };
 
-            return Ok(list);
+            return Ok(response);
         }
 
         [HttpPut]

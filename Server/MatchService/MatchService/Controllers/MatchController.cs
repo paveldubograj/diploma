@@ -5,6 +5,7 @@ using MatchService.BusinessLogic.Models.Match;
 using MatchService.BusinessLogic.Services;
 using MatchService.BusinessLogic.Services.Interfaces;
 using MatchService.Shared.Constants;
+using MatchService.Shared.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -72,11 +73,14 @@ namespace MatchService.API.Controllers
 
         [HttpGet]
         [Route("filter/")]
-        public async Task<IActionResult> GetByFilterAsync(int page, int pageSize, [FromQuery] MatchFilter filter)
+        public async Task<IActionResult> GetByFilterAsync(int page, int pageSize, SortOptions? options, [FromQuery] MatchFilter filter)
         {
-            List<MatchListDto> newsDto = await _matchService.GetByFilterAsync(filter, page, pageSize);
+            MatchPagedResponse response = new MatchPagedResponse(){
+                Matches = await _matchService.GetByFilterAsync(filter, options, page, pageSize),
+                Total = await _matchService.GetTotalAsync()
+            };
             
-            return Ok(newsDto);
+            return Ok(response);
         }
 
         // [HttpGet]

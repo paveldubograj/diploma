@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using TournamentService.BusinessLogic.Models.Match;
+using TournamentService.BusinessLogic.Models.ParticipantDtos;
 using TournamentService.BusinessLogic.Services.Interfaces;
 using TournamentService.BusinessLogic.Services.Tournaments.Interfaces;
 using TournamentService.DataAccess.Repositories.Interfaces;
@@ -33,7 +34,9 @@ public class SwissBracket : ISwissBracket
         res = await _tournamentRepository.UpdateAsync(res);
         var participants = await _participantService.GetAllByTournamentAsync(tournamentId);
         List<MatchDto> matches = new List<MatchDto>();
-        if (participants.Count < 2) throw new Exception("Недостаточно участников!");
+        if (participants.Count < 2) throw new ParticipantAmountException(ErrorName.NotEnoughParticipants);
+        if (participants.Count % 2 != 0)
+            participants.Add(new ParticipantDto(){Id = "PASS", Name = "PASS"});
 
         participants = participants.OrderBy(p => p.Points).ToList();
         if(res.Rounds == 1) Random.Shared.Shuffle(CollectionsMarshal.AsSpan(participants));
@@ -41,12 +44,15 @@ public class SwissBracket : ISwissBracket
         {
             matches.Add(CreateMatch(
                 tournamentId,
-                res.Rounds,
+                $"{res.Rounds}",
                 i,
                 participants[i * 2].Id,
                 participants[i * 2 + 1].Id,
                 res.OwnerId,
-                res.DisciplineId
+                res.DisciplineId,
+                participants[i * 2].Name,
+                participants[i * 2 + 1].Name,
+                res.Name
             ));
         }
         _matchService.CreateMatches(matches);
@@ -55,7 +61,7 @@ public class SwissBracket : ISwissBracket
     public async Task HandleMatchResult(string matchId, string winnerId, string loserId, int winScore, int looseScore)
     {
         var match = await _matchService.GetMatchById(matchId);
-        if (match == null) throw new NotFoundException("Матч не найден!");
+        if (match == null) throw new NotFoundException(ErrorName.MatchNotFound);
 
         match.status = MatchStatus.Completed;
         match.winnerId = winnerId;
@@ -63,26 +69,44 @@ public class SwissBracket : ISwissBracket
         match.looseScore = looseScore;
 
         if(string.IsNullOrEmpty(winnerId)){
-            await _participantService.UpdatePointsAsync(winnerId, 1, match.ownerId); // 1 очко за ничью
-            await _participantService.UpdatePointsAsync(loserId, 1, match.ownerId); // 1 очко за ничью
+            await _participantService.UpdatePointsAsync(winnerId, 1); 
+            await _participantService.UpdatePointsAsync(loserId, 1); 
         }
         else{
             match.winnerId = winnerId;
-            await _participantService.UpdatePointsAsync(winnerId, 3, match.ownerId); // 3 очка за победу
+            await _participantService.UpdatePointsAsync(winnerId, 3); 
         }
         await _matchService.UpdateMatch(match.id, match);        
     }
 
-    private MatchDto CreateMatch(string tournamentId, int round, int number, string participant1Id, string participant2Id, string ownerId, string categoryId){
-        MatchDto dto = new MatchDto(){
-            //id = new Guid().ToString(),
-            tournamentId = tournamentId, 
-            round = round.ToString(), 
-            matchOrder = number, 
-            participant1Id = participant1Id, 
+    private MatchDto CreateMatch(string tournamentId, 
+        string round, 
+        int number, 
+        string participant1Id, 
+        string participant2Id, 
+        string ownerId, 
+        string categoryId, 
+        string participant1Name, 
+        string participant2Name, 
+        string tournamentName)
+    {
+        MatchDto dto = new MatchDto()
+        {
+            id = Guid.NewGuid().ToString(),
+            tournamentId = tournamentId,
+            round = round,
+            matchOrder = number,
+            participant1Id = participant1Id,
             participant2Id = participant2Id,
+            winnerId = string.Empty,
+            winScore = 0,
             ownerId = ownerId,
-            categoryId = categoryId};
+            categoryId = categoryId,
+            nextMatchId = string.Empty,
+            participant1Name = participant1Name,
+            participant2Name = participant2Name,
+            tournamentName = tournamentName
+        };
         return dto;
     }
 }

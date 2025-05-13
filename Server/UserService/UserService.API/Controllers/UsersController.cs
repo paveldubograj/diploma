@@ -63,10 +63,11 @@ public class UsersController : ControllerBase
     [HttpGet]
     [Route("")]
     public async Task<IActionResult> GetByNameAsync(int page, int pageSize, [FromQuery] string? userName, CancellationToken token = default)
-    {
-        IEnumerable<UserCleanDto> result = await _userManageService.GetByNameAsync(page, pageSize, userName, token);
-        
-        return Ok(result);
+    {        
+        return Ok(new UserPagedDto(){
+            Users = await _userManageService.GetByNameAsync(page, pageSize, userName, token),
+            Total = await _userManageService.GetTotalAsync()
+        });
     }
 
     [Authorize(Roles = RoleName.Admin)]

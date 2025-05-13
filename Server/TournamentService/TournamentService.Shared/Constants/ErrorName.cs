@@ -12,4 +12,8 @@ public class ErrorName
     public static string ProvidedNameIsNull => "Provided Name Is Null Or Empty";
     public static string ProvidedMatchIsNull => "Provided Match Is Null";
     public static string WrongTournamentOperationCall => "You cannot do it with this tournament";
+    public static string NotEnoughParticipants => "Not Enough Participants";
+    public static string RegistrationNotAllowed => "Registration For This Tournament Is Not Allowed";
+    public static string AlreadyEnded => "Tournament Already Ended";
+    public static string AlreadyStarted => "Tournament Already Started";
 }

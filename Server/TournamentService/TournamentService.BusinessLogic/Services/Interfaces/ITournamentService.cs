@@ -3,13 +3,14 @@ using System.Runtime.CompilerServices;
 using TournamentService.BusinessLogic.Models.Filters;
 using TournamentService.BusinessLogic.Models.Match;
 using TournamentService.BusinessLogic.Models.Tournament;
+using TournamentService.Shared.Enums;
 
 namespace TournamentService.BusinessLogic.Services.Interfaces;
 
 public interface ITournamentService
 {
     public Task<List<TournamentCleanDto>> GetAllByPageAsync(int page, int pageSize);
-    public Task<List<TournamentCleanDto>> GetByFilterAsync(TournamentFilter filter, int page, int pageSize);
+    public Task<List<TournamentCleanDto>> GetByFilterAsync(TournamentFilter filter, TournamentSortOptions? options, int page, int pageSize);
     public Task<TournamentDto> GetByIdAsync(string id);
     public Task<TournamentDto> DeleteAsync(string id, string userId);
     public Task<TournamentDto> UpdateAsync(string id, TournamentDto newsDto, string userId);
@@ -19,4 +20,5 @@ public interface ITournamentService
     public Task<TournamentCleanDto> EndTournamentAsync(string tournamentId, string userId);
     public void GenerateBracketAsync(string tournamentId, string userId);
     public Task<TournamentCleanDto> StartTournamentAsync(string tournamentId, string userId);
+    public Task<int> GetTotalAsync();
 }

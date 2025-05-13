@@ -10,4 +10,5 @@ public interface IUserManageService
     Task<UserDto> UpdateAsync(string id, UserCleanDto dto);
     Task<UserCleanDto> DeleteAsync(string id);
     Task<bool> IsUserExits(string id);
+    Task<int> GetTotalAsync();
 }

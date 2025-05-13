@@ -9,6 +9,7 @@ using MatchService.DataAccess.Repositories;
 using MatchService.DataAccess.Repositories.Interfaces;
 using MatchService.DataAccess.Specifications;
 using MatchService.Shared.Constants;
+using MatchService.Shared.Enums;
 using MatchService.Shared.Exceptions;
 
 namespace MatchService.BusinessLogic.Services;
@@ -27,7 +28,6 @@ public class MatchService : IMatchService
         var result = await _matchRepository.AddAsync(news);
         return _mapper.Map<MatchDto>(result);
     }
-
     public async Task<MatchDto> DeleteAsync(string matchId, string userId)
     {
         var obj = await _matchRepository.GetByIdAsync(matchId);
@@ -40,20 +40,17 @@ public class MatchService : IMatchService
         var result = _matchRepository.DeleteAsync(obj);
         return _mapper.Map<MatchDto>(result);
     }
-
     public async Task<List<MatchListDto>> GetAllByPageAsync(int page, int pageSize)
     {
         var list = await _matchRepository.GetAsync(page, pageSize);
         return _mapper.Map<List<MatchListDto>>(list);
     }
-
-    public async Task<List<MatchListDto>> GetByFilterAsync(MatchFilter filter, int page, int pageSize)
+    public async Task<List<MatchListDto>> GetByFilterAsync(MatchFilter filter, SortOptions? options, int page, int pageSize)
     {
         MatchSpecification specification = MatchSpecification.FilterMatch(filter.CategoryId, filter.StartTime, filter.EndTime, filter.TournamentId, filter.Status);
-        var result = await _matchRepository.GetBySpecificationAsync(specification, page, pageSize);
+        var result = await _matchRepository.GetBySpecificationAsync(specification, options, page, pageSize);
         return _mapper.Map<List<MatchListDto>>(result);
     }
-
     public async Task<MatchDto> GetByIdAsync(string id)
     {
         var res = await _matchRepository.GetByIdAsync(id);
@@ -62,7 +59,6 @@ public class MatchService : IMatchService
         }
         return _mapper.Map<MatchDto>(res);
     }
-
     public async Task<List<MatchListDto>> GetTournamentStructureAsync(string id)
     {
         var res = await _matchRepository.GetTournamentStructureAsync(id);
@@ -71,7 +67,6 @@ public class MatchService : IMatchService
         }
         return _mapper.Map<List<Match>, List<MatchListDto>>(res);
     }
-
     public async Task<MatchDto> UpdateAsync(string id, MatchDto newsDto, string userId)
     {
         var news = await _matchRepository.GetByIdAsync(id);
@@ -85,7 +80,6 @@ public class MatchService : IMatchService
         var res = await _matchRepository.UpdateAsync(newsUp);
         return _mapper.Map<MatchDto>(res);
     }
-
     public async Task<MatchDto> UpdateForUserAsync(string id, MatchUpdateDto newsDto, string userId)
     {
         var news = await _matchRepository.GetByIdAsync(id);
@@ -99,7 +93,6 @@ public class MatchService : IMatchService
         var res = await _matchRepository.UpdateAsync(newsUp);
         return _mapper.Map<MatchDto>(res);
     }
-
     public async Task<MatchDto> SetWinnerAsync(string matchId, string winnerId, int winScore, int looseScore, string userId){
         var news = await _matchRepository.GetByIdAsync(matchId);
         if(news == null){
@@ -114,17 +107,19 @@ public class MatchService : IMatchService
         var res = _matchRepository.UpdateAsync(news);
         return _mapper.Map<MatchDto>(res);
     }
-
     public async Task<MatchDto> GetByRoundAsync(string tournamentId, string round){
         MatchSpecification specification = MatchSpecification.FindTournamentRound(tournamentId, round);
         var result = await _matchRepository.GetOneBySpecificationAsync(specification);
         return _mapper.Map<MatchDto>(result);
     }
-
-    public async void AddMatchesAsync(List<MatchDto> matches){
+    public async Task<bool> AddMatchesAsync(List<MatchDto> matches){
         List<Match> matches1 = new List<Match>();
         matches1 = _mapper.Map<List<MatchDto>, List<Match>>(matches);
         if(matches1.Count < 1) throw new ArgumentException(ErrorName.EmptyMatchList);
         await _matchRepository.AddRange(matches1);
+        return true;
+    }
+    public async Task<int> GetTotalAsync(){
+        return await _matchRepository.GetTotalAsync();
     }
 }

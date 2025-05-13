@@ -66,9 +66,9 @@ try {
 }
 }
 
-export const searchUsersByName = async (userName: string) => {
+export const searchUsersByName = async (userName: string, page: number, pageSize: number) => {
     try {
-        const res = await fetch(`${API_BASE}/user?userName=${userName}`, {
+        const res = await fetch(`${API_BASE}/user?page=${page}&pageSize=${pageSize}&userName=${userName}`, {
           credentials: "include",
         });
         return await res.json();

@@ -74,7 +74,10 @@ public class MatchService : IMatchService
             participant2Id = match.Participant2Id,
             tournamentId = match.TournamentId,
             nextMatchId = match.NextMatchId,
-            ownerId = match.OwnerId
+            ownerId = match.OwnerId,
+            participant1Name = match.Participant1Name,
+            participant2Name = match.Participant2Name,
+            tournamentName = match.TournamentName
         };
     }
 
@@ -94,7 +97,10 @@ public class MatchService : IMatchService
             Participant2Id = match.participant2Id,
             TournamentId = match.tournamentId,
             NextMatchId = match.nextMatchId,
-            OwnerId = match.ownerId
+            OwnerId = match.ownerId,
+            Participant1Name = match.participant1Name,
+            Participant2Name = match.participant2Name,
+            TournamentName = match.tournamentName
         };
     }
 }

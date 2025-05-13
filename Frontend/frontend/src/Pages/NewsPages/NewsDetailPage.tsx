@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { fetchPieceOfNews, fetchTags as fetchTaggs, saveNewsChanges, deletePieceOfNews, addTagToPieceOfNews} from '../../api/newsApi';
 import { DetailNews, Tag } from '../../types';
 import { hasRole } from '../../utils/auth';
@@ -100,6 +100,7 @@ const NewsDetailPage: React.FC = () => {
         </div>
       )}
 
+
       {hasRole('newsTeller') && (
         <>
           {!isEditing ? (
@@ -146,6 +147,8 @@ const NewsDetailPage: React.FC = () => {
           <Button className="mt-2" onClick={handleAddTag}>Добавить тег</Button>
         </div>
       )}
+
+      <Link to={`/profile/${news.authorId}`}>Автор: {news.authorName}</Link>
 
       {hasRole('admin') && (
         <Button variant="danger" className="mt-4" onClick={handleDelete}>

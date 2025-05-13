@@ -34,7 +34,6 @@ const LoginForm: React.FC = () => {
         email: data.email,
       }
       login(user, data.accessToken)
-      alert("Logged in!");
       navigate("/news");
     } catch (err: any) {
       setError(err.message);

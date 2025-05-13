@@ -234,6 +234,39 @@ export const handleSetWinner = async (tid: string, mid: string, winnerId: string
   }
 };
 
+export async function registerForTournament(tid: string, name: string) {
+  try {
+      const token = getToken();
+      if(!token) return null;
+      const res = await fetch(`${API_BASE}/${tid}/participants/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`, },
+          body: JSON.stringify({
+           name
+          })
+      });
+  } catch (error) {
+    console.error("Произошла ошибка при регистрации:", error);
+    setError("Не удалось зарегистрироваться");
+  }
+  }
+
+
+  export async function fetchPlayingParticipants(id: string){
+    try {
+        const response = await fetch(`${API_BASE}/${id}/participants/plays`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+        });
+        return response.json();
+    } catch (error) {
+      console.error("Произошла ошибка при получении матчей:", error);
+      setError("Не удалось получить матчи");
+    }
+    }
+
 function setError(arg0: string) {
   throw new Error(arg0);
 }

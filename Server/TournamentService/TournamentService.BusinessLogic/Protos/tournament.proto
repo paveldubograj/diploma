@@ -44,4 +44,7 @@ message Match {
     string tournamentId = 13;
     string nextMatchId = 14;
     string ownerId = 15;
+    string participant1Name = 16;
+    string participant2Name = 17;
+    string tournamentName = 18;
 }

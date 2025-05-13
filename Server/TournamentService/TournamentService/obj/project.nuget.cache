@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "zsR5jULqUjqHPbX7t9jjqf8I9LaOsr8CiOjIk6BPCK15eD5H7wV/d8XrQtRW7p7p+oqeboSWavLWfk9HnP43Og==",
+  "dgSpecHash": "RHtBjNuZLfQcgzqn+A0loK/KYsfRf7frgeTra6g5L3KSKX7McMpyms0/4jmnVNtrKd972UcsjVppo4Z8Pun8YQ==",
   "success": true,
   "projectFilePath": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/TournamentService.API.csproj",
   "expectedPackageFiles": [

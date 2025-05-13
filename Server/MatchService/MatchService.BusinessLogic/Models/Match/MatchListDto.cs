@@ -13,6 +13,9 @@ public class MatchListDto
     public int WinScore {get; set;}
     public int LooseScore {get; set;}
     public DateTime EndTime {get; set;}
+    public string Participant1Name {get; set;}
+    public string Participant2Name {get; set;}
+    public string TournamentName {get; set;}
 
     public string CategoryId {get; set;}
     public string WinnerId {get; set;}

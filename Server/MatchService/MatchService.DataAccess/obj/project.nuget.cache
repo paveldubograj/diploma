@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "a8O70zb01DcC9g8KxhM/Y+7tXG9FIBfVHpiAcoEG5gGQB2e4eHM7NZUHPkxoMo6Q/AEghqKf/et4Fk24/gOjWQ==",
+  "dgSpecHash": "BN+4z4GJDrpklAWwakM5JPsGJTX7ITsE4cVVVVBwUSVdByocZQZjgcULM30upsLgJSXltgSJJiia1G9gViMPlg==",
   "success": true,
   "projectFilePath": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.DataAccess/MatchService.DataAccess.csproj",
   "expectedPackageFiles": [
