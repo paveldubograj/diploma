@@ -13,11 +13,11 @@ namespace TournamentService.BusinessLogic.Services.Tournaments;
 
 public class SwissBracket : ISwissBracket
 {
-    private readonly IMatchService _matchService;
+    private readonly IMatchGrpcService _matchService;
     private readonly ITournamentRepository _tournamentRepository;
     private readonly IParticipantService _participantService;
 
-    public SwissBracket(IMatchService matchService, ITournamentRepository tournamentService, IParticipantService participantService)
+    public SwissBracket(IMatchGrpcService matchService, ITournamentRepository tournamentService, IParticipantService participantService)
     {
         _matchService = matchService;
         _tournamentRepository = tournamentService;

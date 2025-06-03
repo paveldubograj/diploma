@@ -20,10 +20,14 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.8" />
   </ItemGroup>
 
   <ItemGroup>
     <Protobuf Include="Protos/tournament.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos/discipline.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos/user.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>

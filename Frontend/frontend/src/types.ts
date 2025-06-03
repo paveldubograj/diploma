@@ -9,8 +9,10 @@ export interface ListNews {
   id: string;
   title: string;
   authorId: string;
+  authorName: string;
   publishingDate: Date;
   categoryId: string;
+  imagePath: string;
 }
 
 export interface DetailNews {
@@ -21,6 +23,7 @@ export interface DetailNews {
   content: string;
   categoryId: string;
   authorName: string;
+  imagePath: string;
   tags: Tag[];
 }
 
@@ -35,6 +38,8 @@ export interface UserCleanDto {
   id: string;
   userName: string;
   email: string;
+  bio: string; 
+  registeredAt: Date;
 }
 
 
@@ -97,6 +102,7 @@ export interface TournamentCleanDto {
   maxParticipants: number;
   ownerId: string;
   winnerId?: string;
+  imagePath: string;
 }
 
 export interface TournamentFilter {
@@ -137,6 +143,7 @@ export interface TournamentDto {
   winnerId: string;
   participants: ParticipantDto[];
   isRegistrationAllowed: boolean;
+  imagePath: string;
 }
 
 export interface TournamentCreateDto {

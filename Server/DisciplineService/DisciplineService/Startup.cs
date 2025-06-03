@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using DisciplineService.API.Extensions;
 using DisciplineService.API.Middlewares;
 using DisciplineService.BusinessLogic.Mapping;
@@ -7,8 +8,10 @@ using DisciplineService.DataAccess.DataBase;
 using DisciplineService.DataAccess.Repositories;
 using DisciplineService.DataAccess.Repositories.Interfaces;
 using DisciplineService.Shared.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace DisciplineService.API;
@@ -40,6 +43,26 @@ public class Startup
         var connectionString = config.GetConnectionString("DataBase");
         services.AddDbContext<DisciplineContext>(options =>
             options.UseNpgsql(connectionString, b => b.MigrationsAssembly("DisciplineService.API")));
+    }
+
+    public static void ConfigureAuth(IServiceCollection services, ConfigurationManager config)
+    {
+        services.AddAuthentication(x =>
+        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(x =>
+        {
+            x.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidIssuer = config["JwtSettings:Issuer"],
+                ValidAudience = config["JwtSettings:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"])),
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true
+            };
+        });
+
     }
 
     

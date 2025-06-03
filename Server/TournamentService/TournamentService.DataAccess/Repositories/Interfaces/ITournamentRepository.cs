@@ -11,7 +11,6 @@ public interface ITournamentRepository
     Tournament GetById(string id);
     Task<List<Tournament>> GetAsync(int page, int pageSize);
     Task<int> GetTotalAsync();
-    Participant GetParticipantById(string id);
     Task<Tournament> AddAsync(Tournament tournament);
     Task<Tournament> DeleteAsync(Tournament tournament);
     Task<Tournament> UpdateAsync(Tournament tournament);

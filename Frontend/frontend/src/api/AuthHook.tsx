@@ -52,3 +52,10 @@ export const useAuth = () => useContext(AuthContext);
 export const getToken = (): string | null => {
   return localStorage.getItem("token");
 };
+
+export const getUser = (): UserCleanDto | null => {
+  let k = localStorage.getItem("user");
+  if(k)
+    return JSON.parse(k);
+  return null;
+}

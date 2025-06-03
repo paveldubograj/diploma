@@ -11,30 +11,30 @@ namespace NewsService.DataAccess.Repositories;
 
 public class NewsRepository : INewsRepository
 {
-
-    private NewsContext db;
-
-    public NewsRepository(NewsContext db)
+    private NewsContext _context;
+    public NewsRepository(NewsContext context)
     {
-        this.db = db;
+        _context = context;
     }
     public async Task<News> AddAsync(News news)
     {
-        db.Entry(news).State = EntityState.Added;
-        await db.SaveChangesAsync();
+        _context.Entry(news).State = EntityState.Added;
+        await _context.SaveChangesAsync();
         return news;
     }
     public async Task<News> DeleteAsync(News news)
     {
-        var removedEntity = db.Set<News>().Remove(news).Entity;
-        await db.SaveChangesAsync();
+        var removedEntity = _context.Set<News>().Remove(news).Entity;
+        await _context.SaveChangesAsync();
         return removedEntity;
     }
     public async Task<List<News>> GetAsync(int page, int pageSize)
     {
         if (page < 1) page = 1;
 
-        var query = await db.News
+        var query = await _context.News
+            .Where(c => c.Visibility)
+            .AsNoTracking()
             .OrderByDescending(n => n.PublishingDate)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
@@ -42,12 +42,47 @@ public class NewsRepository : INewsRepository
 
         return query;
     }
-    public async Task<int> GetTotalAsync(){
-        return await db.News.CountAsync();
+    public async Task<List<News>> GetBySpecWithNoSortAsync(NewsSpecification spec, int page, int pageSize)
+    {
+        if (page < 1) page = 1;
+
+        var query = _context.News
+            .Where(c => c.Visibility);
+            
+        var r = await query.ApplySpecification(spec)
+            .OrderByDescending(n => n.PublishingDate)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return r;
+    }
+    public async Task<int> GetTotalAsync()
+    {
+        return await _context.News.CountAsync();
     }
     public async Task<IEnumerable<News>> GetBySpecificationAsync(NewsSpecification spec, List<Tag> tags, int page, int pageSize, SortOptions? options, CancellationToken token = default)
     {
-        IQueryable<News> query = db.News.OrderByDescending(n => n.PublishingDate).AsNoTracking().Include(n => n.Tags);
+        IQueryable<News> query = _context.News
+            .Where(c => c.Visibility)
+            .AsNoTracking()
+            .Include(n => n.Tags);
+            
+        switch (options)
+        {
+            case SortOptions.ByName:
+                query = query.OrderBy(c => c.Title);
+                break;
+            case SortOptions.ByNameDesc:
+                query = query.OrderByDescending(c => c.Title);
+                break;
+            case SortOptions.ByDateDesc:
+                query = query.OrderByDescending(c => c.PublishingDate);
+                break;
+            default:
+                query = query.OrderBy(c => c.PublishingDate);
+                break;
+        }
 
         query = query.ApplySpecification(spec);
         IQueryable<News> r = Enumerable.Empty<News>().AsQueryable();
@@ -72,33 +107,18 @@ public class NewsRepository : INewsRepository
 
         r = r.Skip((page - 1) * pageSize).Take(pageSize);
 
-        switch(options){
-            case SortOptions.ByName:
-                r = r.OrderBy(c => c.Title);
-                break;
-            case SortOptions.ByNameDesc:
-                r = r.OrderByDescending(c => c.Title);
-                break;
-            case SortOptions.ByDateDesc:
-                r = r.OrderByDescending(c => c.PublishingDate);
-                break;
-            default:
-                r = r.OrderBy(c => c.PublishingDate);
-                break;
-        }
-
         //return await query.ToListAsync(cancellationToken: token);
         return r;
     }
-    public async Task<News> GetByIdAsync(string id)
+    public async Task<News?> GetByIdAsync(string id)
     {
-        var entity = await db.News.Include(t => t.Tags).Where(t => t.Id.Equals(id)).FirstOrDefaultAsync();
+        var entity = await _context.News.Include(t => t.Tags).Where(t => t.Id.Equals(id)).FirstOrDefaultAsync();
         return entity;
     }
     public async Task<News> UpdateAsync(News news)
     {
-        db.Entry(news).State = EntityState.Modified;
-        await db.SaveChangesAsync();
+        _context.Entry(news).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
         return news;
     }
 }

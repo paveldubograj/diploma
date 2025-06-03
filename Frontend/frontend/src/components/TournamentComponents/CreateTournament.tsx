@@ -12,8 +12,9 @@ const CreateTournament: React.FC = () => {
     disciplineId: "",
     format: 0,
     maxParticipants: 0,
+    isRegistrationAllowed: false,
     startDate: "",
-    endDate: "",
+    endDate: ""
   });
 
   const [disciplines, setDisciplines] = useState<{ id: string; name: string }[]>([]);

@@ -14,7 +14,6 @@ public class MatchUpdateDto
     public string Participant1Name {get; set;}
     public string Participant2Name {get; set;}
     
-    public string categoryId {get; set;}
     public string winnerId {get; set;}
     public string participant1Id {get; set;}
     public string participant2Id {get; set;}

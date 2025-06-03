@@ -46,6 +46,10 @@ namespace NewsService.API.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("PublishingDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -53,6 +57,9 @@ namespace NewsService.API.Migrations
                         .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("character varying(60)");
+
+                    b.Property<bool>("Visibility")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 

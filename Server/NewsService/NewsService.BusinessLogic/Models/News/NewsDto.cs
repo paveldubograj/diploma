@@ -12,6 +12,8 @@ public class NewsDto
     public string CategoryId { get; set; } 
     public string AuthorId { get; set; } 
     public string AuthorName { get; set; }
+    public bool Visibility { get; set; }
+    public string ImagePath { get; set; }
 
-    public List<TagDto> tags {get; set;} = new(); 
+    public List<TagDto> tags { get; set; } = new(); 
 }

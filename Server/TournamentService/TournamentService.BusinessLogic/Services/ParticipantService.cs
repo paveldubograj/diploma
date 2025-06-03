@@ -14,10 +14,12 @@ public class ParticipantService : IParticipantService
 {
     private readonly IParticipantRepository _participantRepository;
     private readonly ITournamentRepository _tournamentRepository;
+    private readonly IUserGrpcService _userGrpcService;
     private readonly IMapper _mapper;
-    public ParticipantService(IParticipantRepository participantRepository, ITournamentRepository tournamentRepository, IMapper mapper){
+    public ParticipantService(IParticipantRepository participantRepository, ITournamentRepository tournamentRepository, IUserGrpcService userGrpcService, IMapper mapper){
         _participantRepository = participantRepository;
         _tournamentRepository = tournamentRepository;
+        _userGrpcService = userGrpcService;
         _mapper = mapper;
     }
     public async Task<ParticipantDto> AddAsync(ParticipantAddDto newsDto, string tournamentId)
@@ -38,6 +40,7 @@ public class ParticipantService : IParticipantService
         participant.TournamentId = tournamentId;
         participant.Status = ParticipantStatus.PlayWin;
         var result = await _participantRepository.AddAsync(participant);
+        await _userGrpcService.AddToUser(registerDto.UserId, tournamentId);
         return _mapper.Map<ParticipantDto>(result);
     }
 
@@ -51,6 +54,7 @@ public class ParticipantService : IParticipantService
             throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
         }
         var result = _participantRepository.RemoveParticipantFromTournament(participant.TournamentId, participant.Id);
+        await _userGrpcService.RemoveFromUser(participant.UserId, participant.TournamentId);
         return _mapper.Map<ParticipantDto>(result);
     }
 

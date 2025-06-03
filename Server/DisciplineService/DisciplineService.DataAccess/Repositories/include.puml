@@ -1,4 +1,0 @@
-@startuml
-!include ./DisciplineRepository.puml
-!include ./Interfaces/IDisciplineRepository.puml
-@enduml

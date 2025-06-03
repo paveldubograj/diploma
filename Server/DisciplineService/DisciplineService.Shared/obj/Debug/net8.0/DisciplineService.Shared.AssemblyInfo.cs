@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DisciplineService.Shared")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+daa59e37c47c1b4ad5ce51248bae6e6c1d9175f5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5e9ba496cd6c5b34fe0fbda7a28784a087e1b471")]
 [assembly: System.Reflection.AssemblyProductAttribute("DisciplineService.Shared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DisciplineService.Shared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

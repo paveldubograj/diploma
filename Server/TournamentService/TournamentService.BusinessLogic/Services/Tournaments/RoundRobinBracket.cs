@@ -11,11 +11,11 @@ namespace TournamentService.BusinessLogic.Services.Tournaments;
 
 public class RoundRobinBracket : IRoundRobinBracket
 {
-    private readonly IMatchService _matchService;
+    private readonly IMatchGrpcService _matchService;
     private readonly ITournamentRepository _tournamentRepository;
     private readonly IParticipantService _participantService;
 
-    public RoundRobinBracket(IMatchService matchService, ITournamentRepository tournamentService, IParticipantService participantService)
+    public RoundRobinBracket(IMatchGrpcService matchService, ITournamentRepository tournamentService, IParticipantService participantService)
     {
         _matchService = matchService;
         _tournamentRepository = tournamentService;

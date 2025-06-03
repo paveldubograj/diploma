@@ -10,9 +10,10 @@ namespace UserService.DataAccess.DataBase;
 
 public class UsersContext : IdentityDbContext<User>
 {
-    public string str = "Host=localhost;Port=5432;Database=Diploma.UserService;Username=pavel;Password=1234";
+    //public string str = "Host=localhost;Port=5432;Database=Diploma.UserService;Username=pavel;Password=1234";
     public DbSet<User> Users { get; set; }
     public DbSet<IdentityRole> Roles { get; set; }
+    public DbSet<UserTournaments> UserTournaments { get; set; }
     
     public UsersContext(DbContextOptions<UsersContext> options) : base(options)
     {
@@ -20,12 +21,12 @@ public class UsersContext : IdentityDbContext<User>
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(str);
+        //optionsBuilder.UseNpgsql(str);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        //modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
     }
 }

@@ -8,15 +8,21 @@ using TournamentService.BusinessLogic.Services.Interfaces;
 using Google.Protobuf.WellKnownTypes;
 using TournamentService.Shared.Constants;
 using TournamentService.Shared.Exceptions;
+using Microsoft.Extensions.Options;
+using TournamentService.Shared.Options;
 
 namespace TournamentService.BusinessLogic.Services;
 
-public class MatchService : IMatchService
+public class MatchGrpcService : IMatchGrpcService
 {
-    private readonly Protos.TournamentService.TournamentServiceClient client = 
-        new Protos.TournamentService.TournamentServiceClient(GrpcChannel.ForAddress("http://localhost:5000", new GrpcChannelOptions{
-                HttpHandler = new HttpClientHandler()
-            }));
+    public MatchGrpcService(IOptions<GrpcMatchSettings> options)
+    {
+        client = new Protos.TournamentService.TournamentServiceClient(GrpcChannel.ForAddress(options.Value.Address, new GrpcChannelOptions
+        {
+            HttpHandler = new HttpClientHandler()
+        }));
+    }
+    private readonly Protos.TournamentService.TournamentServiceClient client;
     public async void CreateMatches(List<MatchDto> matches)
     {
         AddMatchesRequest req = new AddMatchesRequest();

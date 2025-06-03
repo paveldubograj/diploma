@@ -17,20 +17,20 @@ public class MatchRepository : IMatchRepository
     {
         _context = context;
     }
-    public async Task<Match> AddAsync(Match Match)
+    public async Task<Match> AddAsync(Match match)
     {
-        _context.Entry(Match).State = EntityState.Added;
+        _context.Entry(match).State = EntityState.Added;
         await _context.SaveChangesAsync();
-        return Match;
+        return match;
     }
     public async Task<List<Match>> AddRange(List<Match> matches){
         _context.Set<Match>().AddRange(matches);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return matches;
     }
-    public async Task<Match> DeleteAsync(Match Match)
+    public async Task<Match> DeleteAsync(Match match)
     {
-        var removedEntity = _context.Set<Match>().Remove(Match).Entity;
+        var removedEntity = _context.Set<Match>().Remove(match).Entity;
         await _context.SaveChangesAsync();
         return removedEntity;
     }
@@ -94,17 +94,17 @@ public class MatchRepository : IMatchRepository
             .ToListAsync();
         return matches;
     }
-    public async Task<Match> UpdateAsync(Match Match)
+    public async Task<Match> UpdateAsync(Match match)
     {
-        _context.Entry(Match).State = EntityState.Modified;
+        _context.Entry(match).State = EntityState.Modified;
         await _context.SaveChangesAsync();
-        return Match;
+        return match;
     }
     public async Task<Match> GetOneBySpecificationAsync(MatchSpecification spec, CancellationToken token = default)
     {
         IQueryable<Match> query = _context.Matches.OrderByDescending(n => n.StartTime);
 
-        var res = query.ApplySpecification(spec).FirstOrDefault();
+        var res = await query.ApplySpecification(spec).FirstOrDefaultAsync();
 
         return res;
     }

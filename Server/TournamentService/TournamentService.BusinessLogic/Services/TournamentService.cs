@@ -1,6 +1,8 @@
 using System;
 using System.Text.RegularExpressions;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using TournamentService.BusinessLogic.Models.Filters;
 using TournamentService.BusinessLogic.Models.Match;
 using TournamentService.BusinessLogic.Models.Tournament;
@@ -13,6 +15,7 @@ using TournamentService.DataAccess.Specifications;
 using TournamentService.Shared.Constants;
 using TournamentService.Shared.Enums;
 using TournamentService.Shared.Exceptions;
+using TournamentService.Shared.Options;
 
 namespace TournamentService.BusinessLogic.Services;
 
@@ -20,6 +23,8 @@ public class TournamentService : ITournamentService
 {
     private readonly ITournamentRepository _tournamentRepository;
     private readonly IParticipantRepository _participantRepository;
+    private readonly IImageService _imageService;
+    private readonly IDisciplineGrpcService _disciplineService;
     private readonly ISingleEliminationBracket _singleEliminationBracket;
     private readonly IRoundRobinBracket _roundRobinBracket;
     private readonly IDoubleEliminationBracket _doubleEliminationBracket;
@@ -28,6 +33,8 @@ public class TournamentService : ITournamentService
     public TournamentService(
         ITournamentRepository tournamentRepository,
         IParticipantRepository participantRepository,
+        IImageService imageService,
+        IDisciplineGrpcService disciplineService,
         IMapper mapper,
         ISingleEliminationBracket singleEliminationBracket,
         IRoundRobinBracket roundRobinBracket,
@@ -36,6 +43,8 @@ public class TournamentService : ITournamentService
     {
         _tournamentRepository = tournamentRepository;
         _participantRepository = participantRepository;
+        _imageService = imageService;
+        _disciplineService = disciplineService;
         _mapper = mapper;
         _singleEliminationBracket = singleEliminationBracket;
         _roundRobinBracket = roundRobinBracket;
@@ -45,6 +54,7 @@ public class TournamentService : ITournamentService
     public async Task<TournamentDto> AddAsync(TournamentCreateDto newsDto, string ownerId)
     {
         var tournament = _mapper.Map<Tournament>(newsDto);
+        if (!await _disciplineService.IsDisciplineExists(tournament.DisciplineId)) throw new NotFoundException(ErrorName.DisciplineNotFound);
         tournament.OwnerId = ownerId;
         tournament.Status = TournamentStatus.Pending;
         tournament.Id = Guid.NewGuid().ToString();
@@ -100,6 +110,7 @@ public class TournamentService : ITournamentService
         {
             throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
         }
+        if (!await _disciplineService.IsDisciplineExists(tournament.DisciplineId)) throw new NotFoundException(ErrorName.DisciplineNotFound);
         var newsUp = _mapper.Map(newsDto, tournament);
         var res = _tournamentRepository.UpdateAsync(newsUp);
         return _mapper.Map<TournamentDto>(res);
@@ -245,5 +256,44 @@ public class TournamentService : ITournamentService
     public async Task<int> GetTotalAsync()
     {
         return await _tournamentRepository.GetTotalAsync();
+    }
+    public async Task<TournamentDto> AddImageAsync(string id, IFormFile file, string userId)
+    {
+        var news = await _tournamentRepository.GetByIdAsync(id);
+        if (news == null)
+        {
+            throw new NotFoundException(ErrorName.TournamentNotFound);
+        }
+        if (!news.OwnerId.Equals(userId))
+        {
+            throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
+        }
+        news.ImagePath = await _imageService.SaveImage(file, id);
+        var res = await _tournamentRepository.UpdateAsync(news);
+        return _mapper.Map<TournamentDto>(res);
+    }
+
+    public async Task<TournamentDto> RemoveImageAsync(string id, string userId)
+    {
+        var news = await _tournamentRepository.GetByIdAsync(id);
+        if (news == null)
+        {
+            throw new NotFoundException(ErrorName.TournamentNotFound);
+        }
+        if (!news.OwnerId.Equals(userId))
+        {
+            throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
+        }
+        _imageService.DeleteImage(id);
+        news.ImagePath = string.Empty;
+        var res = await _tournamentRepository.UpdateAsync(news);
+        return _mapper.Map<TournamentDto>(res);
+    }
+
+    public async Task<List<TournamentCleanDto>> GetByOwnerAsync(string ownerId, int page, int pageSize)
+    {
+        TournamentSpecification spec = new TournamentSpecification(c => c.OwnerId.Equals(ownerId));
+        var list = await _tournamentRepository.GetBySpecificationAsync(spec, null, page, pageSize);
+        return _mapper.Map<List<TournamentCleanDto>>(list);
     }
 }

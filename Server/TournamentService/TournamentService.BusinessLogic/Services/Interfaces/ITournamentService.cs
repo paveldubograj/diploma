@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Http;
 using TournamentService.BusinessLogic.Models.Filters;
 using TournamentService.BusinessLogic.Models.Match;
 using TournamentService.BusinessLogic.Models.Tournament;
@@ -14,11 +15,14 @@ public interface ITournamentService
     public Task<TournamentDto> GetByIdAsync(string id);
     public Task<TournamentDto> DeleteAsync(string id, string userId);
     public Task<TournamentDto> UpdateAsync(string id, TournamentDto newsDto, string userId);
-    public Task<TournamentDto> AddAsync(TournamentCreateDto newsDto, string id); 
+    public Task<TournamentDto> AddAsync(TournamentCreateDto newsDto, string id);
     public void SetWinnerForMatchAsync(string tournamentId, string matchId, string winnerId, string looserId, int winPoints, int loosePoints, string userId);
     public void SetNextRound(string tournamentId, string userId);
     public Task<TournamentCleanDto> EndTournamentAsync(string tournamentId, string userId);
     public void GenerateBracketAsync(string tournamentId, string userId);
     public Task<TournamentCleanDto> StartTournamentAsync(string tournamentId, string userId);
     public Task<int> GetTotalAsync();
+    public Task<TournamentDto> AddImageAsync(string id, IFormFile file, string userId);
+    public Task<TournamentDto> RemoveImageAsync(string id, string userId);
+    public Task<List<TournamentCleanDto>> GetByOwnerAsync(string ownerId, int page, int pageSize);
 }

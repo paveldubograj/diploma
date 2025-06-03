@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "kBcUq7U8lngBmI7OXYATLZGPcriTN4jPLIdd2uQY4x6ftN5hoyld9fE3AipC578AsnDuw4fx/K6ioojIlw63RQ==",
+  "dgSpecHash": "/LgyRt5vcKWmMSbVMP5nPz7zuUesXdM2FW64z/0d0Gjw3qqj8gbEwHSD/bRZV1n/8ms9OPdwGFHqMmOYuE0lXg==",
   "success": true,
   "projectFilePath": "/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.DataAccess/NewsService.DataAccess.csproj",
   "expectedPackageFiles": [

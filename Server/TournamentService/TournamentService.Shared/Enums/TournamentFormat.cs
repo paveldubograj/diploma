@@ -7,4 +7,3 @@ public enum TournamentFormat
     RoundRobin,
     Swiss
 }
-// single_elimination, double_elimination, round_robin, swiss

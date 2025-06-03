@@ -9,5 +9,5 @@ public interface IDisciplineRepository
     Task<List<Discipline>> GetAllAsync();
     Task<Discipline> UpdateAsync(Discipline discipline);
     Task<Discipline> DeleteAsync(Discipline discipline);
-    Task<Discipline>? GetByIdAsync(string id);
+    Task<Discipline?> GetByIdAsync(string id);
 }

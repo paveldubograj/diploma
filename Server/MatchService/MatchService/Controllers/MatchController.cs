@@ -57,6 +57,7 @@ namespace MatchService.API.Controllers
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> AddMatchAsync([FromBody] MatchDto dto)
         {
+            dto.ownerId = User.Claims.First(x => x.Type.Equals(ClaimTypes.GivenName)).Value;
             MatchDto newsDto = await _matchService.AddAsync(dto);
             
             return Ok(newsDto);
@@ -82,37 +83,5 @@ namespace MatchService.API.Controllers
             
             return Ok(response);
         }
-
-        // [HttpGet]
-        // [Route("tournament/{TournamentId}")]
-        // public async Task<IActionResult> GetByTournamentAsync([FromRoute]string TournamentId)
-        // {
-        //     var newsDto = await _matchService.GetTournamentStructureAsync(TournamentId);
-            
-        //     return Ok(newsDto);
-        // }
-
-        // [HttpPost]
-        // [Route("winner/")]
-        // [Authorize(Roles = RoleName.Organizer)]
-        // public async Task<IActionResult> SetMatchWinner([FromBody]string matchId, [FromBody]string winnerId, [FromBody]int winPoints, [FromBody]int loosePoints){
-        //     var match = await _matchService.SetWinnerAsync(matchId, winnerId, winPoints, loosePoints, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
-
-        //     return Ok(match);
-        // }
-
-        // [HttpGet]
-        // [Route("byRound")]
-        // public async Task<IActionResult> GetByRoundName(string tournamentId, string round){
-        //     var match = await _matchService.GetByRoundAsync(tournamentId, round);
-        //     return Ok(match);
-        // }
-
-        // [HttpPost]
-        // [Route("list/add")]
-        // public async Task<IActionResult> AddMatchesAsync([FromBody] List<MatchDto> matches){
-        //     _matchService.AddMatchesAsync(matches);
-        //     return Ok();
-        // }
     }
 }

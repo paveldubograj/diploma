@@ -1,8 +1,0 @@
-@startuml
-class DisciplineDto {
-    + Id : string <<get>> <<set>>
-    + Name : string <<get>> <<set>>
-    + Description : string <<get>> <<set>>
-    + CreatedAt : DateTime <<get>> <<set>>
-}
-@enduml

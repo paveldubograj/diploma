@@ -17,6 +17,24 @@ try {
 }
 };
 
+export async function fetchTournamentsByUser(userId: string, page: number, pageSize: number){
+  try {
+    const filter = new URLSearchParams({
+      page: page.toString(),
+      pageSize: pageSize.toString(),
+    });
+      const response = await fetch(`${API_BASE}/${userId}/list?${filter}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        mode: "cors",
+      });
+      return response.json();
+  } catch (error) {
+    console.error("Произошла ошибка при получении турниров:", error);
+    setError("Не удалось получить турниры");
+  }
+  };
+
 export async function fetchTournamentById(id: string){
 try {
     const response = await fetch(`${API_BASE}/${id}`, {

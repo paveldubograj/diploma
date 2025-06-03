@@ -6,7 +6,7 @@ export function getUserRoles(): string[] {
     if (!token) return [];
   
     const payload = token.split('.')[1];
-    const decoded = JSON.parse(atob(payload));
+    const decoded = JSON.parse(Buffer.from(payload, 'base64').toString('base64'));
     return decoded["role"] ? (Array.isArray(decoded["role"]) ? decoded["role"] : [decoded["role"]]) : [];
   }
   

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.3">
@@ -20,6 +21,10 @@
     <ProjectReference Include="../DisciplineService.BusinessLogic/DisciplineService.BusinessLogic.csproj" />
     <ProjectReference Include="../DisciplineService.DataAccess/DisciplineService.DataAccess.csproj" />
     <ProjectReference Include="../DisciplineService.Shared/DisciplineService.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos/discipline.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

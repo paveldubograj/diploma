@@ -58,7 +58,7 @@ namespace TournamentService.API.Controllers
 
 
         [HttpPost]
-        [Route("")]
+        [Route("add")]
         [Authorize(Roles = RoleName.Organizer)]
         public async Task<IActionResult> AddParticipantAsync([FromRoute]string tournamentId, [FromBody] ParticipantAddDto dto)
         {
@@ -70,12 +70,12 @@ namespace TournamentService.API.Controllers
 
         [HttpPost]
         [Route("register")]
-        [Authorize(Roles = RoleName.Organizer)]
-        public async Task<IActionResult> RegisterForTournamentAsync([FromRoute]string tournamentId, [FromBody] string userName)
+        [Authorize]
+        public async Task<IActionResult> RegisterForTournamentAsync([FromRoute] string tournamentId, [FromBody] string userName)
         {
-            RegisterForTournamentDto dto = new RegisterForTournamentDto(){UserId = User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value, Name = userName};
+            RegisterForTournamentDto dto = new RegisterForTournamentDto() { UserId = User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value, Name = userName };
             var newsDto = await _participantService.RegisterAsync(dto, tournamentId);
-            
+
             return Ok(newsDto);
         }
 

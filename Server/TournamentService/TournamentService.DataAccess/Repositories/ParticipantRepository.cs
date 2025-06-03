@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TournamentService.DataAccess.Database;
 using TournamentService.DataAccess.Entities;
 using TournamentService.DataAccess.Repositories.Interfaces;
+using TournamentService.Shared.Constants;
 using TournamentService.Shared.Enums;
 using TournamentService.Shared.Exceptions;
 
@@ -18,7 +19,7 @@ public class ParticipantRepository : IParticipantRepository
     {
         var tournament = await _context.Tournaments.FindAsync(participant.TournamentId);
         if (tournament == null) throw new NotFoundException("Tournament not found");
-        if((await GetAllAsync(tournament.Id)).Count >= tournament.MaxParticipants) throw new WrongCallException("There are already max participants in tournament");
+        if((await GetAllAsync(tournament.Id)).Count >= tournament.MaxParticipants) throw new WrongCallException(ErrorName.MaxParticipants);
         _context.Participants.Add(participant);
         await _context.SaveChangesAsync();
         return participant;
@@ -30,7 +31,7 @@ public class ParticipantRepository : IParticipantRepository
         var participant = await _context.Participants.FindAsync(participantId);
         
         if (tournament == null) throw new NotFoundException("Tournament not found");
-        if((await GetAllAsync(tournament.Id)).Count >= tournament.MaxParticipants) throw new WrongCallException("There are already max participants in tournament");
+        if((await GetAllAsync(tournament.Id)).Count >= tournament.MaxParticipants) throw new WrongCallException(ErrorName.MaxParticipants);
         if (participant == null) throw new NotFoundException("Participant not found");
 
         tournament.Participants.Add(participant);
@@ -93,24 +94,15 @@ public class ParticipantRepository : IParticipantRepository
         return await _context.Participants.Where(c => c.TournamentId.Equals(tournamentId) && c.Status == ParticipantStatus.PlayWin).AsNoTracking().ToListAsync();
     }
 
-    public async Task<Participant> GetByIdAsync(string id)
+    public async Task<Participant?> GetByIdAsync(string id)
     {
         return await _context.Set<Participant>().FindAsync(id);
-       // .FirstOrDefaultAsync(t => t.Id.Equals(id));
     }
 
     public async Task<Participant> GetByIdWithToutnamentAsync(string id)
     {
         return await _context.Set<Participant>().Include(c => c.Tournament).FirstAsync(c => c.Id.Equals(id));
-       // .FirstOrDefaultAsync(t => t.Id.Equals(id));
     }
-
-    public Participant GetById(string id)
-    {
-        return _context.Set<Participant>().Find(id);
-       // .FirstOrDefaultAsync(t => t.Id.Equals(id));
-    }
-
     public async Task<Participant> RemoveParticipantFromTournament(string tournamentId, string participantId)
     {
         var tournament = await _context.Tournaments.FindAsync(tournamentId);
@@ -131,16 +123,13 @@ public class ParticipantRepository : IParticipantRepository
         return participant;
     }
 
-    public Participant Update(Participant participant)
-    {
-        _context.Entry(participant).State = EntityState.Modified;
-        _context.SaveChanges();
-        return participant;
-    }
-
     public async Task<Participant> UpdatePointsAsync(string id, int points)
     {
         var p = await _context.Set<Participant>().FindAsync(id);
+        if (p is null)
+        {
+            throw new NotFoundException(ErrorName.ParticipantNotFound);
+        }
         p.Points += points;
         _context.Entry(p).Property(p => p.Points).IsModified = true;
         await _context.SaveChangesAsync();

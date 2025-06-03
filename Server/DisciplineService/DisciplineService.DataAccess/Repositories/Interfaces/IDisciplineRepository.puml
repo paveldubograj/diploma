@@ -1,9 +1,0 @@
-@startuml
-interface IDisciplineRepository {
-    AddAsync(discipline:Discipline) : Task<Discipline>
-    GetAllAsync() : Task<List<Discipline>>
-    UpdateAsync(discipline:Discipline) : Task<Discipline>
-    DeleteAsync(discipline:Discipline) : Task<Discipline>
-    GetByIdAsync(id:string) : Task<Discipline>?
-}
-@enduml

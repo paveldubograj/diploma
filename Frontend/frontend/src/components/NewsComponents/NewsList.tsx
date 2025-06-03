@@ -10,6 +10,7 @@ import {
 import { ListNews, Discipline, Tag, NewsSortOptions } from "../../types";
 import { Container, Row, Col, Form, Button, Card, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import NewsCard from "./NewsCard";
 
 const pageSize = 10;
 
@@ -178,14 +179,11 @@ const NewsList = () => {
       </Row>
 
       {error && <Alert variant="danger">{error}</Alert>}
-      {news.map((n) => (
-        <Card key={n.id} className="mb-3">
-          <Card.Body>
-            <Card.Title><Link to={`/news/${n.id}`}>{n.title}</Link></Card.Title>
-          </Card.Body>
-        </Card>
-      ))}
-
+      <Row xs={1} md={2} className="g-4">
+        {news.map((n) => (
+          <NewsCard id={n.id} title={n.title} authorId={n.authorId} authorName={n.authorName} publishingDate={n.publishingDate} categoryId={n.categoryId} imagePath={n.imagePath}></NewsCard>
+        ))}
+      </Row>
       <div className="d-flex justify-content-between align-items-center my-3">
         <Button disabled={page === 1} onClick={() => setPage(page - 1)}>
           Назад

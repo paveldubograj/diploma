@@ -32,6 +32,8 @@ const LoginForm: React.FC = () => {
         id: data.id,
         userName: data.userName,
         email: data.email,
+        bio: data.bio,
+        registeredAt: data.registeredAt
       }
       login(user, data.accessToken)
       navigate("/news");

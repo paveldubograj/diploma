@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "UserService.API.Protos";
+
+import "google/protobuf/empty.proto";
+
+service TournamentRegisterService{
+    rpc AddToUser (Request) returns (google.protobuf.Empty);
+    rpc RemoveFromUser (Request) returns (google.protobuf.Empty);
+}
+
+message Request{
+    string userId = 1;
+    string tournamentId = 2;
+}
+
+

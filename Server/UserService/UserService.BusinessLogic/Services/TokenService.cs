@@ -27,7 +27,7 @@ public class TokenService : ITokenService
     {
         var user = await _userRepository.GetByIdAsync(userId);
 
-        var keyBytes = Encoding.UTF8.GetBytes("12345678901234567890123456789012");
+        var keyBytes = Encoding.UTF8.GetBytes(_options.Value.Key);
 
         var roles = await _userRepository.GetRolesAsync(user);
 
@@ -39,9 +39,9 @@ public class TokenService : ITokenService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddDays(10), // Время жизни токена
-            Issuer = "https://id.CompanyName.com",
-            Audience = "https://tournament.CompanyName.com",
+            Expires = DateTime.UtcNow.AddMinutes(_options.Value.Expires), // Время жизни токена
+            Issuer = _options.Value.Issuer,
+            Audience = _options.Value.Audience,
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
         };
 

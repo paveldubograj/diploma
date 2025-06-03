@@ -1,4 +1,0 @@
-@startuml
-!include ./DisciplineDto.puml
-!include ./DisciplineCleanDto.puml
-@enduml

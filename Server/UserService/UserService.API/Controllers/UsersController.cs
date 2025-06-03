@@ -25,7 +25,7 @@ public class UsersController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetProfileAsync()
     {
-        UserCleanDto userDto = await _userManageService.GetByIdAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
+        UserProfileDto userDto = await _userManageService.GetByIdAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
 
         return Ok(userDto);
     }
@@ -33,9 +33,9 @@ public class UsersController : ControllerBase
     [HttpPut]
     [Route("profile")]
     [Authorize]
-    public async Task<IActionResult> UpdateProfileAsync([FromBody] UserCleanDto dto)
+    public async Task<IActionResult> UpdateProfileAsync([FromBody] UserProfileDto dto)
     {
-        UserDto userDto = await _userManageService.UpdateAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value, dto);
+        UserProfileDto userDto = await _userManageService.UpdateAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value, dto);
 
         return Ok(userDto);
     }
@@ -53,18 +53,21 @@ public class UsersController : ControllerBase
 
     [HttpGet]
     [Route("{id}")]
+    [Authorize(Roles = RoleName.Admin)]
     public async Task<IActionResult> GetAsync([FromRoute] string id)
     {
-        UserCleanDto userDto = await _userManageService.GetByIdAsync(id);
-        
+        UserProfileDto userDto = await _userManageService.GetByIdAsync(id);
+
         return Ok(userDto);
     }
 
     [HttpGet]
     [Route("")]
+    [Authorize(Roles = RoleName.Admin)]
     public async Task<IActionResult> GetByNameAsync(int page, int pageSize, [FromQuery] string? userName, CancellationToken token = default)
-    {        
-        return Ok(new UserPagedDto(){
+    {
+        return Ok(new UserPagedDto()
+        {
             Users = await _userManageService.GetByNameAsync(page, pageSize, userName, token),
             Total = await _userManageService.GetTotalAsync()
         });
@@ -73,20 +76,51 @@ public class UsersController : ControllerBase
     [Authorize(Roles = RoleName.Admin)]
     [HttpPut]
     [Route("{id}")]
-    public async Task<IActionResult> EditAsync([FromRoute] string id, [FromBody] UserCleanDto dto)
+    public async Task<IActionResult> EditAsync([FromRoute] string id, [FromBody] UserProfileDto dto)
     {
-        UserDto userDto = await _userManageService.UpdateAsync(id, dto);
-        
+        UserProfileDto userDto = await _userManageService.UpdateAsync(id, dto);
+
         return Ok(userDto);
     }
-    
+
     [Authorize(Roles = RoleName.Admin)]
     [HttpDelete]
     [Route("{id}")]
-    public async Task<IActionResult> DeleteAsync([FromRoute]string id)
+    public async Task<IActionResult> DeleteAsync([FromRoute] string id)
     {
         UserCleanDto deletedUser = await _userManageService.DeleteAsync(id);
-        
+
         return Ok(deletedUser);
+    }
+
+    [HttpPost]
+    [Route("profile/image")]
+    [Authorize]
+    public async Task<IActionResult> AddUserImageAsync(IFormFile image)
+    {
+        var newsDto = await _userManageService.AddImageAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value, image);
+
+        return Ok(newsDto);
+    }
+
+    [HttpDelete]
+    [Route("profile/image")]
+    [Authorize]
+    public async Task<IActionResult> DeleteUserImageAsync()
+    {
+        var newsDto = await _userManageService.RemoveImageAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
+
+        return Ok(newsDto);
+    }
+
+    [HttpPut]
+    [Route("profile/image")]
+    [Authorize]
+    public async Task<IActionResult> UpdateUserImageAsync(IFormFile image)
+    {
+        var newsDto = await _userManageService.RemoveImageAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
+        var res = await _userManageService.AddImageAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value, image);
+
+        return Ok(newsDto);
     }
 }

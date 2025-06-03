@@ -117,7 +117,7 @@ const NewsDetailPage: React.FC = () => {
                 />
               </Form.Group>
               <Form.Group className="mb-2">
-                <Form.Label>Контент</Form.Label>
+                <Form.Label>Содержание</Form.Label>
                 <Form.Control
                   as="textarea"
                   rows={4}

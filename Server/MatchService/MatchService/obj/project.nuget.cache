@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "QAYSTFXsX5zbn5sC4JA6+aPdpgfIzfzZyhTpNeQ7fgeD6icFBBypgQCsz6EvXK8ZyhCEspPZvOl4BWF/nBlFLg==",
+  "dgSpecHash": "tBJOtQo79Lwsn3AOkHEmqNFmAK+NdLExR5aDk88xOlMThCTZ2ml9FAmto6MgYNsX4L7tFcTp1JYWqA0QnlqF1w==",
   "success": true,
   "projectFilePath": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService/MatchService.API.csproj",
   "expectedPackageFiles": [

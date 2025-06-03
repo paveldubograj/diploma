@@ -1,5 +1,6 @@
 using System.Text;
 using DisciplineService.API;
+using DisciplineService.API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -9,29 +10,16 @@ Startup.OptionsConfigure(builder.Services, config);
 Startup.ConfigureDataBase(builder.Services, config);
 
 builder.Services.AddControllers();
+builder.Services.AddGrpc();
 Startup.ConfigureCors(builder.Services);
 Startup.ConfigureSwagger(builder.Services);
 Startup.ConfigureRepository(builder.Services);
 Startup.ConfigureServices(builder.Services);
-
-builder.Services.AddAuthentication(x =>
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(x =>
-{
-    x.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidIssuer = config["JwtSettings:Issuer"],
-        ValidAudience = config["JwtSettings:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("12345678901234567890123456789012")),
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true
-    };
-});
+Startup.ConfigureAuth(builder.Services, config);
 
 var app = builder.Build();
 //Startup.UseMigrations(app);
+app.MapGrpcService<DisciplineGrpcService>();
 
 Startup.ConfigureMiddlewares(app);
 if (app.Environment.IsDevelopment())

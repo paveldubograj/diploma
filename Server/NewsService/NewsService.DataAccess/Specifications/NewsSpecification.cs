@@ -13,7 +13,7 @@ public class NewsSpecification : BaseSpecification<News>
     {
         Includes.Add(c => c.Tags);
     }
-    public static NewsSpecification FilterNews(string? SearchString, string? CategoryId/*, List<Tag> tags*/){
+    public static NewsSpecification FilterNews(string? SearchString, string? CategoryId){
         var predicate = PredicateBuilder.True<News>();
         if(!string.IsNullOrEmpty(SearchString)){
             predicate = predicate.And(news => news.Title.Contains(SearchString));
@@ -21,16 +21,6 @@ public class NewsSpecification : BaseSpecification<News>
         if(!string.IsNullOrEmpty(CategoryId)){
             predicate = predicate.And(news => news.CategoryId.Equals(CategoryId));
         }
-        // if(tags.Count > 0){
-        //     Console.WriteLine("Tags added");
-        //     var f = new Func<News, bool>((news) => {
-        //         foreach(var el in tags) {
-        //             if(!news.Tags.Contains(el)) return false;
-        //         }
-        //         return true;
-        //     });
-        //     predicate.And(news => f(news));
-        // }
         return new NewsSpecification(predicate);
     }
 

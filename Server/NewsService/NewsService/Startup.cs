@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NewsService.API.Configs;
 using NewsService.API.Extensions;
 using NewsService.API.Middlewares;
 using NewsService.BusinessLogic.Mapping;
@@ -20,11 +21,15 @@ namespace NewsService.API;
 public class Startup
 {
     private static string MyAllowSpecificOrigins { get; set; }
+    private readonly IWebHostEnvironment _env;
     public static void ConfigureServices(IServiceCollection services)
     {
         services.AddAutoMapper(typeof(MappingProfile));
         services.AddTransient<ITagsService, TagsService>();
         services.AddTransient<INewsService, NewsService.BusinessLogic.Services.NewsService>();
+        services.AddTransient<IImageService, ImageService>();
+        services.AddTransient<IDisciplineService, DisciplineService>();
+        services.AddSingleton<IFileStorageConfig, FileStorageConfig>();
     }
     
     public static void ConfigureRepository(IServiceCollection services)
@@ -33,12 +38,13 @@ public class Startup
         services.AddTransient<ITagRepository, TagRepository>();
     }
 
-    
+
     public static void ConfigureSwagger(IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfigurationExtension>();
+        
     }
     
     public static void ConfigureDataBase(IServiceCollection services, ConfigurationManager config)
@@ -63,7 +69,7 @@ public class Startup
                 {
                     ValidIssuer = config["JwtSettings:Issuer"],
                     ValidAudience = config["JwtSettings:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("12345678901234567890123456789012")),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"])),
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
@@ -74,7 +80,7 @@ public class Startup
 
     public static void OptionsConfigure(IServiceCollection services, ConfigurationManager config)
     {
-        services.Configure<JwtOption>(config.GetSection("JwtSettings"));
+        services.Configure<GrpcDisciplineSettings>(config.GetSection("GrpcDisciplineSettings"));
     }
     
     public static void ConfigureCors(IServiceCollection services)

@@ -60,7 +60,7 @@ public class Startup
             {
                 ValidIssuer = config["JwtSettings:Issuer"],
                 ValidAudience = config["JwtSettings:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("12345678901234567890123456789012")),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"])),
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidateLifetime = true,
@@ -94,13 +94,13 @@ public class Startup
         app.UseCors(MyAllowSpecificOrigins);
     }
 
-    // public static void UseMigrations(WebApplication app)
-    // {
-    //     using (var scope = app.Services.CreateScope())
-    //     {
-    //         var serviceProvider = scope.ServiceProvider;
-    //         var dbContext = serviceProvider.GetService<UsersContext>();
-    //         dbContext.Database.Migrate();
-    //     }
-    // }
+    public static void UseMigrations(WebApplication app)
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            var serviceProvider = scope.ServiceProvider;
+            var dbContext = serviceProvider.GetService<MatchContext>();
+            dbContext.Database.Migrate();
+        }
+    }
 }

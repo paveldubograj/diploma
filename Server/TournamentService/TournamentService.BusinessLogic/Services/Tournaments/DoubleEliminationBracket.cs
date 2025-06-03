@@ -12,12 +12,12 @@ namespace TournamentService.BusinessLogic.Services.Tournaments;
 
 public class DoubleEliminationBracket : IDoubleEliminationBracket
 {
-    private readonly IMatchService _matchService;
+    private readonly IMatchGrpcService _matchService;
     private readonly ITournamentRepository _tournamentRepository;
     private readonly IParticipantService _participantService;
     private readonly ISingleEliminationBracket _singleEliminationBracket;
 
-    public DoubleEliminationBracket(IMatchService matchService, ITournamentRepository tournamentRepository, IParticipantService participantService, ISingleEliminationBracket singleEliminationBracket)
+    public DoubleEliminationBracket(IMatchGrpcService matchService, ITournamentRepository tournamentRepository, IParticipantService participantService, ISingleEliminationBracket singleEliminationBracket)
     {
         _matchService = matchService;
         _tournamentRepository = tournamentRepository;

@@ -157,3 +157,5 @@
 /home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/FluentValidation.dll
 /home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/FluentValidation.AspNetCore.dll
 /home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/FluentValidation.DependencyInjectionExtensions.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/Microsoft.Extensions.ObjectPool.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/SixLabors.ImageSharp.dll

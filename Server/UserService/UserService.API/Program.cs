@@ -6,6 +6,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using UserService.API;
+using UserService.API.Services;
 using UserService.BusinessLogic.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,27 +16,13 @@ Startup.ConfigureIdentity(builder.Services);
 Startup.ConfigureDataBase(builder.Services, config);
 
 builder.Services.AddControllers();
+builder.Services.AddGrpc();
 builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>(); 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddAuthorization();
 Startup.ConfigureCors(builder.Services);
 Startup.ConfigureSwagger(builder.Services);
-
-builder.Services.AddAuthentication(x =>
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(x =>
-{
-    x.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidIssuer = config["JwtSettings:Issuer"],
-        ValidAudience = config["JwtSettings:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("12345678901234567890123456789012")),
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true
-    };
-});
+Startup.ConfigureAuth(builder.Services, config);
 
 Startup.ConfigureRepository(builder.Services);
 Startup.ConfigureServices(builder.Services);
@@ -51,6 +38,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapGrpcService<TournamentGrpcService>();
 app.UseHttpsRedirection();
 
 Startup.ConfigureCors(app);

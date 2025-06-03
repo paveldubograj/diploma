@@ -9,7 +9,8 @@ namespace DisciplineService.DataAccess.Repositories;
 public class DisciplineRepository : IDisciplineRepository
 {
     private readonly DisciplineContext _context;
-    public DisciplineRepository(DisciplineContext context){
+    public DisciplineRepository(DisciplineContext context)
+    {
         _context = context;
     }
     public async Task<Discipline> AddAsync(Discipline discipline)
@@ -38,7 +39,7 @@ public class DisciplineRepository : IDisciplineRepository
         return discipline;
     }
 
-    public async Task<Discipline>? GetByIdAsync(string id)
+    public async Task<Discipline?> GetByIdAsync(string id)
     {
         return await _context.disciplines.FirstOrDefaultAsync(t => t.Id.Equals(id));
     }

@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using UserService.Shared.Contants;
 using UserService.Shared.Options;
+using UserService.API.Configs;
 
 namespace UserService.API;
 
@@ -30,6 +31,8 @@ public class Startup
         services.AddTransient<IAuthService, AuthService>();
         services.AddTransient<IUserManageService, UserManageService>();
         services.AddTransient<IRolesService, RolesService>();
+        services.AddTransient<IImageService, ImageService>();
+        services.AddSingleton<IFileStorageConfig, FileStorageConfig>();
     }
     
     public static void ConfigureRepository(IServiceCollection services)
@@ -68,14 +71,14 @@ public class Startup
     public static void ConfigureAuth(IServiceCollection services, ConfigurationManager config)
     {
         services.AddAuthentication(x =>
-            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
+        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(x =>
         {
             x.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidIssuer = config["JwtSettings:Issuer"],
                 ValidAudience = config["JwtSettings:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"]!)),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"])),
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidateLifetime = true,
@@ -134,13 +137,13 @@ public class Startup
         app.UseCors(MyAllowSpecificOrigins);
     }
 
-    // public static void UseMigrations(WebApplication app)
-    // {
-    //     using (var scope = app.Services.CreateScope())
-    //     {
-    //         var serviceProvider = scope.ServiceProvider;
-    //         var dbContext = serviceProvider.GetService<UsersContext>();
-    //         dbContext.Database.Migrate();
-    //     }
-    // }
+    public static void UseMigrations(WebApplication app)
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            var serviceProvider = scope.ServiceProvider;
+            var dbContext = serviceProvider.GetService<UsersContext>();
+            dbContext.Database.Migrate();
+        }
+    }
 }

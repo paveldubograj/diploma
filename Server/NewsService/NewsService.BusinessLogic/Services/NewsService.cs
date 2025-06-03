@@ -1,5 +1,6 @@
 using System;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using NewsService.BusinessLogic.Models.Filter;
 using NewsService.BusinessLogic.Models.News;
 using NewsService.BusinessLogic.Services.Interfaces;
@@ -15,18 +16,24 @@ public class NewsService : INewsService
 {
     private readonly INewsRepository _newsRepository;
     private readonly ITagRepository _tagRepository;
+    private readonly IImageService _imageService;
+    private readonly IDisciplineService _disciplineService;
     private readonly IMapper _mapper;
-    public NewsService(INewsRepository newsRepository, ITagRepository tagRepository, IMapper mapper){
+    public NewsService(INewsRepository newsRepository, ITagRepository tagRepository, IMapper mapper, IImageService imageService, IDisciplineService disciplineService)
+    {
         _newsRepository = newsRepository;
         _tagRepository = tagRepository;
+        _imageService = imageService;
+        _disciplineService = disciplineService;
         _mapper = mapper;
     }
-    public async Task<NewsDto> AddAsync(NewsUpdateDto newsDto, string userId)
+    public async Task<NewsDto> AddAsync(NewsUpdateDto newsDto, string userId, string userName)
     {
         var news = _mapper.Map<News>(newsDto);
+        if (!await _disciplineService.IsDisciplineExists(news.CategoryId)) throw new NotFoundException(ErrorName.DisciplineNotFound);
         news.AuthorId = userId;
+        news.AuthorName = userName;
         news.PublishingDate = DateTime.Now;
-        news.CategoryId = "test";
         var result = await _newsRepository.AddAsync(news);
         return _mapper.Map<NewsDto>(result);
     }
@@ -34,7 +41,8 @@ public class NewsService : INewsService
     public async Task<NewsCleanDto> DeleteAsync(string id)
     {
         var obj = await _newsRepository.GetByIdAsync(id);
-        if(obj == null){
+        if (obj == null)
+        {
             throw new NotFoundException(ErrorName.NewsNotFound);
         }
         var result = _newsRepository.DeleteAsync(obj);
@@ -50,53 +58,123 @@ public class NewsService : INewsService
     public async Task<List<NewsCleanDto>> GetByFilterAsync(NewsFilter filter, int page, int pageSize)
     {
         var tags = new List<Tag>();
-        if(filter.Tags is not null && filter.Tags.Count > 0) tags = await _tagRepository.GetByIdsAsync(filter.Tags);
+        if (filter.Tags is not null && filter.Tags.Count > 0) tags = await _tagRepository.GetByIdsAsync(filter.Tags);
         NewsSpecification specification = NewsSpecification.FilterNews(filter.SearchString, filter.CategoryId);
         var result = await _newsRepository.GetBySpecificationAsync(specification, tags, page, pageSize, filter.sortOptions);
+        return _mapper.Map<List<NewsCleanDto>>(result);
+    }
+
+    public async Task<List<NewsCleanDto>> GetByUserAsync(string userId, int page, int pageSize)
+    {
+        NewsSpecification specification = new NewsSpecification(c => c.AuthorId.Equals(userId));
+        var result = await _newsRepository.GetBySpecWithNoSortAsync(specification, page, pageSize);
         return _mapper.Map<List<NewsCleanDto>>(result);
     }
 
     public async Task<NewsDto> GetByIdAsync(string id)
     {
         var res = await _newsRepository.GetByIdAsync(id);
-        if(res == null){
+        if (res == null)
+        {
             throw new NotFoundException(ErrorName.NewsNotFound);
         }
         return _mapper.Map<NewsDto>(res);
     }
 
-    public async Task<int> GetTotalAsync(){
+    public async Task<int> GetTotalAsync()
+    {
         return await _newsRepository.GetTotalAsync();
     }
 
     public async Task<NewsDto> UpdateAsync(string id, NewsUpdateDto newsDto, string userId)
     {
         var news = await _newsRepository.GetByIdAsync(id);
-        if(news == null){
+        if (news == null)
+        {
             throw new NotFoundException(ErrorName.NewsNotFound);
         }
-        if(!news.AuthorId.Equals(userId)){
+        if (!news.AuthorId.Equals(userId))
+        {
             throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
         }
         var newsUp = _mapper.Map(newsDto, news);
+        if (!await _disciplineService.IsDisciplineExists(newsUp.CategoryId)) throw new NotFoundException(ErrorName.DisciplineNotFound);
         var res = await _newsRepository.UpdateAsync(newsUp);
         return _mapper.Map<NewsDto>(res);
     }
 
-    public async Task<NewsDto> AddTagAsync(string id, string tagId, string userId){
+    public async Task<NewsDto> AddTagAsync(string id, string tagId, string userId)
+    {
         var news = await _newsRepository.GetByIdAsync(id);
-        if(news == null){
+        if (news == null)
+        {
             throw new NotFoundException(ErrorName.NewsNotFound);
         }
-        if(!news.AuthorId.Equals(userId)){
+        if (!news.AuthorId.Equals(userId))
+        {
             throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
         }
         var tag = await _tagRepository.GetByIdAsync(tagId);
-        if(tag == null){
+        if (tag == null)
+        {
             throw new NotFoundException(ErrorName.TagNotFound);
         }
         news.Tags.Add(tag);
         var res = await _newsRepository.UpdateAsync(news);
         return _mapper.Map<NewsDto>(res);
     }
+
+    public async Task<NewsDto> RemoveTagAsync(string id, string tagId, string userId)
+    {
+        var news = await _newsRepository.GetByIdAsync(id);
+        if (news == null)
+        {
+            throw new NotFoundException(ErrorName.NewsNotFound);
+        }
+        if (!news.AuthorId.Equals(userId))
+        {
+            throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
+        }
+        var tag = await _tagRepository.GetByIdAsync(tagId);
+        if (tag == null)
+        {
+            throw new NotFoundException(ErrorName.TagNotFound);
+        }
+        news.Tags.Remove(tag);
+        var res = await _newsRepository.UpdateAsync(news);
+        return _mapper.Map<NewsDto>(res);
+    }
+
+    public async Task<NewsDto> AddImageAsync(string id, IFormFile file, string userId)
+    {
+        var news = await _newsRepository.GetByIdAsync(id);
+        if (news == null)
+        {
+            throw new NotFoundException(ErrorName.NewsNotFound);
+        }
+        if (!news.AuthorId.Equals(userId))
+        {
+            throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
+        }
+        news.ImagePath = await _imageService.SaveImage(file, id);
+        var res = await _newsRepository.UpdateAsync(news);
+        return _mapper.Map<NewsDto>(res);
+    }
+
+    public async Task<NewsDto> DeleteImageAsync(string id, string userId)
+    {
+        var news = await _newsRepository.GetByIdAsync(id);
+        if (news == null)
+        {
+            throw new NotFoundException(ErrorName.NewsNotFound);
+        }
+        if (!news.AuthorId.Equals(userId))
+        {
+            throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
+        }
+        _imageService.DeleteImage(news.ImagePath);
+        news.ImagePath = string.Empty;
+        var res = await _newsRepository.UpdateAsync(news);
+        return _mapper.Map<NewsDto>(res);
+    } 
 }

@@ -6,8 +6,7 @@ namespace TournamentService.DataAccess.Repositories.Interfaces;
 
 public interface IParticipantRepository
 {
-    Task<Participant> GetByIdAsync(string id);
-    public Participant GetById(string id);
+    Task<Participant?> GetByIdAsync(string id);
     Task<Participant> GetByIdWithToutnamentAsync(string id);
     Task<List<Participant>> GetAsync(string tournamentId, ParticipantSortOptions? options, int page, int pageSize);
     Task<List<Participant>> GetAllAsync(string tournamentId);
@@ -17,8 +16,7 @@ public interface IParticipantRepository
     Task<Participant> AddAsync(Participant participant);
     Task<Participant> DeleteAsync(Participant participant);
     Task<Participant> UpdateAsync(Participant participant);
-    public Participant Update(Participant participant);
-    public Task<Participant> UpdatePointsAsync(string id, int points);
-    public Task<Participant> AddParticipantToTournament(string tournamentId, string participantId);
-    public Task<Participant> RemoveParticipantFromTournament(string tournamentId, string participantId);
+    Task<Participant> UpdatePointsAsync(string id, int points);
+    Task<Participant> AddParticipantToTournament(string tournamentId, string participantId);
+    Task<Participant> RemoveParticipantFromTournament(string tournamentId, string participantId);
 }

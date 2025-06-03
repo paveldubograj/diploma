@@ -17,5 +17,7 @@ public interface IUserRepository
     Task<IEnumerable<User>> GetBySpecAsync(int page, int pageSize, UserSpecification spec, CancellationToken token = default);
     Task<IdentityResult> UpdateAsync(User entity);
     Task<IdentityResult> DeleteAsync(User entity);
+    Task<User> AddUserTournament(User user, string tournamentId);
+    Task<User> RemoveUserTournament(User user, string tournamentId);
     Task<int> GetTotalAsync();
 }

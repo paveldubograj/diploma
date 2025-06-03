@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using TournamentService.API.Configs;
 using TournamentService.API.Extensions;
 using TournamentService.API.Middlewares;
 using TournamentService.BusinessLogic.Mapping;
@@ -26,7 +27,7 @@ private static string MyAllowSpecificOrigins { get; set; }
     public static void ConfigureServices(IServiceCollection services)
     {
         services.AddAutoMapper(typeof(MappingProfile));
-        services.AddTransient<IMatchService, MatchService>();
+        services.AddTransient<IMatchGrpcService, MatchGrpcService>();
         services.AddTransient<IParticipantService, ParticipantService>();
         services.AddTransient<ITournamentService, TournamentService.BusinessLogic.Services.TournamentService>();
         services.AddTransient<IParticipantService, ParticipantService>();
@@ -34,6 +35,9 @@ private static string MyAllowSpecificOrigins { get; set; }
         services.AddTransient<IRoundRobinBracket, RoundRobinBracket>();
         services.AddTransient<ISwissBracket, SwissBracket>();
         services.AddTransient<IDoubleEliminationBracket, DoubleEliminationBracket>();
+        services.AddTransient<IImageService, ImageService>();
+        services.AddSingleton<IFileStorageConfig, FileStorageConfig>();
+        services.AddTransient<IDisciplineGrpcService, DisciplineGrpcService>();
     }
     
     public static void ConfigureRepository(IServiceCollection services)
@@ -74,7 +78,7 @@ private static string MyAllowSpecificOrigins { get; set; }
             {
                 ValidIssuer = config["JwtSettings:Issuer"],
                 ValidAudience = config["JwtSettings:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("12345678901234567890123456789012")),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"])),
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidateLifetime = true,
@@ -86,7 +90,9 @@ private static string MyAllowSpecificOrigins { get; set; }
 
     public static void OptionsConfigure(IServiceCollection services, ConfigurationManager config)
     {
-        services.Configure<JwtOption>(config.GetSection("JwtSettings"));
+        services.Configure<GrpcMatchSettings>(config.GetSection("GrpcMatchSettings"));
+        services.Configure<GrpcDisciplineSettings>(config.GetSection("GrpcDisciplineSettings"));
+        services.Configure<GrpcUserSettings>(config.GetSection("GrpcUserSettings"));
     }
     
     public static void ConfigureCors(IServiceCollection services)

@@ -22,6 +22,7 @@ import {
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { hasRole } from "../../utils/auth";
+import TournamentCard from "./TournamentCard";
 
 const pageSize = 10;
 
@@ -201,23 +202,9 @@ const TournamentList = () => {
             )}
             {error && <Alert variant="danger">{error}</Alert>}
 
-            <Row>
+            <Row xs={1} md={2} className="g-4">
                 {tournaments.map((t) => (
-                    <Link to={`/tournaments/${t.id}`} style={{ textDecoration: "none" }}>
-                        <Col md={6} lg={4} key={t.id} className="mb-3">
-                            <Card>
-                                <Card.Body>
-                                    <Card.Title>{t.name}</Card.Title>
-                                    <Card.Text>
-                                        Статус: {TournamentStatus[t.status].name}<br />
-                                        Формат: {TournamentFormat[t.format].name}<br />
-                                        Раунды: {t.rounds}<br />
-                                        Макс. участников: {t.maxParticipants}
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Link>
+                    <TournamentCard id={t.id} name={t.name} disciplineId={t.disciplineId} status={t.status} format={t.format} rounds={t.rounds} maxParticipants={t.maxParticipants} ownerId={t.ownerId} imagePath={t.imagePath}></TournamentCard>
                 ))}
             </Row>
             <div className="d-flex justify-content-between align-items-center my-3">

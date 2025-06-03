@@ -10,6 +10,7 @@ import { MatchList, Discipline, MatchStatus, MatchSortOptions } from "../../type
 import { Container, Row, Col, Form, Button, Card, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ErrorBoundary from "../ErrorBoundary";
+import MatchCard from "./MatchCard";
 
 const pageSize = 10;
 
@@ -169,39 +170,10 @@ const MatchesList = () => {
 
       {error && <Alert variant="danger">{error}</Alert>}
 
-      <Row>
-        {matches.map((match) => {
-          const isCompleted = match.status === 2;
-          const winnerColor = {
-            [match.participant1Id]: match.winnerId === match.participant1Id ? "green" : "red",
-            [match.participant2Id]: match.winnerId === match.participant2Id ? "green" : "red"
-          };
-
-          return (
-            <Col md={6} lg={4} key={match.id} className="mb-3">
-              <Link to={`/matches/${match.id}`} style={{ textDecoration: "none" }}>
-                <Card>
-                  <Card.Body>
-                    <Card.Title>{match.round} (#{match.matchOrder})</Card.Title>
-                    <Card.Text>
-                      Участники: <br />
-                      {match.participant1Name}<br />
-                      {match.participant2Name}
-                      {isCompleted && (
-                        <>
-                          <br />
-                          <span>Счет:</span>
-                          <span style={{ color: winnerColor[match.participant1Id] }}> {match.winScore}</span> -
-                          <span style={{ color: winnerColor[match.participant2Id] }}> {match.looseScore}</span>
-                        </>
-                      )}
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-              </Link>
-            </Col>
-          );
-        })}
+      <Row xs={1} md={2} className="g-4">
+        {matches.map((match) => (
+          <MatchCard id={match.id} round={match.round} startTime={match.startTime} status={match.status} matchOrder={match.matchOrder} winScore={match.winScore} looseScore={match.looseScore} endTime={match.endTime} participant1Name={match.participant1Name} participant2Name={match.participant2Name} tournamentName={match.tournamentName} categoryId={match.categoryId} winnerId={match.winnerId} participant1Id={match.participant1Id} participant2Id={match.participant2Id} tournamentId={match.tournamentId}></MatchCard>
+        ))}
       </Row>
       <div className="d-flex justify-content-between align-items-center my-3">
         <Button disabled={page === 1} onClick={() => setPage(page - 1)}>

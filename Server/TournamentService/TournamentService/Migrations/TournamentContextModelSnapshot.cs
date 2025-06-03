@@ -65,6 +65,10 @@ namespace TournamentService.API.Migrations
                     b.Property<int>("Format")
                         .HasColumnType("integer");
 
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<bool>("IsRegistrationAllowed")
                         .HasColumnType("boolean");
 

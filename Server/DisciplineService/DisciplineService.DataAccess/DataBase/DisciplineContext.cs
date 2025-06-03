@@ -2,13 +2,14 @@ using System;
 using DisciplineService.DataAccess.DataBase.Configurations;
 using DisciplineService.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace DisciplineService.DataAccess.DataBase;
 
 public class DisciplineContext : DbContext
 {
     public string str = "Host=localhost;Port=5432;Database=Diploma.DisciplineService;Username=pavel;Password=1234";
-    public DbSet<Discipline> disciplines {get; set;}
+    public DbSet<Discipline> disciplines { get; set; }
     public DisciplineContext(DbContextOptions<DisciplineContext> options) : base(options)
     {
     }
@@ -24,3 +25,4 @@ public class DisciplineContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(DisciplineConfiguration).Assembly);
     }
 }
+

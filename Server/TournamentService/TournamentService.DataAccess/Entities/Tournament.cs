@@ -17,6 +17,7 @@ public class Tournament
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public bool IsRegistrationAllowed {get; set;} = false;
+    public string ImagePath { get; set; } = string.Empty;
     public List<Participant> Participants { get; set; } = new List<Participant>();
 
     public string DisciplineId { get; set; }

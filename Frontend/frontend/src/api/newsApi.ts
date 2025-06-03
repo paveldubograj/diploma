@@ -18,6 +18,26 @@ try {
 }
 }
 
+export async function fetchNewsByUser(id: string, page: number, pageSize: number) {
+  try {
+    const filter = new URLSearchParams({
+      page: page.toString(),
+      pageSize: pageSize.toString(),
+    });
+      const response = await fetch(`${API_BASE}/news/${id}/list?${filter.toString()}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        mode: "cors"
+        },);
+      return response.json();
+  } catch (error) {
+    console.error("Произошла ошибка при загрузке данных:", error);
+    setError("Не удалось загрузить данные");
+  }
+  }
+
 export async function fetchTags() {
 try {
     const response = await fetch(`${API_BASE}/tags/list/`, {

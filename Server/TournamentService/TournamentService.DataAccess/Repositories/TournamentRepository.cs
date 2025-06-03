@@ -20,7 +20,7 @@ public class TournamentRepository : ITournamentRepository
     public async Task<Tournament> AddAsync(Tournament tournament)
     {
         _db.Set<Tournament>().Add(tournament);
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
         return tournament;
     }
 
@@ -44,17 +44,12 @@ public class TournamentRepository : ITournamentRepository
     public async Task<Tournament?> GetByIdAsync(string id)
     {
         var r = await _db.Tournaments.FindAsync(id);
-        //_context.Dispose();
         return r;
-            //.Include(t => t.Participants)
-            //.FirstOrDefaultAsync(t => t.Id.Equals(id));
     }
 
     public Tournament GetById(string id)
     {
         return _db.Tournaments.Find(id);
-            //.Include(t => t.Participants)
-            //.FirstOrDefaultAsync(t => t.Id.Equals(id));
     }
 
     public async Task<IEnumerable<Tournament>> GetBySpecificationAsync(TournamentSpecification spec1, TournamentSortOptions? options, int page, int pageSize, CancellationToken token = default)
@@ -96,14 +91,8 @@ public class TournamentRepository : ITournamentRepository
     public async Task<Tournament> UpdateAsync(Tournament tournament)
     {
         _db.Entry(tournament).State = EntityState.Modified;
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
         return tournament;
-    }
-
-    public Participant GetParticipantById(string id)
-    {
-        return _db.Participants.Find(id);
-       // .FirstOrDefaultAsync(t => t.Id.Equals(id));
     }
 
     public async Task<int> GetTotalAsync(){
