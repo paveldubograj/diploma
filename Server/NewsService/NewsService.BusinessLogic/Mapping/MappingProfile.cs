@@ -14,5 +14,6 @@ public class MappingProfile : Profile
         CreateMap<News, NewsUpdateDto>().ReverseMap();
         CreateMap<News, NewsDto>().ForMember(dst => dst.tags, opt => opt.MapFrom(src => src.Tags)).ReverseMap();
         CreateMap<Tag, TagDto>().ReverseMap();
+        CreateMap<NewsList, NewsPagedResponse>();
     }
 }

@@ -23,6 +23,17 @@ namespace DisciplineService.API.Controllers
 
             return Ok(list);
         }
+
+        [HttpGet]
+        [Route("admin")]
+        [Authorize(Roles = RoleName.Admin)]
+        public async Task<IActionResult> GetDisciplinesAdminAsync()
+        {
+            var list = await _disciplineService.GetAllAdminAsync();
+
+            return Ok(list);
+        }
+
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetDisciplineByIdAsync([FromRoute] string id)
@@ -56,7 +67,7 @@ namespace DisciplineService.API.Controllers
         [HttpPost]
         [Route("")]
         [Authorize(Roles = RoleName.Admin)]
-        public async Task<IActionResult> AddDisciplineAsync([FromBody] DisciplineDto dto)
+        public async Task<IActionResult> AddDisciplineAsync([FromBody] DisciplineCreateDto dto)
         {
             var newsDto = await _disciplineService.AddAsync(dto);
             

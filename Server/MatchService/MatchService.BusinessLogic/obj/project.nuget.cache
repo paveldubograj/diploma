@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "OrgDUi8q7tv/59kAq86veDS9e9okboZ4vQSHJzqCNQ7zqD0cWRxUmgVV/FUlDHQiylfYe+ESuY05fsd2QwaljA==",
+  "dgSpecHash": "GkJz6vX/sMAWkA1nExrmna1NOcRbnEkzgozfM2WwoMWvBjZpO3h7U0F3CfSaqYvFm+Gu0pORkBCg1KXAHcYkJQ==",
   "success": true,
   "projectFilePath": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.BusinessLogic/MatchService.BusinessLogic.csproj",
   "expectedPackageFiles": [
@@ -10,18 +10,23 @@
     "/home/pavel/.nuget/packages/microsoft.entityframeworkcore.abstractions/9.0.2/microsoft.entityframeworkcore.abstractions.9.0.2.nupkg.sha512",
     "/home/pavel/.nuget/packages/microsoft.entityframeworkcore.analyzers/9.0.2/microsoft.entityframeworkcore.analyzers.9.0.2.nupkg.sha512",
     "/home/pavel/.nuget/packages/microsoft.entityframeworkcore.relational/9.0.1/microsoft.entityframeworkcore.relational.9.0.1.nupkg.sha512",
-    "/home/pavel/.nuget/packages/microsoft.extensions.caching.abstractions/9.0.2/microsoft.extensions.caching.abstractions.9.0.2.nupkg.sha512",
+    "/home/pavel/.nuget/packages/microsoft.extensions.caching.abstractions/9.0.6/microsoft.extensions.caching.abstractions.9.0.6.nupkg.sha512",
     "/home/pavel/.nuget/packages/microsoft.extensions.caching.memory/9.0.2/microsoft.extensions.caching.memory.9.0.2.nupkg.sha512",
+    "/home/pavel/.nuget/packages/microsoft.extensions.caching.stackexchangeredis/9.0.6/microsoft.extensions.caching.stackexchangeredis.9.0.6.nupkg.sha512",
     "/home/pavel/.nuget/packages/microsoft.extensions.configuration.abstractions/9.0.1/microsoft.extensions.configuration.abstractions.9.0.1.nupkg.sha512",
     "/home/pavel/.nuget/packages/microsoft.extensions.dependencyinjection/9.0.2/microsoft.extensions.dependencyinjection.9.0.2.nupkg.sha512",
-    "/home/pavel/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/9.0.2/microsoft.extensions.dependencyinjection.abstractions.9.0.2.nupkg.sha512",
+    "/home/pavel/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/9.0.6/microsoft.extensions.dependencyinjection.abstractions.9.0.6.nupkg.sha512",
     "/home/pavel/.nuget/packages/microsoft.extensions.logging/9.0.2/microsoft.extensions.logging.9.0.2.nupkg.sha512",
-    "/home/pavel/.nuget/packages/microsoft.extensions.logging.abstractions/9.0.2/microsoft.extensions.logging.abstractions.9.0.2.nupkg.sha512",
-    "/home/pavel/.nuget/packages/microsoft.extensions.options/9.0.2/microsoft.extensions.options.9.0.2.nupkg.sha512",
-    "/home/pavel/.nuget/packages/microsoft.extensions.primitives/9.0.2/microsoft.extensions.primitives.9.0.2.nupkg.sha512",
+    "/home/pavel/.nuget/packages/microsoft.extensions.logging.abstractions/9.0.6/microsoft.extensions.logging.abstractions.9.0.6.nupkg.sha512",
+    "/home/pavel/.nuget/packages/microsoft.extensions.options/9.0.6/microsoft.extensions.options.9.0.6.nupkg.sha512",
+    "/home/pavel/.nuget/packages/microsoft.extensions.primitives/9.0.6/microsoft.extensions.primitives.9.0.6.nupkg.sha512",
+    "/home/pavel/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
     "/home/pavel/.nuget/packages/npgsql/9.0.3/npgsql.9.0.3.nupkg.sha512",
     "/home/pavel/.nuget/packages/npgsql.entityframeworkcore.postgresql/9.0.4/npgsql.entityframeworkcore.postgresql.9.0.4.nupkg.sha512",
-    "/home/pavel/.nuget/packages/system.diagnostics.diagnosticsource/9.0.2/system.diagnostics.diagnosticsource.9.0.2.nupkg.sha512"
+    "/home/pavel/.nuget/packages/pipelines.sockets.unofficial/2.2.8/pipelines.sockets.unofficial.2.2.8.nupkg.sha512",
+    "/home/pavel/.nuget/packages/stackexchange.redis/2.7.27/stackexchange.redis.2.7.27.nupkg.sha512",
+    "/home/pavel/.nuget/packages/system.diagnostics.diagnosticsource/9.0.6/system.diagnostics.diagnosticsource.9.0.6.nupkg.sha512",
+    "/home/pavel/.nuget/packages/system.io.pipelines/5.0.1/system.io.pipelines.5.0.1.nupkg.sha512"
   ],
   "logs": []
 }

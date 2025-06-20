@@ -6,10 +6,10 @@ using Grpc.Core;
 
 namespace DisciplineService.API.Services;
 
-public class DisciplineGrpcService : Protos.DisciplineService.DisciplineServiceBase
+public class DisciplineService : Protos.DisciplineService.DisciplineServiceBase
 {
     private readonly IDisciplineService _disciplineService;
-    public DisciplineGrpcService(IDisciplineService disciplineService)
+    public DisciplineService(IDisciplineService disciplineService)
     {
         _disciplineService = disciplineService;
     }

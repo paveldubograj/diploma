@@ -57,7 +57,7 @@ namespace NewsService.API.Controllers
         [HttpPost]
         [Route("")]
         [Authorize(Roles = $"{RoleName.Admin}, {RoleName.NewsTeller}")]
-        public async Task<IActionResult> AddTagAsync(string tagName)
+        public async Task<IActionResult> AddTagAsync([FromBody]string tagName)
         {
             var newsDto = await _tagsService.AddAsync(tagName);
             

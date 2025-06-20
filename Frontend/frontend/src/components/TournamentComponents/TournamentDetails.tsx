@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { fetchTournamentById, updateTournament, deleteTournament, startTournament, endTournament, setNextRound, generateBracket, registerForTournament } from "../../api/tournamentApi";
+import { fetchTournamentById, deleteTournament, startTournament, endTournament, setNextRound, generateBracket, registerForTournament, getParticipantById } from "../../api/tournamentApi";
 import { MatchList, ParticipantStatus, TournamentDto, TournamentFormat, TournamentStatus } from "../../types";
-import { Button, Card, Container, Row, Col, Form, Table, Nav, Alert, Modal } from "react-bootstrap";
+import { Button, Card, Container, Row, Col, Form, Table, Nav, Alert, Modal, Image, Stack, ButtonGroup, Badge, Pagination, Spinner } from "react-bootstrap";
 import { fetchMatches } from "../../api/matchApi";
 import { hasRole } from "../../utils/auth";
+import MatchCard from "../MatchComponents/MatchCard";
+import { generateSVGPlaceholder } from "../../utils/PlaceholdGenerator";
 
 const TournamentDetails = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<"matches" | "participants">("matches");
   const [tournament, setTournament] = useState<TournamentDto | null>(null);
-  const [editMode, setEditMode] = useState(false);
-  const [formData, setFormData] = useState<TournamentDto | null>(null);
   const [matches, setMatches] = useState<MatchList[]>([]);
   const [loadingMatches, setLoadingMatches] = useState(true);
   const [matchPage, setMatchPage] = useState(1);
@@ -21,28 +21,53 @@ const TournamentDetails = () => {
   const [error, setError] = useState<string | null>(null);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [registerName, setRegisterName] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [cacheBuster, setCacheBuster] = useState(Date.now());
+  const [winnerName, setWinnerName] = useState('');
 
 
   useEffect(() => {
-    try {
-      if (id) {
-        fetchTournamentById(id).then(setTournament);
+    const loadTournament = async () => {
+      try {
+        if (!id) {
+          setError("ID турнира не указан");
+          return;
+        }
+
+        setLoading(true);
+        const data = await fetchTournamentById(id);
+        setTournament(data);
+      } catch (err) {
+        setError("Не удалось загрузить турнир");
+        console.error(err);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      setError("Ошибка получения турнира");
-    }
+    };
+
+    loadTournament();
   }, [id]);
 
-  const handleSave = async () => {
-    try {
-      if (!formData || !id) return;
-      const updated = await updateTournament(id, formData);
-      setTournament(updated);
-      setEditMode(false);
-    } catch (error) {
-      setError("Ошибка обновления турнира");
-    }
-  };
+  useEffect(() => {
+    console.log('Current tournament:', tournament);
+  }, [tournament]);
+
+  useEffect(() => {
+    const loadWinner = async () => {
+      if(!tournament) return;
+      if (!tournament?.winnerId) return;
+
+      try {
+        const winner = await getParticipantById(tournament.winnerId, tournament.id);
+        setWinnerName(winner.name);
+      } catch (err) {
+        console.error("Ошибка загрузки победителя:", err);
+        setWinnerName("Неизвестно");
+      }
+    };
+
+    loadWinner();
+  }, [tournament?.winnerId, tournament]);
 
   const handleDelete = async () => {
     if (!id) return;
@@ -51,8 +76,9 @@ const TournamentDetails = () => {
   };
 
   const handleAction = async (action: () => Promise<any>) => {
+    if (!id) return;
     await action();
-    const updated = await fetchTournamentById(id!);
+    const updated = await fetchTournamentById(id);
     setTournament(updated);
   };
 
@@ -65,10 +91,6 @@ const TournamentDetails = () => {
       setError("Ошибка при регистрации на турнир.");
     }
   };
-
-  const openRegisterModal = () => setShowRegisterModal(true);
-  const closeRegisterModal = () => setShowRegisterModal(false);
-
 
   useEffect(() => {
     const loadMatches = async () => {
@@ -93,220 +115,284 @@ const TournamentDetails = () => {
       }
     };
 
-    loadMatches();
-  }, [id, matchPage, matchPageSize]);
+    if(tournament) {loadMatches();}
+  }, [id, matchPage, matchPageSize, tournament]);
 
-  if (!tournament) return <div>Загрузка...</div>;
+  if (loading) {
+    return (
+      <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "50vh" }}>
+      <Spinner animation="border" variant="primary" />
+      </Container>
+    );
+  }
 
-  return (
-    <Container>
-      <h2>{tournament.name}</h2>
-      <Card className="mb-4">
-        <Card.Body>
+  if (error) {
+    return (
+      <Container className="my-4">
+      <Alert variant="danger">
+      {error}
+      <Button variant="link" onClick={() => navigate("/tournaments")}>
+      Вернуться к списку турниров
+      </Button>
+      </Alert>
+      </Container>
+    );
+  }
 
-          {!editMode ? (
-            <Card>
-              <Card.Body>
-                <p><strong>Формат:</strong> {TournamentFormat.find(f => f.id === tournament.format)?.name}</p>
-                <p><strong>Статус:</strong> {TournamentStatus[tournament.status].name}</p>
-                <p><strong>Макс. участников:</strong> {tournament.maxParticipants}</p>
-                <p><strong>Раунды:</strong> {tournament.rounds}</p>
-                <p><strong>Дата начала:</strong> {tournament.startDate?.split("T")[0]}</p>
-                <p><strong>Дата окончания:</strong> {tournament.endDate?.split("T")[0]}</p>
-                <p><strong>Регистрация:</strong> {tournament.isRegistrationAllowed ? "Да" : "Нет"}</p>
-                <p><strong>Победитель:</strong> {tournament.winnerId}</p>
-              </Card.Body>
-            </Card>
-          ) : (<Form onSubmit={handleSave}>
-            <Form.Group className="mb-3">
-              <Form.Label>Название</Form.Label>
-              <Form.Control
-                type="text"
-                value={tournament.name}
-                onChange={(e) => setTournament({ ...tournament, name: e.target.value })}
-              />
-            </Form.Group>
+  if (!tournament) {
+    return (
+      <Container className="my-4">
+      <Alert variant="warning">
+      Турнир не найден
+      <Button variant="link" onClick={() => navigate("/tournaments")}>
+      Вернуться к списку турниров
+      </Button>
+      </Alert>
+      </Container>
+    );
+  }
 
-            <Form.Group className="mb-3">
-              <Form.Label>Формат</Form.Label>
-              <Form.Select
-                value={tournament.format}
-                onChange={(e) => setTournament({ ...tournament, format: parseInt(e.target.value) })}
-              >
-                {TournamentFormat.map((f) => (
-                  <option key={f.id} value={f.id}>
-                    {f.name}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
+  const canEdit = hasRole("organizer");
 
-            <Form.Group className="mb-3">
-              <Form.Label>Статус</Form.Label>
-              <Form.Select
-                value={tournament.status}
-                onChange={(e) =>
-                  setTournament({ ...tournament, status: parseInt(e.target.value) })
-                }
-              >
-                {TournamentStatus.map((f) => (
-                  <option key={f.id} value={f.id}>
-                    {f.name}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Макс. участников</Form.Label>
-              <Form.Control
-                type="number"
-                value={tournament.maxParticipants}
-                onChange={(e) => setTournament({ ...tournament, maxParticipants: parseInt(e.target.value) })}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Дата начала</Form.Label>
-              <Form.Control
-                type="date"
-                value={tournament.startDate?.split('T')[0] ?? ""}
-                onChange={(e) => setTournament({ ...tournament, startDate: e.target.value })}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Дата окончания</Form.Label>
-              <Form.Control
-                type="date"
-                value={tournament.endDate?.split('T')[0] ?? ""}
-                onChange={(e) => setTournament({ ...tournament, endDate: e.target.value })}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Регистрация</Form.Label>
-              <Form.Check
-                type="checkbox"
-                label="Разрешена"
-                checked={tournament.isRegistrationAllowed}
-                onChange={(e) =>
-                  setTournament({ ...tournament, isRegistrationAllowed: e.target.checked })
-                }
-              />
-            </Form.Group>
-
-            {(editMode && hasRole("organizer")) ? (
-              (<Button onClick={handleSave} className="me-2">Сохранить</Button>)
-            ) : (
-              <Button onClick={() => {
-                setEditMode(true);
-                setFormData(tournament);
-              }} className="me-2">Редактировать</Button>
-            )}
-            {hasRole("organizer") && (<Button variant="danger" onClick={handleDelete} className="me-2">Удалить</Button>)}
-          </Form>)}
-        </Card.Body>
-      </Card>
-
+  return <Container className="my-4">
       <Row className="mb-4">
-        <Col>
-          {tournament.status === 0 && (<Button onClick={() => handleAction(() => startTournament(tournament.id))}>Запустить</Button>)}
-          {((tournament.format === 1 || tournament.format === 3) && tournament.status !== 2) && (<Button onClick={() => handleAction(() => setNextRound(tournament.id))}>След. раунд</Button>)}
-          {tournament.status !== 2 && (<Button onClick={() => handleAction(() => endTournament(tournament.id))}>Завершить</Button>)}
-          {tournament.status !== 2 && (<Button onClick={() => handleAction(() => generateBracket(tournament.id))}>Сгенерировать сетку</Button>)}
-          {tournament.isRegistrationAllowed && (
-            <Button variant="success" className="ms-3" onClick={openRegisterModal}>
-              Зарегистрироваться
-            </Button>
-          )}
+        <Col md={4}>
+        {tournament && (
+          <Image 
+            src={tournament.imagePath 
+              ? `http://localhost:5276/${tournament.imagePath}?t=${cacheBuster}`
+              : generateSVGPlaceholder(400, 400)
+            }
+            alt={tournament.name}
+            fluid
+            rounded
+            className="shadow-sm"
+            style={{ maxHeight: '300px', objectFit: 'cover' }}
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = generateSVGPlaceholder(400, 400);
+            }}
+          />)}
+        </Col>
+        <Col md={8}>
+          <Stack gap={3}>
+          {tournament && (
+            <div className="d-flex justify-content-between align-items-start">
+              <h1>{tournament.name}</h1>
+              {canEdit && (
+                <ButtonGroup>
+                  <Button 
+                    variant={"primary"} 
+                    size="sm"
+                    onClick={() => navigate(`/tournaments/update/${tournament.id}`)}
+                  >
+                    {"Редактировать"}
+                  </Button>
+                  <Button 
+                    variant="outline-danger" 
+                    size="sm"
+                    onClick={handleDelete}
+                  >
+                    Удалить
+                  </Button>
+                </ButtonGroup>
+              )}
+            </div>
+            )}
+
+            {tournament && (
+            <div className="d-flex gap-2">
+              <Badge bg={"primary"}>{TournamentFormat.find(f => f.id === tournament.format)?.name}</Badge>
+              <Badge bg={"success"}>{TournamentStatus[tournament.status].name}</Badge>
+              {tournament.winnerId && (
+                <Badge bg="success">Победитель: {winnerName}</Badge>
+              )}
+            </div>
+            )}
+            {tournament && (
+            <Row>
+              <Col md={6}>
+                <Card>
+                  <Card.Body>
+                    <Card.Title>Основная информация</Card.Title>
+                    <Stack gap={2}>
+                      <div>
+                        <strong>Дата начала:</strong> {new Date(tournament.startDate).toLocaleDateString()}
+                      </div>
+                      <div>
+                        <strong>Дата окончания:</strong> {new Date(tournament.endDate).toLocaleDateString()}
+                      </div>
+                      <div>
+                        <strong>Макс. участников:</strong> {tournament.maxParticipants}
+                      </div>
+                      <div>
+                        <strong>Раундов:</strong> {tournament.rounds}
+                      </div>
+                      <div>
+                        <strong>Регистрация:</strong>{" "}
+                        <Badge bg={tournament.isRegistrationAllowed ? "success" : "secondary"}>
+                          {tournament.isRegistrationAllowed ? "Открыта" : "Закрыта"}
+                        </Badge>
+                      </div>
+                    </Stack>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={6}>
+                <Card>
+                  <Card.Body>
+                    <Card.Title>Действия</Card.Title>
+                    <Stack gap={2}>
+                      {(tournament.status === 0 || tournament.status === 4) && (
+                        <Button 
+                          variant="outline-primary"
+                          onClick={() => handleAction(() => startTournament(tournament.id))}
+                        >
+                          Запустить турнир
+                        </Button>
+                      )}
+                      {((tournament.format === 1 || tournament.format === 3) && tournament.status !== 2) && (
+                        <Button 
+                          variant="outline-primary"
+                          onClick={() => handleAction(() => setNextRound(tournament.id))}
+                        >
+                          Следующий раунд
+                        </Button>
+                      )}
+                      {(tournament.status !== 2 && tournament.status !== 3) && (
+                        <Button 
+                          variant="outline-danger"
+                          onClick={() => handleAction(() => endTournament(tournament.id))}
+                        >
+                          Завершить турнир
+                        </Button>
+                      )}
+                      {(tournament.status === 0 || ((tournament.format === 1 || tournament.format === 3) && tournament.status === 1)) && 
+                        <Button 
+                          variant="outline-success"
+                          onClick={() => handleAction(() => generateBracket(tournament.id))}
+                        >
+                          Сгенерировать сетку
+                        </Button>
+                      }
+                      {(tournament.isRegistrationAllowed && tournament.status !== 2) && (
+                        <Button 
+                          variant="success"
+                          onClick={() => setShowRegisterModal(true)}
+                        >
+                          Зарегистрироваться
+                        </Button>
+                      )}
+                    </Stack>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            )}
+          </Stack>
         </Col>
       </Row>
 
+      {error && (
+        <Alert variant="danger" dismissible onClose={() => setError(null)}>
+          {error}
+        </Alert>
+      )}
+
       <Nav variant="tabs" activeKey={activeTab} onSelect={(k) => setActiveTab(k as "matches" | "participants")}>
         <Nav.Item>
-          <Nav.Link eventKey="matches">Матчи</Nav.Link>
+          <Nav.Link eventKey="matches">Матчи ({matches.length})</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link eventKey="participants">Участники</Nav.Link>
+        {tournament && (<Nav.Link eventKey="participants">Участники ({tournament.participants.length})</Nav.Link>)}
         </Nav.Item>
       </Nav>
 
       <div className="mt-3">
-        {activeTab === "matches" && (
+        {activeTab === "matches" ? (
           <>
-            {matches.map((match) => {
-              const isCompleted = match.status === 2;
-              const winnerColor = {
-                [match.participant1Id]: match.winnerId === match.participant1Id ? "green" : "red",
-                [match.participant2Id]: match.winnerId === match.participant2Id ? "green" : "red"
-              };
-
-              return (
-                <Col md={6} lg={4} key={match.id} className="mb-3">
-                  <Link to={`/matches/${match.id}`} style={{ textDecoration: "none" }}>
-                    <Card>
-                      <Card.Body>
-                        <Card.Title>{match.round} (#{match.matchOrder})</Card.Title>
-                        <Card.Text>
-                          Участники: <br />
-                          {match.participant1Name}<br />
-                          {match.participant2Name}
-                          {isCompleted && (
-                            <>
-                              <br />
-                              <span>Счет:</span>
-                              <span style={{ color: winnerColor[match.participant1Id] }}> {match.winScore}</span> -
-                              <span style={{ color: winnerColor[match.participant2Id] }}> {match.looseScore}</span>
-                            </>
-                          )}
-                        </Card.Text>
-                      </Card.Body>
-                    </Card>
-                  </Link>
+            <Row xs={1} md={2} lg={3} className="g-4">
+              {matches.map((match) => (
+                <Col key={match.id}>
+                  <MatchCard {...match} />
                 </Col>
-              );
-            })}
-            <div className="d-flex justify-content-between align-items-center my-3">
-              <Button disabled={matchPage === 1} onClick={() => setMatchPage(matchPage - 1)}>
-                Назад
-              </Button>
-              <span>
-                Страница {matchPage} из {Math.ceil(totalMatches / matchPageSize)}
-              </span>
-              <Button
-                disabled={matchPage >= Math.ceil(totalMatches / matchPageSize)}
-                onClick={() => setMatchPage(matchPage + 1)}
-              >
-                Вперёд
-              </Button>
-            </div>
-          </>
-        )}
+              ))}
+            </Row>
+            
+            {matches.length === 0 && (
+              <Alert variant="info" className="text-center">
+                Матчи не найдены
+              </Alert>
+            )}
 
-        {activeTab === "participants" && (
+            {totalMatches > matchPageSize && (
+              <div className="d-flex justify-content-center mt-4">
+                <Pagination>
+                  <Pagination.Prev 
+                    disabled={matchPage === 1} 
+                    onClick={() => setMatchPage(matchPage - 1)} 
+                  />
+                  {Array.from({ length: Math.ceil(totalMatches / matchPageSize + 1) }).map((_, i) => (
+                    <Pagination.Item
+                      key={i + 1}
+                      active={i + 1 === matchPage}
+                      onClick={() => setMatchPage(i + 1)}
+                    >
+                      {i + 1}
+                    </Pagination.Item>
+                  ))}
+                  <Pagination.Next
+                    disabled={matchPage >= Math.ceil(totalMatches / matchPageSize + 1)}
+                    onClick={() => setMatchPage(matchPage + 1)}
+                  />
+                </Pagination>
+              </div>
+            )}
+          </>
+        ) : (
           <>
-            {hasRole("organizer") && <Link to={`/tournaments/${id}/add-participant`}>
-              <Button variant="success" className="mb-3">Добавить участника</Button>
-            </Link>}
-            <Table striped bordered hover>
+            {canEdit && tournament && (
+              <Link to={`/tournaments/${id}/add-participant`}>
+                <Button variant="success" className="mb-3">
+                  Добавить участника
+                </Button>
+              </Link>
+            )}
+            
+            <Table striped bordered hover responsive>
               <thead>
                 <tr>
+                  <th>#</th>
                   <th>Имя</th>
                   <th>Очки</th>
                   <th>Статус</th>
-                  <th></th>
+                  {canEdit && <th>Действия</th>}
                 </tr>
               </thead>
               <tbody>
-                {tournament.participants.map(p => (
+                {tournament.participants.map((p, index) => (
                   <tr key={p.id}>
-                    <td>{p.name}</td>
-                    <td>{p.points ?? "—"}</td>
-                    <td>{ParticipantStatus[p.status].name ?? "—"}</td>
+                    <td>{index + 1}</td>
                     <td>
-                      {hasRole("organizer") && <a href={`/participants/${p.id}/edit`} className="btn" role="button">Обновить</a>}
+                      <Link to={`/users/${p.userId}`} className="text-decoration-none">
+                        {p.name}
+                      </Link>
                     </td>
+                    <td>{p.points ?? "—"}</td>
+                    <td>
+                      <Badge bg="info">
+                        {ParticipantStatus[p.status].name}
+                      </Badge>
+                    </td>
+                    {canEdit && (
+                      <td>
+                        <Link 
+                          to={`/tournaments/${tournament.id}/edit-participant/${p.id}`}
+                        >
+                          Редактировать
+                        </Link>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -314,34 +400,38 @@ const TournamentDetails = () => {
           </>
         )}
       </div>
-      <Modal show={showRegisterModal} onHide={closeRegisterModal} centered>
+
+      <Modal show={showRegisterModal} onHide={() => setShowRegisterModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Регистрация на турнир</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group controlId="registerName">
-              <Form.Label>Имя участника</Form.Label>
+            <Form.Group className="mb-3">
+              <Form.Label>Ваше имя</Form.Label>
               <Form.Control
                 type="text"
                 value={registerName}
                 onChange={(e) => setRegisterName(e.target.value)}
-                placeholder="Введите имя"
+                placeholder="Введите имя для регистрации"
               />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={closeRegisterModal}>
+          <Button variant="secondary" onClick={() => setShowRegisterModal(false)}>
             Отмена
           </Button>
-          <Button variant="primary" onClick={handleRegister} disabled={!registerName.trim()}>
-            Подтвердить
+          <Button 
+            variant="primary" 
+            onClick={handleRegister} 
+            disabled={!registerName.trim()}
+          >
+            Зарегистрироваться
           </Button>
         </Modal.Footer>
       </Modal>
     </Container>
-  );
 };
 
 export default TournamentDetails;

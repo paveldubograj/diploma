@@ -19,8 +19,9 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash))
             .ReverseMap();
         CreateMap<UserTournaments, string>()
-            .ForMember(dest => dest, opt => opt.MapFrom(c => c.TournamentId))
-            .ReverseMap();
-        CreateMap<User, UserProfileDto>().ForMember(dest => dest.tournaments, opt => opt.MapFrom(c => c.userTournaments)).ReverseMap();
+            .ConvertUsing(t => t.TournamentId);
+        CreateMap<User, UserProfileDto>().ReverseMap();
+        CreateMap<User, UserUpdateDto>().ReverseMap();
+        CreateMap<UserList, UserPagedDto>();
     }
 }

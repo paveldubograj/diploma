@@ -21,14 +21,13 @@ namespace NewsService.API;
 public class Startup
 {
     private static string MyAllowSpecificOrigins { get; set; }
-    private readonly IWebHostEnvironment _env;
     public static void ConfigureServices(IServiceCollection services)
     {
         services.AddAutoMapper(typeof(MappingProfile));
         services.AddTransient<ITagsService, TagsService>();
         services.AddTransient<INewsService, NewsService.BusinessLogic.Services.NewsService>();
         services.AddTransient<IImageService, ImageService>();
-        services.AddTransient<IDisciplineService, DisciplineService>();
+        services.AddTransient<IDisciplineGrpcService, DisciplineGrpcService>();
         services.AddSingleton<IFileStorageConfig, FileStorageConfig>();
     }
     
@@ -75,12 +74,31 @@ public class Startup
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true
                 };
+                x.Events = new JwtBearerEvents
+                {
+                    OnChallenge = async context =>
+                    {
+                        context.HandleResponse();
+                        context.Response.StatusCode = 401;
+                        await context.Response.WriteAsync("Unauthorized (Token expired or invalid)");
+                    }
+                };
             });
     }
 
     public static void OptionsConfigure(IServiceCollection services, ConfigurationManager config)
     {
         services.Configure<GrpcDisciplineSettings>(config.GetSection("GrpcDisciplineSettings"));
+    }
+
+    public static void ConfigureRedis(IServiceCollection services, ConfigurationManager config)
+    {
+        services.AddStackExchangeRedisCache(option =>
+        {
+            option.Configuration = config.GetConnectionString("Cache");
+            option.InstanceName = "news";
+        });
+        services.AddSingleton<ICacheService, CacheService>();
     }
     
     public static void ConfigureCors(IServiceCollection services)
@@ -91,10 +109,9 @@ public class Startup
             options.AddPolicy(name: MyAllowSpecificOrigins,
                 policy =>
                 {
-                    policy.WithOrigins("http://localhost:3000")
+                    policy.WithOrigins("http://localhost:3000", "http://frontend:3000")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
-                        //.AllowCredentials();
                 });
         });
     }

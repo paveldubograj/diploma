@@ -6,7 +6,7 @@ import { getParticipantById, updateParticipant, deleteParticipant } from "../../
 import { ParticipantDto, ParticipantStatus } from "../../types";
 
 const ParticipantEdit = () => {
-  const { id } = useParams();
+  const { tournamentid, id } = useParams();
   const navigate = useNavigate();
   const [participant, setParticipant] = useState<ParticipantDto | null>(null);
   const [loading, setLoading] = useState(true);
@@ -15,8 +15,9 @@ const ParticipantEdit = () => {
   useEffect(() => {
     const loadParticipant = async () => {
       if (!id) return;
+      if (!tournamentid) return;
       try {
-        const data = await getParticipantById(id);
+        const data = await getParticipantById(id, tournamentid);
         setParticipant(data);
       } catch (err) {
         setError("Ошибка загрузки участника:");
@@ -26,7 +27,7 @@ const ParticipantEdit = () => {
     };
 
     loadParticipant();
-  }, [id]);
+  }, [id, tournamentid]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!participant) return;
@@ -48,9 +49,9 @@ const ParticipantEdit = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!participant || !id) return;
+    if (!participant || !id || !tournamentid) return;
     try {
-      await updateParticipant(id, participant);
+      await updateParticipant(id, tournamentid, participant);
       navigate(-1);
     } catch (err) {
       setError("Ошибка обновления участника:");
@@ -58,9 +59,9 @@ const ParticipantEdit = () => {
   };
 
   const handleDelete = async () => {
-    if (!id) return;
+    if (!id || !tournamentid) return;
     try {
-      await deleteParticipant(id);
+      await deleteParticipant(id, tournamentid);
       navigate(-1);
     } catch (err) {
       setError("Ошибка удаления участника:");

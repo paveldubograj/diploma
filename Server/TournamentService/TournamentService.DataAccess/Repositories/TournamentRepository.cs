@@ -7,14 +7,17 @@ using TournamentService.DataAccess.Entities;
 using TournamentService.DataAccess.Repositories.Interfaces;
 using TournamentService.DataAccess.Specifications;
 using TournamentService.DataAccess.Specifications.SpecSettings;
+using TournamentService.Shared.Constants;
 using TournamentService.Shared.Enums;
+using TournamentService.Shared.Exceptions;
 
 namespace TournamentService.DataAccess.Repositories;
 
 public class TournamentRepository : ITournamentRepository
 {
     private readonly TournamentContext _db;
-    public TournamentRepository(TournamentContext context){
+    public TournamentRepository(TournamentContext context)
+    {
         _db = context;
     }
     public async Task<Tournament> AddAsync(Tournament tournament)
@@ -49,19 +52,20 @@ public class TournamentRepository : ITournamentRepository
 
     public Tournament GetById(string id)
     {
-        return _db.Tournaments.Find(id);
+        var t = _db.Tournaments.Find(id);
+        if (t is null) throw new NotFoundException(ErrorName.TournamentNotFound);
+        return t;
     }
 
-    public async Task<IEnumerable<Tournament>> GetBySpecificationAsync(TournamentSpecification spec1, TournamentSortOptions? options, int page, int pageSize, CancellationToken token = default)
+    public async Task<TournamentList> GetBySpecificationAsync(TournamentSpecification spec1, TournamentSortOptions? options, int page, int pageSize, CancellationToken token = default)
     {
+        int total = await _db.Tournaments.ApplySpecification(spec1).CountAsync();
         IQueryable<Tournament> query = _db.Tournaments
-            .OrderByDescending(n => n.StartDate)
             .AsNoTracking()
-            .ApplySpecification(spec1)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize);
+            .ApplySpecification(spec1);
 
-        switch (options){
+        switch (options)
+        {
             case TournamentSortOptions.ByName:
                 query = query.OrderBy(c => c.Name);
                 break;
@@ -85,7 +89,9 @@ public class TournamentRepository : ITournamentRepository
                 break;
         }
 
-        return await query.ToListAsync(cancellationToken: token);
+        query = query.Skip((page - 1) * pageSize).Take(pageSize);
+
+        return new TournamentList(){Tournaments = await query.ToListAsync(), Total = total};
     }
 
     public async Task<Tournament> UpdateAsync(Tournament tournament)
@@ -95,11 +101,24 @@ public class TournamentRepository : ITournamentRepository
         return tournament;
     }
 
-    public async Task<int> GetTotalAsync(){
+    public async Task<int> GetTotalAsync()
+    {
         return await _db.Participants.CountAsync();
     }
 
-    public async Task<bool> IsRegistrationAllowed(string tournamentId){
-        return (await _db.Tournaments.FindAsync(tournamentId)).IsRegistrationAllowed;
+    public async Task<bool> IsRegistrationAllowed(string tournamentId)
+    {
+        var t = await _db.Tournaments.FindAsync(tournamentId);
+        if (t is null) throw new NotFoundException(ErrorName.TournamentNotFound);
+        return t.IsRegistrationAllowed;
+    }
+
+    public async Task<List<Tournament>> GetByIdsAsync(List<string> ids)
+    {
+        var results = await _db.Tournaments
+            .AsNoTracking()
+            .Where(e => ids.Contains(e.Id))
+            .ToListAsync();
+        return results;
     }
 }

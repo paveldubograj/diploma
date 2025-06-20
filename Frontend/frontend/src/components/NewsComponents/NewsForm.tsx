@@ -24,7 +24,7 @@ const NewsForm: React.FC = () => {
       setTitle("");
       setContent("");
     } catch (error) {
-      setError("Не удалось обновить новость");
+      setError("Не удалось добавить новость");
     }
   };
 

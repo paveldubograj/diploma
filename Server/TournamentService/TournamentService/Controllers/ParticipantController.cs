@@ -71,9 +71,9 @@ namespace TournamentService.API.Controllers
         [HttpPost]
         [Route("register")]
         [Authorize]
-        public async Task<IActionResult> RegisterForTournamentAsync([FromRoute] string tournamentId, [FromBody] string userName)
+        public async Task<IActionResult> RegisterForTournamentAsync([FromRoute] string tournamentId, [FromBody] ParticipantAddDto userName)
         {
-            RegisterForTournamentDto dto = new RegisterForTournamentDto() { UserId = User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value, Name = userName };
+            RegisterForTournamentDto dto = new RegisterForTournamentDto() { UserId = User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value, Name = userName.Name };
             var newsDto = await _participantService.RegisterAsync(dto, tournamentId);
 
             return Ok(newsDto);

@@ -10,7 +10,7 @@ using grpc = global::Grpc.Core;
 namespace DisciplineService.API.Protos {
   public static partial class DisciplineService
   {
-    static readonly string __ServiceName = "DisciplineService";
+    static readonly string __ServiceName = "grpc.DisciplineService";
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static void __Helper_SerializeMessage(global::Google.Protobuf.IMessage message, grpc::SerializationContext context)
@@ -46,17 +46,17 @@ namespace DisciplineService.API.Protos {
     }
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::DisciplineService.API.Protos.CheckRequest> __Marshaller_CheckRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DisciplineService.API.Protos.CheckRequest.Parser));
+    static readonly grpc::Marshaller<global::DisciplineService.API.Protos.CheckRequest> __Marshaller_grpc_CheckRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DisciplineService.API.Protos.CheckRequest.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::DisciplineService.API.Protos.CheckResponse> __Marshaller_CheckResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DisciplineService.API.Protos.CheckResponse.Parser));
+    static readonly grpc::Marshaller<global::DisciplineService.API.Protos.CheckResponse> __Marshaller_grpc_CheckResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DisciplineService.API.Protos.CheckResponse.Parser));
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Method<global::DisciplineService.API.Protos.CheckRequest, global::DisciplineService.API.Protos.CheckResponse> __Method_CheckDiscipline = new grpc::Method<global::DisciplineService.API.Protos.CheckRequest, global::DisciplineService.API.Protos.CheckResponse>(
         grpc::MethodType.Unary,
         __ServiceName,
         "CheckDiscipline",
-        __Marshaller_CheckRequest,
-        __Marshaller_CheckResponse);
+        __Marshaller_grpc_CheckRequest,
+        __Marshaller_grpc_CheckResponse);
 
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor

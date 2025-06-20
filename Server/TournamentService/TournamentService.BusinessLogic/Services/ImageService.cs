@@ -13,8 +13,8 @@ public class ImageService : IImageService
     private IFileStorageConfig _config;
     private List<string> _allowesExtensions = [".jpg", ".jpeg", ".png", ".gif"];
     private static int mb = 1048576;
-    private static int Width = 500;
-    private static int Height = 500;
+    private static int Width = 300;
+    private static int Height = 300;
     private static int MaxSizeBytes = 10 * mb;
     public ImageService(IFileStorageConfig config)
     {
@@ -29,7 +29,9 @@ public class ImageService : IImageService
 
         ValidateImageSize(image);
 
-        var folderPath = Path.Combine(_config.WebRootPath, "images");
+        string folderPath;
+        if (!string.IsNullOrEmpty(_config.WebRootPath)) folderPath = Path.Combine(_config.WebRootPath, "images");
+        else folderPath = "wwwroot/images";
 
         string filePath;
         string fileName;
@@ -52,7 +54,9 @@ public class ImageService : IImageService
         if (relativePath.StartsWith("/"))
             relativePath = relativePath[1..];
 
-        var fullPath = Path.Combine(_config.WebRootPath, relativePath);
+        string fullPath;
+        if (!string.IsNullOrEmpty(_config.WebRootPath)) fullPath = Path.Combine(_config.WebRootPath, relativePath);
+        else fullPath = "wwwroot/images";
 
         if (!File.Exists(fullPath))
             return false;

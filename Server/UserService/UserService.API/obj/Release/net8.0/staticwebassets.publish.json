@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "y+GIEww1ayCBnROwuS2aVmzlXITk3rL+NP2vtAXB4JE=",
+  "Source": "UserService.API",
+  "BasePath": "_content/UserService.API",
+  "Mode": "Default",
+  "ManifestType": "Publish",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "UserService.API/wwwroot",
+      "Source": "UserService.API",
+      "ContentRoot": "/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.API/wwwroot/",
+      "BasePath": "_content/UserService.API",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.API/wwwroot/images/News_00000000-0000-0000-0000-000000000000_image.jpg",
+      "SourceId": "UserService.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.API/wwwroot/",
+      "BasePath": "_content/UserService.API",
+      "RelativePath": "images/News_00000000-0000-0000-0000-000000000000_image.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/News_00000000-0000-0000-0000-000000000000_image.jpg"
+    }
+  ]
+}

@@ -15,6 +15,7 @@ builder.Services.AddGrpc();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<MatchValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<MatchUpdateDtoValidator>();
+Startup.ConfigureRedis(builder.Services, config);
 Startup.ConfigureCors(builder.Services);
 Startup.ConfigureSwagger(builder.Services);
 Startup.ConfigureAuth(builder.Services, config);

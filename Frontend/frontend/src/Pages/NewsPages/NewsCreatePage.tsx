@@ -5,17 +5,19 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import ListGroup from 'react-bootstrap/ListGroup';
-import { Tag } from '../../types';
+import { Discipline, Tag } from '../../types';
 import { addPieceOfNews, addTag, addTagToPieceOfNews, fetchTags } from '../../api/newsApi';
+import { fetchDisciplines } from '../../api/disciplineApi';
 
 const NewsCreatePage: React.FC = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ title: '', content: '' });
+  const [form, setForm] = useState({ title: '', content: '', categoryId: '', imagePath: '' });
   const [error, setError] = useState<string | null>(null);
   const [tags, setTags] = useState<Tag[]>([]);
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [newTagName, setNewTagName] = useState('');
   const [newsId, setNewsId] = useState<string | null>(null);
+  const [disciplines, setDisciplines] = useState<Discipline[]>([]);
 
   useEffect(() => {
     loadTags();
@@ -27,10 +29,18 @@ const NewsCreatePage: React.FC = () => {
       const data = await response;
       setTags(data);
     }
+    fetchDisciplines().then(setDisciplines);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleDisciplineChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setForm(prev => ({
+      ...prev,
+      categoryId: e.target.value
+    }));
   };
 
   const handleCreateNews = async () => {
@@ -53,7 +63,7 @@ const NewsCreatePage: React.FC = () => {
   };
 
   const handleCreateTag = async () => {
-    const response = await addTag(JSON.stringify({ name: newTagName }));
+    const response = await addTag(newTagName);
 
     if (response) {
       setNewTagName('');
@@ -70,20 +80,39 @@ const NewsCreatePage: React.FC = () => {
   }
 
   return (
-    <div className="flex-grow-1">
-      <h2>Создать новость</h2>
+    <div className="flex-grow-1 container py-4">
+      <h2 className="mb-4">Создать новость</h2>
 
-      <Form className="mb-3">
-        <Form.Group className="mb-2">
+      <Form className="mb-4">
+        <Form.Group className="mb-3">
           <Form.Label>Заголовок</Form.Label>
           <Form.Control
             type="text"
             name="title"
             value={form.title}
             onChange={handleChange}
+            required
           />
         </Form.Group>
-        <Form.Group className="mb-2">
+
+        <Form.Group className="mb-3">
+          <Form.Label>Дисциплина</Form.Label>
+          <Form.Select
+            name="disciplineId"
+            value={form.categoryId}
+            onChange={handleDisciplineChange}
+            required
+          >
+            <option value="">Выберите дисциплину</option>
+            {disciplines.map(discipline => (
+              <option key={discipline.id} value={discipline.id}>
+                {discipline.name}
+              </option>
+            ))}
+          </Form.Select>
+        </Form.Group>
+
+        <Form.Group className="mb-3">
           <Form.Label>Контент</Form.Label>
           <Form.Control
             as="textarea"
@@ -91,51 +120,78 @@ const NewsCreatePage: React.FC = () => {
             rows={5}
             value={form.content}
             onChange={handleChange}
+            required
           />
         </Form.Group>
-        <Button variant="primary" onClick={handleCreateNews} disabled={!!newsId}>
+
+        <Button 
+          variant="primary" 
+          onClick={handleCreateNews} 
+          disabled={!!newsId || !form.title || !form.content || !form.categoryId}
+        >
           {newsId ? 'Новость создана' : 'Создать новость'}
         </Button>
       </Form>
 
       {newsId && (
-        <>
-          <h4>Добавить теги к новости</h4>
-          <ListGroup className="mb-3">
+        <div className="border-top pt-4">
+          <h4 className="mb-3">Добавить теги к новости</h4>
+          
+          <ListGroup className="mb-4">
             {tags.map(tag => (
-              <ListGroup.Item key={tag.id}>
+              <ListGroup.Item key={tag.id} className="d-flex justify-content-between align-items-center">
                 {tag.name}
                 <Button
-                  variant="outline-success"
+                  variant={selectedTagIds.includes(tag.id) ? "success" : "outline-success"}
                   size="sm"
-                  className="ms-2"
-                  disabled={selectedTagIds.includes(tag.id)}
                   onClick={() => handleAddTagToNews(tag.id)}
+                  disabled={selectedTagIds.includes(tag.id)}
                 >
-                  Добавить
+                  {selectedTagIds.includes(tag.id) ? 'Добавлен' : 'Добавить'}
                 </Button>
               </ListGroup.Item>
             ))}
           </ListGroup>
 
-          <Form className="mb-3">
+          <Form className="mb-4">
             <Form.Label>Создать новый тег</Form.Label>
             <div className="d-flex gap-2">
               <Form.Control
                 value={newTagName}
                 onChange={(e) => setNewTagName(e.target.value)}
+                placeholder="Введите название тега"
               />
-              <Button onClick={handleCreateTag}>Создать</Button>
+              <Button 
+                onClick={handleCreateTag}
+                disabled={!newTagName.trim()}
+              >
+                Создать
+              </Button>
             </div>
           </Form>
 
-          <Button variant="success" onClick={finishAndGoToDetails}>
-            Перейти к новости
-          </Button>
-        </>
+          <div className="d-flex justify-content-end">
+            <Button 
+              variant="success" 
+              onClick={finishAndGoToDetails}
+              className="px-4"
+            >
+              Перейти к новости
+            </Button>
+          </div>
+        </div>
       )}
 
-      {error && <Alert className="mt-3" variant="danger">{error}</Alert>}
+      {error && (
+        <Alert 
+          variant="danger" 
+          className="mt-3"
+          dismissible
+          onClose={() => setError(null)}
+        >
+          {error}
+        </Alert>
+      )}
     </div>
   );
 };

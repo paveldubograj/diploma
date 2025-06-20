@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.API/wwwroot/images/News_00000000-0000-0000-0000-000000000000_image.jpg",
+      "PackagePath": "staticwebassets/images/News_00000000-0000-0000-0000-000000000000_image.jpg"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.UserService.API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.UserService.API.props",
+      "PackagePath": "build\\UserService.API.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.UserService.API.props",
+      "PackagePath": "buildMultiTargeting\\UserService.API.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.UserService.API.props",
+      "PackagePath": "buildTransitive\\UserService.API.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

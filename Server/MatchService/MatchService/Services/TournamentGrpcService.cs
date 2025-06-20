@@ -35,7 +35,7 @@ public class TournamentGrpcService : TournamentService.TournamentServiceBase
 
     public override async Task<Empty> UpdateMatch(Match request, ServerCallContext context)
     {
-        var matchDto = await _matchService.UpdateAsync(request.Id, MatchToDto(request), request.OwnerId);
+        var matchDto = await _matchService.UpdateForGrpcAsync(request.Id, MatchToDto(request), request.OwnerId);
         return new Empty();
     }
 
@@ -54,7 +54,7 @@ public class TournamentGrpcService : TournamentService.TournamentServiceBase
             participant1Id = match.Participant1Id,
             participant2Id = match.Participant2Id,
             tournamentId = match.TournamentId,
-            nextMatchId = match.NextMatchId.Equals(" ") ? null : match.NextMatchId,
+            nextMatchId = (match.NextMatchId.Equals(" ") || match.NextMatchId.Equals("")) ? null : match.NextMatchId,
             ownerId = match.OwnerId,
             participant1Name = match.Participant1Name,
             participant2Name = match.Participant2Name,

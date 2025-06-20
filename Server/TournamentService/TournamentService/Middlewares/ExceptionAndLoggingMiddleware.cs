@@ -27,7 +27,7 @@ public class ExceptionAndLoggingMiddleware
             await HandleExceptionAsync(httpContext, ex);
         }
         
-        _logger.LogInformation($"Response: {httpContext.Response.StatusCode} {httpContext.Response}");
+        _logger.LogInformation($"Response: {httpContext.Response.StatusCode}");
     }
     private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
@@ -40,20 +40,28 @@ public class ExceptionAndLoggingMiddleware
 
         switch (exception)
         {
-            case ValidationException :
+            case ValidationException:
                 result.StatusCode = 400;
                 break;
-            
-            case NotFoundException  :
+
+            case NotFoundException:
                 result.StatusCode = 404;
                 break;
 
-            case BadAuthorizeException :
+            case BadAuthorizeException:
                 result.StatusCode = 400;
                 break;
 
-            case WrongCallException :
+            case WrongCallException:
                 result.StatusCode = 400;
+                break;
+
+            case ParticipantAmountException:
+                result.StatusCode = 400;
+                break;
+
+            case GrpcException:
+                result.StatusCode = 500;
                 break;
 
         }

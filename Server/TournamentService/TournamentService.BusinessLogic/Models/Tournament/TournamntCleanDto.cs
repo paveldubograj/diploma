@@ -15,4 +15,5 @@ public class TournamentCleanDto
     public int MaxParticipants { get; set; }
     public string OwnerId {get; set;}
     public string? WinnerId {get; set;}
+    public string? ImagePath {get; set;}
 }

@@ -154,3 +154,13 @@
 /home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.API/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 /home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.API/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 /home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.API/bin/Debug/net8.0/runtimes/browser/lib/net8.0/System.Text.Encodings.Web.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.API/bin/Debug/net8.0/Google.Protobuf.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.API/bin/Debug/net8.0/Grpc.AspNetCore.Server.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.API/bin/Debug/net8.0/Grpc.AspNetCore.Server.ClientFactory.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.API/bin/Debug/net8.0/Grpc.Core.Api.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.API/bin/Debug/net8.0/Grpc.Net.Client.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.API/bin/Debug/net8.0/Grpc.Net.ClientFactory.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.API/bin/Debug/net8.0/Grpc.Net.Common.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.API/bin/Debug/net8.0/Microsoft.Extensions.ObjectPool.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.API/bin/Debug/net8.0/SixLabors.ImageSharp.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.API/bin/Debug/net8.0/UserService.API.staticwebassets.runtime.json

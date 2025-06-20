@@ -24,11 +24,11 @@ namespace DisciplineService.API.Protos {
     static DisciplineReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChdQcm90b3MvZGlzY2lwbGluZS5wcm90byIaCgxDaGVja1JlcXVlc3QSCgoC",
-            "SWQYASABKAkiIQoNQ2hlY2tSZXNwb25zZRIQCghJc0V4aXN0cxgBIAEoCDJF",
-            "ChFEaXNjaXBsaW5lU2VydmljZRIwCg9DaGVja0Rpc2NpcGxpbmUSDS5DaGVj",
-            "a1JlcXVlc3QaDi5DaGVja1Jlc3BvbnNlQh+qAhxEaXNjaXBsaW5lU2Vydmlj",
-            "ZS5BUEkuUHJvdG9zYgZwcm90bzM="));
+            "ChdQcm90b3MvZGlzY2lwbGluZS5wcm90bxIEZ3JwYyIaCgxDaGVja1JlcXVl",
+            "c3QSCgoCSWQYASABKAkiIQoNQ2hlY2tSZXNwb25zZRIQCghJc0V4aXN0cxgB",
+            "IAEoCDJPChFEaXNjaXBsaW5lU2VydmljZRI6Cg9DaGVja0Rpc2NpcGxpbmUS",
+            "Ei5ncnBjLkNoZWNrUmVxdWVzdBoTLmdycGMuQ2hlY2tSZXNwb25zZUIfqgIc",
+            "RGlzY2lwbGluZVNlcnZpY2UuQVBJLlByb3Rvc2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {

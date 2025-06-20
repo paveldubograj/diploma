@@ -13,6 +13,5 @@ public interface INewsRepository
     Task<News> DeleteAsync(News news);
     Task<News> UpdateAsync(News news);
     Task<int> GetTotalAsync();
-    Task<List<News>> GetBySpecWithNoSortAsync(NewsSpecification spec, int page, int pageSize);
-    Task<IEnumerable<News>> GetBySpecificationAsync(NewsSpecification spec1, List<Tag> tags, int page, int pageSize, SortOptions? options, CancellationToken token = default);
+    Task<NewsList> GetBySpecificationAsync(NewsSpecification spec1, int page, int pageSize, SortOptions? options, CancellationToken token = default);
 }

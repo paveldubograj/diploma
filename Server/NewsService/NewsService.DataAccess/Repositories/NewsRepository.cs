@@ -42,30 +42,15 @@ public class NewsRepository : INewsRepository
 
         return query;
     }
-    public async Task<List<News>> GetBySpecWithNoSortAsync(NewsSpecification spec, int page, int pageSize)
-    {
-        if (page < 1) page = 1;
-
-        var query = _context.News
-            .Where(c => c.Visibility);
-            
-        var r = await query.ApplySpecification(spec)
-            .OrderByDescending(n => n.PublishingDate)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
-
-        return r;
-    }
     public async Task<int> GetTotalAsync()
     {
         return await _context.News.CountAsync();
     }
-    public async Task<IEnumerable<News>> GetBySpecificationAsync(NewsSpecification spec, List<Tag> tags, int page, int pageSize, SortOptions? options, CancellationToken token = default)
+    public async Task<NewsList> GetBySpecificationAsync(NewsSpecification spec, int page, int pageSize, SortOptions? options, CancellationToken token = default)
     {
         IQueryable<News> query = _context.News
-            .Where(c => c.Visibility)
             .AsNoTracking()
+            .Where(c => c.Visibility)
             .Include(n => n.Tags);
             
         switch (options)
@@ -85,30 +70,10 @@ public class NewsRepository : INewsRepository
         }
 
         query = query.ApplySpecification(spec);
-        IQueryable<News> r = Enumerable.Empty<News>().AsQueryable();
+        int total = await query.CountAsync();
+        query = query.Skip((page - 1) * pageSize).Take(pageSize);
 
-        if(tags.Count > 0){
-            bool i = true;
-            foreach(var elem in query)
-            { 
-                foreach(var el in tags) 
-                {
-                    if(!elem.Tags.Contains(el)) 
-                    {
-                        i = false;
-                        break;
-                    }
-                }
-                if(i) r.Append(elem);
-                i = true;
-            }
-        }
-        else r = query;
-
-        r = r.Skip((page - 1) * pageSize).Take(pageSize);
-
-        //return await query.ToListAsync(cancellationToken: token);
-        return r;
+        return new NewsList() { News = query.ToList(), Total = total };
     }
     public async Task<News?> GetByIdAsync(string id)
     {

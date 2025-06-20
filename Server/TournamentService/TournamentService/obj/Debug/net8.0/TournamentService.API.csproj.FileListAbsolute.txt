@@ -159,3 +159,8 @@
 /home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/FluentValidation.DependencyInjectionExtensions.dll
 /home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/Microsoft.Extensions.ObjectPool.dll
 /home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/SixLabors.ImageSharp.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/Microsoft.Extensions.Caching.StackExchangeRedis.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/Newtonsoft.Json.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/Pipelines.Sockets.Unofficial.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/StackExchange.Redis.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/bin/Debug/net8.0/TournamentService.API.staticwebassets.runtime.json

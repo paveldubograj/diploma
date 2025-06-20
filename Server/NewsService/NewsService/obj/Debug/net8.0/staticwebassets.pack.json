@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/wwwroot/images/News_d5d7ff33-c596-41f3-9bf5-c3710c63b8dd_image.jpg",
+      "PackagePath": "staticwebassets/images/News_d5d7ff33-c596-41f3-9bf5-c3710c63b8dd_image.jpg"
+    },
+    {
+      "Id": "/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/wwwroot/images/News_testim_image.jpg",
+      "PackagePath": "staticwebassets/images/News_testim_image.jpg"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.NewsService.API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.NewsService.API.props",
+      "PackagePath": "build\\NewsService.API.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.NewsService.API.props",
+      "PackagePath": "buildMultiTargeting\\NewsService.API.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.NewsService.API.props",
+      "PackagePath": "buildTransitive\\NewsService.API.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

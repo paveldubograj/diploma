@@ -162,6 +162,9 @@ namespace UserService.API.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Bio")
+                        .HasColumnType("text");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
@@ -174,9 +177,7 @@ namespace UserService.API.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Image")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -201,6 +202,9 @@ namespace UserService.API.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<DateTime>("RegisteredAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
@@ -221,6 +225,26 @@ namespace UserService.API.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("UserService.DataAccess.Entities.UserTournaments", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TournamentId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserTournaments");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -272,6 +296,22 @@ namespace UserService.API.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("UserService.DataAccess.Entities.UserTournaments", b =>
+                {
+                    b.HasOne("UserService.DataAccess.Entities.User", "User")
+                        .WithMany("userTournaments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("UserService.DataAccess.Entities.User", b =>
+                {
+                    b.Navigation("userTournaments");
                 });
 #pragma warning restore 612, 618
         }

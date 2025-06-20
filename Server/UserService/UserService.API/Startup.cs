@@ -57,7 +57,10 @@ public class Startup
 
     public static void ConfigureIdentity(IServiceCollection services)
     {
-        services.AddIdentity<User, IdentityRole>()
+        services.AddIdentity<User, IdentityRole>(opts =>
+        {
+            opts.User.AllowedUserNameCharacters += "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
+        })
             .AddEntityFrameworkStores<UsersContext>()
             .AddUserManager<UserManager<User>>()
             .AddDefaultTokenProviders();
@@ -83,6 +86,15 @@ public class Startup
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true
+            };
+            x.Events = new JwtBearerEvents
+            {
+                OnChallenge = async context =>
+                {
+                    context.HandleResponse();
+                    context.Response.StatusCode = 401;
+                    await context.Response.WriteAsync("Unauthorized (Token expired or invalid)");
+                }
             };
         });
 
@@ -124,7 +136,7 @@ public class Startup
             options.AddPolicy(name: MyAllowSpecificOrigins,
                 policy =>
                 {
-                    policy.WithOrigins("http://localhost:3000")
+                    policy.WithOrigins("http://localhost:3000", "http://frontend:3000")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();

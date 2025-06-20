@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ZS/eyEywnPgHyi+rxfuSOYGzlprdO8VuS5Psk0GXDX6QaYtvUdpvHRNUL4cUBsBICK0owC2EL2u+LMKQtJwaKw==",
+  "dgSpecHash": "4/S1VBm0Gjn5svjHoZRieVVcOSL4XRKroYS+m7m0fji5IOdZobQ1lMaz6fP/+IUOx57Gx+VsNWL86O+7oF9Nvg==",
   "success": true,
   "projectFilePath": "/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.DataAccess/DisciplineService.DataAccess.csproj",
   "expectedPackageFiles": [

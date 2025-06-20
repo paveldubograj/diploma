@@ -1,4 +1,5 @@
-// src/types.ts
+// News dto
+
 
 export interface Tag {
   id: string;
@@ -10,7 +11,7 @@ export interface ListNews {
   title: string;
   authorId: string;
   authorName: string;
-  publishingDate: Date;
+  publishingDate: string;
   categoryId: string;
   imagePath: string;
 }
@@ -25,7 +26,19 @@ export interface DetailNews {
   authorName: string;
   imagePath: string;
   tags: Tag[];
+  visibility: boolean;
 }
+
+export const NewsSortOptions = [
+  {id: 0, name:"По названию"},
+  {id: 1, name:"По убыванию названия"},
+  {id: 2, name:"По дате"},
+  {id: 3, name:"По убыванию даты"},
+];
+
+
+// Discipline dto
+
 
 export interface Discipline {
   id: string;
@@ -34,13 +47,37 @@ export interface Discipline {
   createdAt: string;
 }
 
+
+// User dto
+
+
 export interface UserCleanDto {
   id: string;
   userName: string;
   email: string;
-  bio: string; 
-  registeredAt: Date;
 }
+
+export interface UserProfileDto {
+  id: string;
+  userName: string;
+  email: string;
+  bio: string;
+  registeredAt: Date;
+  image: string;
+  tournaments: string[];
+}
+
+export interface RoleDto {
+  name: string;
+}
+
+export interface UserUpdatedto {
+  userName: string;
+  email: string;
+  bio: string;
+}
+
+// Match dto
 
 
 export interface MatchList {
@@ -92,6 +129,19 @@ export const MatchStatus = [
   {id: 4, name:"Перенесён"}
 ];
 
+export const MatchSortOptions = [
+  {id: 0, name:"По раунду"},
+  {id: 1, name:"По убыванию раунда"},
+  {id: 2, name:"По очереди"},
+  {id: 3, name:"По убыванию очереди"},
+  {id: 4, name:"По дате"},
+  {id: 5, name:"По убыванию даты"},
+];
+
+
+// Tournament dto
+
+
 export interface TournamentCleanDto {
   id: string;
   name: string;
@@ -110,24 +160,9 @@ export interface TournamentFilter {
   CategoryId?: string;
   Status?: number;
   Format?: number;
-  StartTime?: string; // ISO string format
+  StartTime?: string;
   EndTime?: string;
 }
-
-export const TournamentStatus = [
-  {id: 0, name:"Запланирован"},
-  {id: 1, name:"Идёт"},
-  {id: 2, name:"Завершен"},
-  {id: 3, name:"Отменён"},
-  {id: 4, name:"Остановлен"}
-];
-
-export const TournamentFormat = [
-  {id: 0, name:"Single Elimination"},
-  {id: 1, name:"Double Elimination"},
-  {id: 2, name:"Round Robin"},
-  {id: 3, name:"Swiss"},
-];
 
 export interface TournamentDto {
   id: string;
@@ -174,26 +209,24 @@ export interface ParticipantCreateDto {
   name: string;
 }
 
+export const TournamentStatus = [
+  {id: 0, name:"Запланирован"},
+  {id: 1, name:"Идёт"},
+  {id: 2, name:"Завершен"},
+  {id: 3, name:"Отменён"},
+  {id: 4, name:"Остановлен"}
+];
+
+export const TournamentFormat = [
+  {id: 0, name:"Single Elimination"},
+  {id: 1, name:"Double Elimination"},
+  {id: 2, name:"Round Robin"},
+  {id: 3, name:"Swiss"},
+];
 
 export const ParticipantStatus = [
   {id:0, name:"Участсвует"},
   {id:1, name:"Не участвует"},
-];
-
-export const NewsSortOptions = [
-  {id: 0, name:"По названию"},
-  {id: 1, name:"По убыванию названия"},
-  {id: 2, name:"По дате"},
-  {id: 3, name:"По убыванию даты"},
-];
-
-export const MatchSortOptions = [
-  {id: 0, name:"По раунду"},
-  {id: 1, name:"По убыванию раунда"},
-  {id: 2, name:"По очереди"},
-  {id: 3, name:"По убыванию очереди"},
-  {id: 4, name:"По дате"},
-  {id: 5, name:"По убыванию даты"},
 ];
 
 export const TournamentSortOptions = [

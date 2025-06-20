@@ -15,5 +15,6 @@ public interface ITournamentRepository
     Task<Tournament> DeleteAsync(Tournament tournament);
     Task<Tournament> UpdateAsync(Tournament tournament);
     Task<bool> IsRegistrationAllowed(string tournamentId);
-    Task<IEnumerable<Tournament>> GetBySpecificationAsync(TournamentSpecification spec1, TournamentSortOptions? options, int page, int pageSize, CancellationToken token = default);
+    Task<List<Tournament>> GetByIdsAsync(List<string> ids);
+    Task<TournamentList> GetBySpecificationAsync(TournamentSpecification spec1, TournamentSortOptions? options, int page, int pageSize, CancellationToken token = default);
 }

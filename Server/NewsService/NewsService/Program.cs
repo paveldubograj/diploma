@@ -12,6 +12,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<NewsValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<TagValidator>();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddControllers();
+Startup.ConfigureRedis(builder.Services, config);
 Startup.ConfigureCors(builder.Services);
 Startup.ConfigureSwagger(builder.Services);
 Startup.ConfigureAuth(builder.Services, config);

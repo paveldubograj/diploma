@@ -28,8 +28,9 @@ public class ImageService : IImageService
         var image = await Image.LoadAsync(file.OpenReadStream());
 
         ValidateImageSize(image);
-
-        var folderPath = Path.Combine(_config.WebRootPath, "images");
+        string folderPath;
+        if (!string.IsNullOrEmpty(_config.WebRootPath)) folderPath = Path.Combine(_config.WebRootPath, "images");
+        else folderPath = "wwwroot/images";
 
         string filePath;
         string fileName;
@@ -51,8 +52,9 @@ public class ImageService : IImageService
 
         if (relativePath.StartsWith("/"))
             relativePath = relativePath[1..];
-
-        var fullPath = Path.Combine(_config.WebRootPath, relativePath);
+        string fullPath;
+        if (!string.IsNullOrEmpty(_config.WebRootPath)) fullPath = Path.Combine(_config.WebRootPath, relativePath);
+        else fullPath = "wwwroot/images";
 
         if (!File.Exists(fullPath))
             return false;

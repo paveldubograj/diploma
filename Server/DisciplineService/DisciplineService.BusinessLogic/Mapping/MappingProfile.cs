@@ -11,5 +11,6 @@ public class MappingProfile : Profile
     {
         CreateMap<Discipline, DisciplineDto>().ReverseMap();
         CreateMap<Discipline, DisciplineCleanDto>().ReverseMap();
+        CreateMap<Discipline, DisciplineCreateDto>().ReverseMap();
     }
 }

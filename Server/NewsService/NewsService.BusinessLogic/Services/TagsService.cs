@@ -20,7 +20,7 @@ public class TagsService : ITagsService
     }
     public async Task<TagDto> AddAsync(string tagDto)
     {
-        TagDto dto = new TagDto(){Name = tagDto};
+        TagDto dto = new TagDto(){Id = Guid.NewGuid().ToString(), Name = tagDto};
         var obj = _mapper.Map<Tag>(dto);
         var res = await _tagRepository.AddAsync(obj);
         return _mapper.Map<TagDto>(res);

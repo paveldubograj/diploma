@@ -1,0 +1,192 @@
+version: '3.9'
+
+services:
+  # User Service
+  user-service:
+    build:
+      context: ./Server/UserService
+    ports:
+      - "5153:5153"
+      - "4900:4900"
+    environment:
+      - ASPNETCORE_URLS=http://+:5153;http://+:4900
+      - ConnectionStrings__DataBase=Host=user-db;Port=5432;Database=userdb;Username=postgres;Password=postgres
+    volumes:
+      - user-images:/app/wwwroot/images
+    depends_on:
+      - user-db
+    networks:
+      - backend
+
+  user-db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: userdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - user-db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  # Tournament Service
+  tournament-service:
+    build:
+      context: ./Server/TournamentService
+    ports:
+      - "5276:5276"
+    environment:
+      - ASPNETCORE_URLS=http://+:5276
+      - ConnectionStrings__DataBase=Host=tournament-db;Port=5432;Database=tournamentdb;Username=postgres;Password=postgres
+      - GrpcMatchSettings__Address=http://match-service:5000
+      - GrpcDisciplineSettings__Address=http://discipline-service:4800
+      - GrpcUserSettings__Address=http://user-service:4900
+      - Cache__Host=redis
+    volumes:
+      - tournament-images:/app/wwwroot/images
+    depends_on:
+      - tournament-db
+      - match-service
+      - discipline-service
+      - user-service
+      - redis
+    networks:
+      - backend
+
+  tournament-db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: tournamentdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - tournament-db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  # Match Service
+  match-service:
+    build:
+      context: ./Server/MatchService
+    ports:
+      - "5083:5083"
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_URLS=http://+:5083;http://+:5000
+      - ConnectionStrings__DataBase=Host=match-db;Port=5432;Database=matchdb;Username=postgres;Password=postgres
+      - Cache__Host=redis
+    depends_on:
+      - match-db
+      - redis
+    networks:
+      - backend
+
+  match-db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: matchdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - match-db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  # News Service
+  news-service:
+    build:
+      context: ./Server/NewsService
+    ports:
+      - "5149:5149"
+    environment:
+      - ASPNETCORE_URLS=http://+:5149
+      - ConnectionStrings__DataBase=Host=news-db;Port=5432;Database=newsdb;Username=postgres;Password=postgres
+      - GrpcDisciplineSettings__Address=http://discipline-service:4800
+      - Cache__Host=redis
+    volumes:
+      - news-images:/app/wwwroot/images
+    depends_on:
+      - news-db
+      - discipline-service
+      - redis
+    networks:
+      - backend
+
+  news-db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: newsdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - news-db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  # Discipline Service
+  discipline-service:
+    build:
+      context: ./Server/DisciplineService
+    ports:
+      - "5215:5215"
+      - "4800:4800"
+    environment:
+      - ASPNETCORE_URLS=http://+:5215;http://+:4800
+      - ConnectionStrings__DataBase=Host=discipline-db;Port=5432;Database=disciplinedb;Username=postgres;Password=postgres
+    depends_on:
+      - discipline-db
+    networks:
+      - backend
+
+  discipline-db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: disciplinedb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - discipline-db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  frontend:
+    build:
+      context: ./Frontend  # путь к папке с React-проектом
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true  # для hot-reload в Docker
+    networks:
+      - backend
+    depends_on:
+      - user-service
+      - tournament-service
+      - match-service
+      - news-service
+      - discipline-service
+
+  # Redis
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  user-db-data:
+  tournament-db-data:
+  match-db-data:
+  news-db-data:
+  discipline-db-data:
+  user-images:
+  tournament-images:
+  news-images:

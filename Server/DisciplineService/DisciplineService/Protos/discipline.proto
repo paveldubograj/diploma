@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package grpc;
+
 option csharp_namespace = "DisciplineService.API.Protos";
 
 service DisciplineService{

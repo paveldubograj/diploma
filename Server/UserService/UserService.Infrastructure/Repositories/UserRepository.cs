@@ -32,12 +32,13 @@ public class UserRepository : IUserRepository
         return await _db.Set<User>().Include(c => c.userTournaments).FirstOrDefaultAsync(c => c.Id.Equals(id));
     }
 
-    public async Task<IEnumerable<User>> GetBySpecAsync(int page, int pageSize, UserSpecification spec, CancellationToken token = default)
+    public async Task<UserList> GetBySpecAsync(int page, int pageSize, UserSpecification spec, CancellationToken token = default)
     {
-        IQueryable<User> query = _db.Users;
-        query = query.ApplySpecification(spec).Skip((page - 1) * pageSize).Take(pageSize);
+        IQueryable<User> query = _db.Users.ApplySpecification(spec);
+        int total = await query.CountAsync();
+        query = query.Skip((page - 1) * pageSize).Take(pageSize);
 
-        return await query.ToListAsync(cancellationToken: token);
+        return new UserList(){Users = await query.ToListAsync(), Total = total};
     }
 
     public async Task<IdentityResult> AddAsync(User entity, string password)

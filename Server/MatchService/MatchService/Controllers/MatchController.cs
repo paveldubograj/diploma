@@ -33,20 +33,20 @@ namespace MatchService.API.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        [Authorize(Roles = RoleName.Organizer)]
+        [Authorize(Roles = $"{RoleName.Admin}, {RoleName.Organizer}")]
         public async Task<IActionResult> UpdateMatchAsync([FromRoute] string id, [FromBody] MatchDto dto)
         {
-            MatchDto newsDto = await _matchService.UpdateAsync(id, dto, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
+            MatchDto newsDto = await _matchService.UpdateAsync(id, dto, User);
 
             return Ok(newsDto);
         }
 
         [HttpDelete]
         [Route("{id}")]
-        [Authorize(Roles = RoleName.Organizer)]
+        [Authorize(Roles = $"{RoleName.Admin}, {RoleName.Organizer}")]
         public async Task<IActionResult> DeleteMatchAsync(string Id)
         {
-            MatchDto newsDto = await _matchService.DeleteAsync(Id, User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
+            MatchDto newsDto = await _matchService.DeleteAsync(Id, User);
 
             return Ok(newsDto);
         }
@@ -74,14 +74,9 @@ namespace MatchService.API.Controllers
 
         [HttpGet]
         [Route("filter/")]
-        public async Task<IActionResult> GetByFilterAsync(int page, int pageSize, SortOptions? options, [FromQuery] MatchFilter filter)
+        public async Task<IActionResult> GetByFilterAsync([FromQuery] MatchFilter filter)
         {
-            MatchPagedResponse response = new MatchPagedResponse(){
-                Matches = await _matchService.GetByFilterAsync(filter, options, page, pageSize),
-                Total = await _matchService.GetTotalAsync()
-            };
-            
-            return Ok(response);
+            return Ok(await _matchService.GetByFilterAsync(filter));
         }
     }
 }

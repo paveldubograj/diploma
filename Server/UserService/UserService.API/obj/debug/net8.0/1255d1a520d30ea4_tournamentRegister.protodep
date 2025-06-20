@@ -1,0 +1,3 @@
+obj/debug/net8.0/Protos/TournamentRegister.cs \
+obj/debug/net8.0/Protos/TournamentRegisterGrpc.cs: /home/pavel/.nuget/packages/grpc.tools/2.71.0/build/native/include/google/protobuf/empty.proto\
+ Protos/tournamentRegister.proto
