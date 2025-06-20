@@ -1,0 +1,14 @@
+@startuml
+class MatchRepository {
+    - db : MatchContext
+    + MatchRepository(db:MatchContext)
+    + <<async>> AddAsync(Match:Match) : Task<Match>
+    + <<async>> DeleteAsync(Match:Match) : Task<Match>
+    + <<async>> GetAsync(page:int, pageSize:int) : Task<List<Match>>
+    + <<async>> GetByIdAsync(id:string) : Task<Match>
+    + <<async>> GetBySpecificationAsync(spec:MatchSpecification, page:int, pageSize:int, token:CancellationToken) : Task<IEnumerable<Match>>
+    + <<async>> GetTournamentStructureAsync(tournamentId:string) : Task<List<Match>>
+    + <<async>> UpdateAsync(Match:Match) : Task<Match>
+}
+IMatchRepository <|-- MatchRepository
+@enduml

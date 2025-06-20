@@ -1,0 +1,5 @@
+obj/Debug/net8.0/Protos/Tournament.cs \
+obj/Debug/net8.0/Protos/TournamentGrpc.cs: /home/pavel/.nuget/packages/grpc.tools/2.70.0/build/native/include/google/protobuf/empty.proto\
+ /home/pavel/.nuget/packages/grpc.tools/2.70.0/build/native/include/google/protobuf/timestamp.proto\
+ /home/pavel/.nuget/packages/grpc.tools/2.70.0/build/native/include/google/protobuf/wrappers.proto\
+ Protos/tournament.proto

@@ -1,0 +1,12 @@
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/bin/Debug/net8.0/DisciplineService.Shared.deps.json
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/bin/Debug/net8.0/DisciplineService.Shared.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/bin/Debug/net8.0/DisciplineService.Shared.pdb
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/obj/Debug/net8.0/DisciplineService.Shared.GeneratedMSBuildEditorConfig.editorconfig
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/obj/Debug/net8.0/DisciplineService.Shared.AssemblyInfoInputs.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/obj/Debug/net8.0/DisciplineService.Shared.AssemblyInfo.cs
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/obj/Debug/net8.0/DisciplineService.Shared.csproj.CoreCompileInputs.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/obj/Debug/net8.0/DisciplineService.Shared.sourcelink.json
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/obj/Debug/net8.0/DisciplineService.Shared.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/obj/Debug/net8.0/refint/DisciplineService.Shared.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/obj/Debug/net8.0/DisciplineService.Shared.pdb
+/home/pavel/Documents/csh/Diploma/diploma/Server/DisciplineService/DisciplineService.Shared/obj/Debug/net8.0/ref/DisciplineService.Shared.dll

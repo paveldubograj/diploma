@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option csharp_namespace = "DisciplineService.API.Protos";
+
+service DisciplineService{
+    rpc CheckDiscipline (CheckRequest) returns (CheckResponse);
+}
+
+message CheckRequest {
+    string Id = 1;
+}
+
+message CheckResponse {
+    bool IsExists = 1;
+}

@@ -1,0 +1,12 @@
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Shared/bin/Debug/net8.0/UserService.Shared.deps.json
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Shared/bin/Debug/net8.0/UserService.Shared.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Shared/bin/Debug/net8.0/UserService.Shared.pdb
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Shared/obj/Debug/net8.0/UserService.Shared.GeneratedMSBuildEditorConfig.editorconfig
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Shared/obj/Debug/net8.0/UserService.Shared.AssemblyInfoInputs.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Shared/obj/Debug/net8.0/UserService.Shared.AssemblyInfo.cs
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Shared/obj/Debug/net8.0/UserService.Shared.csproj.CoreCompileInputs.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Shared/obj/Debug/net8.0/UserService.Shared.sourcelink.json
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Shared/obj/Debug/net8.0/UserService.Shared.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Shared/obj/Debug/net8.0/refint/UserService.Shared.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Shared/obj/Debug/net8.0/UserService.Shared.pdb
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Shared/obj/Debug/net8.0/ref/UserService.Shared.dll

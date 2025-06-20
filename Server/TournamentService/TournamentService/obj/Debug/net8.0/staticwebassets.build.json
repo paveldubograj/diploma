@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "0w59x5OhETDJX1c9xn6wTgt6JJq3G2SOglMJCtDkTS0=",
+  "Source": "TournamentService.API",
+  "BasePath": "_content/TournamentService.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

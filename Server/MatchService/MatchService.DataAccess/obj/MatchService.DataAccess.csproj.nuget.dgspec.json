@@ -1,0 +1,140 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.DataAccess/MatchService.DataAccess.csproj": {}
+  },
+  "projects": {
+    "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.DataAccess/MatchService.DataAccess.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.DataAccess/MatchService.DataAccess.csproj",
+        "projectName": "MatchService.DataAccess",
+        "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.DataAccess/MatchService.DataAccess.csproj",
+        "packagesPath": "/home/pavel/.nuget/packages/",
+        "outputPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.DataAccess/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/pavel/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.Shared/MatchService.Shared.csproj": {
+                "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.Shared/MatchService.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.2, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.116/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.Shared/MatchService.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.Shared/MatchService.Shared.csproj",
+        "projectName": "MatchService.Shared",
+        "projectPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.Shared/MatchService.Shared.csproj",
+        "packagesPath": "/home/pavel/.nuget/packages/",
+        "outputPath": "/home/pavel/Documents/csh/Diploma/diploma/Server/MatchService/MatchService.Shared/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/pavel/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.116/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

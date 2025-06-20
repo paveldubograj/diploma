@@ -1,0 +1,11 @@
+@startuml
+interface IMatchRepository {
+    GetByIdAsync(id:string) : Task<Match>
+    GetTournamentStructureAsync(TournamentId:string) : Task<List<Match>>
+    GetAsync(page:int, pageSize:int) : Task<List<Match>>
+    AddAsync(Match:Match) : Task<Match>
+    DeleteAsync(Match:Match) : Task<Match>
+    UpdateAsync(Match:Match) : Task<Match>
+    GetBySpecificationAsync(spec:MatchSpecification, page:int, pageSize:int, token:CancellationToken) : Task<IEnumerable<Match>>
+}
+@enduml

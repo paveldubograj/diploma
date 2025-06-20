@@ -1,0 +1,12 @@
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.Shared/bin/Debug/net8.0/NewsService.Shared.deps.json
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.Shared/bin/Debug/net8.0/NewsService.Shared.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.Shared/bin/Debug/net8.0/NewsService.Shared.pdb
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.Shared/obj/Debug/net8.0/NewsService.Shared.GeneratedMSBuildEditorConfig.editorconfig
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.Shared/obj/Debug/net8.0/NewsService.Shared.AssemblyInfoInputs.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.Shared/obj/Debug/net8.0/NewsService.Shared.AssemblyInfo.cs
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.Shared/obj/Debug/net8.0/NewsService.Shared.csproj.CoreCompileInputs.cache
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.Shared/obj/Debug/net8.0/NewsService.Shared.sourcelink.json
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.Shared/obj/Debug/net8.0/NewsService.Shared.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.Shared/obj/Debug/net8.0/refint/NewsService.Shared.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.Shared/obj/Debug/net8.0/NewsService.Shared.pdb
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService.Shared/obj/Debug/net8.0/ref/NewsService.Shared.dll
