@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TournamentService.DataAccess")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5e9ba496cd6c5b34fe0fbda7a28784a087e1b471")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cadd5667dc251954ebf159091ab91641c84854c2")]
 [assembly: System.Reflection.AssemblyProductAttribute("TournamentService.DataAccess")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TournamentService.DataAccess")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

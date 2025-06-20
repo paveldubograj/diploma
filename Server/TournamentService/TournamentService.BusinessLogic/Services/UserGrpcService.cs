@@ -3,6 +3,8 @@ using Grpc.Net.Client;
 using Microsoft.Extensions.Options;
 using TournamentService.BusinessLogic.Protos;
 using TournamentService.BusinessLogic.Services.Interfaces;
+using TournamentService.Shared.Constants;
+using TournamentService.Shared.Exceptions;
 using TournamentService.Shared.Options;
 
 namespace TournamentService.BusinessLogic.Services;
@@ -20,12 +22,26 @@ public class UserGrpcService : IUserGrpcService
     public async Task AddToUser(string userId, string tournamentId)
     {
         Request r = new Request() { UserId = userId, TournamentId = tournamentId };
-        await client.AddToUserAsync(r);
+        try
+        {
+            await client.AddToUserAsync(r);
+        }
+        catch (Exception ex)
+        {
+            throw new GrpcException(ErrorName.UserServiceNotWork);
+        }
     }
 
     public async Task RemoveFromUser(string userId, string tournamentId)
     {
         Request r = new Request() { UserId = userId, TournamentId = tournamentId };
-        await client.RemoveFromUserAsync(r);
+        try
+        {
+            await client.RemoveFromUserAsync(r);
+        }
+        catch (Exception ex)
+        {
+            throw new GrpcException(ErrorName.UserServiceNotWork);
+        }
     }
 }

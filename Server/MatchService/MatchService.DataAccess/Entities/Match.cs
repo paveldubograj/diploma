@@ -7,7 +7,7 @@ namespace MatchService.DataAccess.Entities;
 public class Match
 {
     public Match(){
-        Id = new Guid().ToString();
+        Id = Guid.NewGuid().ToString();
     }
     public string Id {get; set;}
     public string Round {get; set;}

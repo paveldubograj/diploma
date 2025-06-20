@@ -53,8 +53,8 @@ public class ParticipantService : IParticipantService
         if(!participant.Tournament.OwnerId.Equals(userId)){
             throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
         }
-        var result = _participantRepository.RemoveParticipantFromTournament(participant.TournamentId, participant.Id);
-        await _userGrpcService.RemoveFromUser(participant.UserId, participant.TournamentId);
+        var result = await _participantRepository.RemoveParticipantFromTournament(participant.TournamentId, participant.Id);
+        if(!string.IsNullOrEmpty(participant.UserId)) await _userGrpcService.RemoveFromUser(participant.UserId, participant.TournamentId);
         return _mapper.Map<ParticipantDto>(result);
     }
 
@@ -95,7 +95,7 @@ public class ParticipantService : IParticipantService
             throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
         }
         var newsUp = _mapper.Map(newsDto, participant);
-        var res = _participantRepository.UpdateAsync(newsUp);
+        var res = await _participantRepository.UpdateAsync(newsUp);
         return _mapper.Map<ParticipantDto>(res);
     }
 

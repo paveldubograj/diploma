@@ -40,6 +40,7 @@ if (app.Environment.IsDevelopment())
 
 app.MapGrpcService<TournamentGrpcService>();
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 Startup.ConfigureCors(app);
 

@@ -4,7 +4,7 @@ import MatchesList from '../../components/MatchComponents/MatchesList';
 const MatchesPage: React.FC = () => {
   return (
     <div className="flex-grow-1">
-      <h2>Matches</h2>
+      <h2>Матчи</h2>
       <ErrorBoundary>
       <MatchesList />
       </ErrorBoundary>

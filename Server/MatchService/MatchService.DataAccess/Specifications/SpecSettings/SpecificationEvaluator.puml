@@ -1,5 +1,0 @@
-@startuml ev
-class SpecificationEvaluator <<static>> {
-    + {static} ApplySpecification(query:IQueryable<T>, spec:ISpecification<T>) : IQueryable<T>
-}
-@enduml

@@ -1,66 +1,86 @@
-import { MatchDto } from "../types";
+import { MatchDto, MatchList } from "../types";
 import { getToken } from "./AuthHook";
 
 const API_BASE = "http://localhost:5083/api";
+//const API_BASE = "http://match-service:5083/api";
 
-export async function fetchMatches(search: string) {
-try {
-    const response = await fetch(`${API_BASE}/matches/filter?${search}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      mode: "cors",
-    });
-    return response.json();
-} catch (error) {
-  console.error("Произошла ошибка при загрузке матчей:", error);
-  setError("Не удалось загрузить матчи");
+
+interface matchess{
+  matches: MatchList[],
+  total: number 
 }
-  //else throw new Error("Ошибка при получении");
+// Централизованный fetch с обработкой ошибок и редиректом при 401
+async function apiRequest<T>(url: string, options: RequestInit): Promise<T> {
+  try {
+    const response = await fetch(url, options);
+
+    if (response.status === 401) {
+      window.location.href = "/login";
+      throw new Error("Unauthorized");
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Ошибка HTTP: ${response.status}, ${errorText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Произошла сетевая ошибка:", error);
+    throw error;
+  }
 }
 
-export const getMatchById = async (id: string) => {
-try {
-    const response = await fetch(`${API_BASE}/matches/${id}`);
-    return response.json();
-} catch (error) {
-  console.error("Произошла ошибка при загрузке матча:", error);
-  setError("Не удалось загрузить матч");
+// Получение списка матчей по фильтру
+export async function fetchMatches(search: string): Promise<matchess> {
+  const url = `${API_BASE}/matches/filter?${search}`;
+  return apiRequest<matchess>(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    mode: "cors",
+  });
 }
-};
 
-export const updateMatch = async (id: string, data: MatchDto) => {
-try {
-    const token = getToken();
-    if(!token) return null;
-    const response = await fetch(`${API_BASE}/match/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`, 
-              },
-      body: JSON.stringify(data),
-    });
-} catch (error) {
-  console.error("Произошла ошибка при обновлении матча:", error);
-  setError("Не удалось обновить матч");
+// Получение матча по ID
+export async function getMatchById(id: string): Promise<MatchDto> {
+  const url = `${API_BASE}/matches/${id}`;
+  return apiRequest<MatchDto>(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 }
-};
 
-export const deleteMatch = async (id: string) => {
-try {
-    const token = getToken();
-    if(!token) return null;
-    const response = await fetch(`${API_BASE}/match/${id}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`, 
-      },
-    });
-} catch (error) {
-  console.error("Произошла ошибка при удалении матча:", error);
-  setError("Не удалось удалить матч");
+// Обновление матча
+export async function updateMatch(id: string, data: MatchDto): Promise<void> {
+  const token = getToken();
+  if (!token) throw new Error("Токен отсутствует");
+
+  const url = `${API_BASE}/matches/${id}`;
+  await apiRequest<MatchDto>(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
 }
-};
 
-function setError(arg0: string) {
-  throw new Error(arg0);
+// Удаление матча
+export async function deleteMatch(id: string): Promise<void> {
+  const token = getToken();
+  if (!token) throw new Error("Токен отсутствует");
+
+  const url = `${API_BASE}/matches/${id}`;
+  await apiRequest<void>(url, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }

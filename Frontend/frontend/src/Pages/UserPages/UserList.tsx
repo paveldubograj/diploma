@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Table, Alert } from "react-bootstrap";
-import { searchUsersByName } from "../../api/userApi";
+import { Form, Button, Table, Alert, Pagination } from "react-bootstrap";
+import { getUserRolesById, searchUsersByName } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
-import { UserCleanDto } from "../../types";
+import { RoleDto, UserCleanDto } from "../../types";
 
 const pageSize = 10;
 
@@ -13,20 +13,37 @@ const UserList = () => {
   const [page, setPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
   const [total, setTotal] = useState(0);
+  const [userRoles, setUserRoles] = useState<Record<string, RoleDto[]>>({});
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const loadUsers = async () => {
-    try {
-      const result = await searchUsersByName(searchName, page, pageSize);
-      setUsers(result.users);
-      setTotal(result.total);
-    } catch (err) {
-      console.error("Ошибка при поиске пользователей", err);
-      setError("Ошибка при поиске пользователей");
-    }
-  };
-  loadUsers();
+      setLoading(true);
+      try {
+        const result = await searchUsersByName(searchName, page, pageSize);
+        setUsers(result.users);
+        setTotal(result.total);
+
+        const errorDto: RoleDto = { name: 'Ошибка загрузки ролей' }
+        const rolesMap: Record<string, RoleDto[]> = {};
+        for (const user of result.users) {
+          try {
+            const roles = await getUserRolesById(user.id);
+            rolesMap[user.id] = roles;
+          } catch (e) {
+            rolesMap[user.id] = [errorDto];
+          }
+        }
+        setUserRoles(rolesMap);
+      } catch (err) {
+        console.error("Ошибка при поиске пользователей", err);
+        setError("Ошибка при поиске пользователей");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadUsers();
   }, [searchName, page]);
 
   return (
@@ -36,13 +53,20 @@ const UserList = () => {
         <Form.Control
           type="text"
           placeholder="Поиск по имени"
-          value={searchName}
+          value={inpstr}
           onChange={(e) => setInp(e.target.value)}
         />
-        <Button className="ms-2" onClick={() => {setPage(1);setSearchName(inpstr);}}>
+        <Button className="ms-2" onClick={() => { setPage(1); setSearchName(inpstr); }}>
           Поиск
         </Button>
       </Form>
+
+      <Button
+        className="mt-2"
+        onClick={() => navigate(`/admin/disciplines`)}
+      >
+        Дисциплины
+      </Button>
 
       {error && <Alert variant="danger">{error}</Alert>}
 
@@ -51,6 +75,7 @@ const UserList = () => {
           <tr>
             <th>Имя</th>
             <th>Email</th>
+            <th>Роли</th>
             <th>Действия</th>
           </tr>
         </thead>
@@ -59,10 +84,11 @@ const UserList = () => {
             <tr key={user.id}>
               <td>{user.userName}</td>
               <td>{user.email}</td>
+              <td>{userRoles[user.id]?.map(r => r.name + ' ') || "Загрузка..."}</td>
               <td>
                 <Button
                   variant="info"
-                  onClick={() => navigate(`/admin/users/${user.id}`)}
+                  onClick={() => navigate(`/users/${user.id}`)}
                 >
                   Подробнее
                 </Button>
@@ -71,18 +97,32 @@ const UserList = () => {
           ))}
         </tbody>
       </Table>
-      <div className="d-flex justify-content-between align-items-center my-3">
-        <Button disabled={page === 1} onClick={() => setPage(page - 1)}>
-          Назад
-        </Button>
-        <span>Страница {page} из {Math.ceil(total / pageSize)}</span>
-        <Button
-          disabled={page >= Math.ceil(total / pageSize)}
-          onClick={() => setPage(page + 1)}
+      <Pagination className="justify-content-center mt-4">
+      <Pagination.Prev
+      onClick={() => setPage(page - 1)}
+      disabled={page === 1 || loading}
+      >
+      Назад
+      </Pagination.Prev>
+
+      {Array.from({ length: (total / pageSize + 1) }, (_, i) => (
+        <Pagination.Item
+        key={i + 1}
+        active={i + 1 === page}
+        onClick={() => setPage(i + 1)}
+        disabled={loading}
         >
-          Вперёд
-        </Button>
-      </div>
+        {i + 1}
+        </Pagination.Item>
+      ))}
+
+      <Pagination.Next
+      onClick={() => setPage(page + 1)}
+      disabled={page >= (total / pageSize) || loading}
+      >
+      Вперёд
+      </Pagination.Next>
+      </Pagination>
     </div>
   );
 };

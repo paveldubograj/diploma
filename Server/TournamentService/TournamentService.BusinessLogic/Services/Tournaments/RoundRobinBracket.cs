@@ -2,6 +2,7 @@ using System;
 using TournamentService.BusinessLogic.Models.Match;
 using TournamentService.BusinessLogic.Services.Interfaces;
 using TournamentService.BusinessLogic.Services.Tournaments.Interfaces;
+using TournamentService.BusinessLogic.Models.ParticipantDtos;
 using TournamentService.DataAccess.Repositories.Interfaces;
 using TournamentService.Shared.Constants;
 using TournamentService.Shared.Enums;
@@ -30,20 +31,44 @@ public class RoundRobinBracket : IRoundRobinBracket
         }
         var participants = await _participantService.GetAllByTournamentAsync(tournamentId);
         if (participants.Count < 2) throw new ParticipantAmountException(ErrorName.NotEnoughParticipants);
-        int totalPlayers = participants.Count;
-        var matches = new List<MatchDto>();
 
-        for (int round = 0; round < totalPlayers - 1; round++)
+        var matches = new List<MatchDto>();
+        int n = participants.Count;
+
+        bool hasBye = n % 2 != 0;
+        if (hasBye) n++;
+
+        for (int round = 0; round < n - 1; round++)
         {
-            for (int i = 1; i < totalPlayers; i++)
+            for (int i = 0; i < n / 2; i++)
             {
-                var p1 = participants[0];
-                var p2 = participants[i];
-                matches.Add(CreateMatch(tournamentId, $"{round + 1}", i + 1, p1.Id, p2.Id, res.OwnerId, res.DisciplineId, p1.Name, p2.Name, res.Name));
+                int p1Index = i;
+                int p2Index = n - 1 - i;
+
+                if (hasBye && (p1Index >= participants.Count || p2Index >= participants.Count))
+                    continue;
+
+                var p1 = participants[p1Index];
+                var p2 = participants[p2Index];
+
+                matches.Add(CreateMatch(
+                    tournamentId,
+                    $"{round + 1}",
+                    i + 1,
+                    p1.Id, p2.Id,
+                    res.OwnerId,
+                    res.DisciplineId,
+                    p1.Name, p2.Name,
+                    res.Name));
             }
-            participants.RemoveAt(0);
+            var rotated = new List<ParticipantDto>(participants);
+            var temp = rotated[1];
+            rotated.RemoveAt(1);
+            rotated.Add(temp);
+            participants = rotated;
         }
-        _matchService.CreateMatches(matches);
+
+        await _matchService.CreateMatches(matches);
     }
     public async Task HandleMatchResult(string matchId, string winnerId, int winPoints, int loosePoints)
     {

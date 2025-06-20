@@ -35,16 +35,16 @@ public class UserManageService : IUserManageService
 
         return userDto;
     }
-    public async Task<IEnumerable<UserCleanDto>> GetByNameAsync(int page, int pageSize, string? firstName, CancellationToken token = default)
+    public async Task<UserPagedDto> GetByNameAsync(int page, int pageSize, string? firstName, CancellationToken token = default)
     {
         UserSpecification spec = new UserSpecification(user => true);
         if (!string.IsNullOrEmpty(firstName)) spec = new UserSpecification(user => user.UserName.Contains(firstName));
         var users = await _userRepository.GetBySpecAsync(page, pageSize, spec, token);
-        var userDtos = _mapper.Map<List<UserCleanDto>>(users);
+        var userDtos = _mapper.Map<UserPagedDto>(users);
 
         return userDtos;
     }
-    public async Task<UserProfileDto> UpdateAsync(string id, UserProfileDto dto)
+    public async Task<UserProfileDto> UpdateAsync(string id, UserUpdateDto dto)
     {
         var user = await _userRepository.GetByIdAsync(id);
 
@@ -69,7 +69,7 @@ public class UserManageService : IUserManageService
 
         return _mapper.Map<UserProfileDto>(userUpdated);
     }
-    public async Task<UserCleanDto> DeleteAsync(string id)
+    public async Task<UserProfileDto> DeleteAsync(string id)
     {
         var user = await _userRepository.GetByIdAsync(id);
 
@@ -91,7 +91,7 @@ public class UserManageService : IUserManageService
             throw new IdentityException(errorMessage);
         }
 
-        return _mapper.Map<UserCleanDto>(user);
+        return _mapper.Map<UserProfileDto>(user);
     }
     public async Task<bool> IsUserExits(string id)
     {
@@ -112,8 +112,18 @@ public class UserManageService : IUserManageService
             throw new NotFoundException(ErrorName.UserNotFound);
         }
         news.Image = await _imageService.SaveImage(file, id);
-        var res = await _userRepository.UpdateAsync(news);
-        return _mapper.Map<UserProfileDto>(res);
+        var result = await _userRepository.UpdateAsync(news);
+        if (!result.Succeeded)
+        {
+            var errorMessage = string.Join(
+                Environment.NewLine,
+                result.Errors.Select(exception =>
+                    exception.Description
+                ));
+
+            throw new IdentityException(errorMessage);
+        }
+        return _mapper.Map<UserProfileDto>(news);
     }
     public async Task<UserProfileDto> RemoveImageAsync(string id)
     {
@@ -122,9 +132,20 @@ public class UserManageService : IUserManageService
         {
             throw new NotFoundException(ErrorName.UserNotFound);
         }
+        news.Image = string.Empty;
         _imageService.DeleteImage(id);
-        var res = await _userRepository.UpdateAsync(news);
-        return _mapper.Map<UserProfileDto>(res);
+        var result = await _userRepository.UpdateAsync(news);
+        if (!result.Succeeded)
+        {
+            var errorMessage = string.Join(
+                Environment.NewLine,
+                result.Errors.Select(exception =>
+                    exception.Description
+                ));
+
+            throw new IdentityException(errorMessage);
+        }
+        return _mapper.Map<UserProfileDto>(news);
     }
 
     public async Task<UserProfileDto> RegisterForTournamentAsync(string userId, string tournamentId)

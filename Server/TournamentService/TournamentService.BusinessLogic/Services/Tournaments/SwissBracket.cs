@@ -55,7 +55,7 @@ public class SwissBracket : ISwissBracket
                 res.Name
             ));
         }
-        _matchService.CreateMatches(matches);
+        await _matchService.CreateMatches(matches);
     }
 
     public async Task HandleMatchResult(string matchId, string winnerId, string loserId, int winScore, int looseScore)

@@ -7,9 +7,9 @@ namespace UserService.BusinessLogic.Services.Interfaces;
 public interface IUserManageService
 {
     Task<UserProfileDto> GetByIdAsync(string id);
-    Task<IEnumerable<UserCleanDto>> GetByNameAsync(int page, int pageSize, string? firstName, CancellationToken token = default);
-    Task<UserProfileDto> UpdateAsync(string id, UserProfileDto dto);
-    Task<UserCleanDto> DeleteAsync(string id);
+    Task<UserPagedDto> GetByNameAsync(int page, int pageSize, string? firstName, CancellationToken token = default);
+    Task<UserProfileDto> UpdateAsync(string id, UserUpdateDto dto);
+    Task<UserProfileDto> DeleteAsync(string id);
     Task<bool> IsUserExits(string id);
     Task<int> GetTotalAsync();
     Task<UserProfileDto> AddImageAsync(string id, IFormFile file);

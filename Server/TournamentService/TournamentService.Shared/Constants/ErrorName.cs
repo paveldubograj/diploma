@@ -21,4 +21,7 @@ public class ErrorName
     public static string ImageTooLarge => "This Image Is Too Large";
     public static string ImageTooSmall => "This Image Is Small";
     public static string DisciplineNotFound => "Provided Discipline Not Found";
+    public static string DisciplineServiceNotWork => "Discipline Service Not Work";
+    public static string MatchServiceNotWork => "Match Service Not Work";
+    public static string UserServiceNotWork => "User Service Not Work";
 }

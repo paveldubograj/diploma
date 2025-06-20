@@ -7,9 +7,7 @@ import {
   fetchDisciplineById,
 } from "../../api/disciplineApi"
 import { MatchList, Discipline, MatchStatus, MatchSortOptions } from "../../types";
-import { Container, Row, Col, Form, Button, Card, Alert } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import ErrorBoundary from "../ErrorBoundary";
+import { Container, Row, Col, Form, Card, Alert, Pagination } from "react-bootstrap";
 import MatchCard from "./MatchCard";
 
 const pageSize = 10;
@@ -26,6 +24,7 @@ const MatchesList = () => {
   const [endDate, setEndDate] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [sortOption, setSortOption] = useState<string>("0");
+  const [loading, setLoading] = useState(false);
 
   // Загрузка тегов и дисциплин при первом рендере
   useEffect(() => {
@@ -59,6 +58,7 @@ const MatchesList = () => {
 
   useEffect(() => {
     const loadNews = async () => {
+      setLoading(true);
       const filter = new URLSearchParams({
         page: page.toString(),
         pageSize: pageSize.toString(),
@@ -91,6 +91,8 @@ const MatchesList = () => {
       } catch (err) {
         console.error("Ошибка загрузки матчей:", err);
         setError("Ошибка загрузки матчей");
+      } finally {
+        setLoading(false)
       }
     };
 
@@ -112,8 +114,6 @@ const MatchesList = () => {
           </Card.Body>
         </Card>
       )}
-
-      
 
       <Row className="mb-3">
         <Col md={4}>
@@ -148,10 +148,7 @@ const MatchesList = () => {
         <Col md={3}>
           <Form.Label>Дата окончания</Form.Label>
           <Form.Control type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-        </Col>
-      </Row>
-
-      <Col md={4}>
+        </Col><Col md={3}>
           <Form.Group>
             <Form.Label>Сортировка</Form.Label>
             <Form.Select
@@ -167,28 +164,41 @@ const MatchesList = () => {
             </Form.Select>
           </Form.Group>
         </Col>
+      </Row>
 
       {error && <Alert variant="danger">{error}</Alert>}
 
-      <Row xs={1} md={2} className="g-4">
+      <Row>
         {matches.map((match) => (
           <MatchCard id={match.id} round={match.round} startTime={match.startTime} status={match.status} matchOrder={match.matchOrder} winScore={match.winScore} looseScore={match.looseScore} endTime={match.endTime} participant1Name={match.participant1Name} participant2Name={match.participant2Name} tournamentName={match.tournamentName} categoryId={match.categoryId} winnerId={match.winnerId} participant1Id={match.participant1Id} participant2Id={match.participant2Id} tournamentId={match.tournamentId}></MatchCard>
         ))}
       </Row>
-      <div className="d-flex justify-content-between align-items-center my-3">
-        <Button disabled={page === 1} onClick={() => setPage(page - 1)}>
+      <Pagination className="justify-content-center mt-4">
+        <Pagination.Prev
+          onClick={() => setPage(page - 1)}
+          disabled={page === 1 || loading}
+        >
           Назад
-        </Button>
-        <span>
-          Страница {page} из {Math.ceil(total / pageSize)}
-        </span>
-        <Button
-          disabled={page >= Math.ceil(total / pageSize)}
+        </Pagination.Prev>
+
+        {Array.from({ length: (total / pageSize + 1) }, (_, i) => (
+          <Pagination.Item
+            key={i + 1}
+            active={i + 1 === page}
+            onClick={() => setPage(i + 1)}
+            disabled={loading}
+          >
+            {i + 1}
+          </Pagination.Item>
+        ))}
+
+        <Pagination.Next
           onClick={() => setPage(page + 1)}
+          disabled={page >= (total / pageSize) || loading}
         >
           Вперёд
-        </Button>
-      </div>
+        </Pagination.Next>
+      </Pagination>
     </Container>
   );
 };

@@ -33,7 +33,7 @@ public class UsersController : ControllerBase
     [HttpPut]
     [Route("profile")]
     [Authorize]
-    public async Task<IActionResult> UpdateProfileAsync([FromBody] UserProfileDto dto)
+    public async Task<IActionResult> UpdateProfileAsync([FromBody] UserUpdateDto dto)
     {
         UserProfileDto userDto = await _userManageService.UpdateAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value, dto);
 
@@ -45,7 +45,7 @@ public class UsersController : ControllerBase
     [Authorize]
     public async Task<IActionResult> DeleteProfileAsync()
     {
-        UserCleanDto userDto = await _userManageService.DeleteAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
+        UserProfileDto userDto = await _userManageService.DeleteAsync(User.Claims.First(x => x.Type.Equals(ClaimTypes.Name)).Value);
 
         return Ok(userDto);
     }
@@ -53,11 +53,9 @@ public class UsersController : ControllerBase
 
     [HttpGet]
     [Route("{id}")]
-    [Authorize(Roles = RoleName.Admin)]
-    public async Task<IActionResult> GetAsync([FromRoute] string id)
+    public async Task<IActionResult> GetByIdAsync([FromRoute] string id)
     {
         UserProfileDto userDto = await _userManageService.GetByIdAsync(id);
-
         return Ok(userDto);
     }
 
@@ -66,29 +64,25 @@ public class UsersController : ControllerBase
     [Authorize(Roles = RoleName.Admin)]
     public async Task<IActionResult> GetByNameAsync(int page, int pageSize, [FromQuery] string? userName, CancellationToken token = default)
     {
-        return Ok(new UserPagedDto()
-        {
-            Users = await _userManageService.GetByNameAsync(page, pageSize, userName, token),
-            Total = await _userManageService.GetTotalAsync()
-        });
+        return Ok(await _userManageService.GetByNameAsync(page, pageSize, userName, token));
     }
 
-    [Authorize(Roles = RoleName.Admin)]
     [HttpPut]
     [Route("{id}")]
-    public async Task<IActionResult> EditAsync([FromRoute] string id, [FromBody] UserProfileDto dto)
+    [Authorize(Roles = RoleName.Admin)]
+    public async Task<IActionResult> EditAsync([FromRoute] string id, [FromBody] UserUpdateDto dto)
     {
         UserProfileDto userDto = await _userManageService.UpdateAsync(id, dto);
 
         return Ok(userDto);
     }
 
-    [Authorize(Roles = RoleName.Admin)]
     [HttpDelete]
     [Route("{id}")]
+    [Authorize(Roles = RoleName.Admin)]
     public async Task<IActionResult> DeleteAsync([FromRoute] string id)
     {
-        UserCleanDto deletedUser = await _userManageService.DeleteAsync(id);
+        UserProfileDto deletedUser = await _userManageService.DeleteAsync(id);
 
         return Ok(deletedUser);
     }

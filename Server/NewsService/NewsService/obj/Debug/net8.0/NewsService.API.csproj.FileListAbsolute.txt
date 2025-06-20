@@ -155,3 +155,12 @@
 /home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/bin/Debug/net8.0/FluentValidation.DependencyInjectionExtensions.dll
 /home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/bin/Debug/net8.0/Microsoft.Extensions.ObjectPool.dll
 /home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/bin/Debug/net8.0/SixLabors.ImageSharp.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/bin/Debug/net8.0/Google.Protobuf.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/bin/Debug/net8.0/Grpc.Core.Api.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/bin/Debug/net8.0/Grpc.Net.Client.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/bin/Debug/net8.0/Grpc.Net.Common.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/bin/Debug/net8.0/NewsService.API.staticwebassets.runtime.json
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/bin/Debug/net8.0/Microsoft.Extensions.Caching.StackExchangeRedis.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/bin/Debug/net8.0/Newtonsoft.Json.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/bin/Debug/net8.0/Pipelines.Sockets.Unofficial.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/bin/Debug/net8.0/StackExchange.Redis.dll

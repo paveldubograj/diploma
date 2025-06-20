@@ -24,20 +24,20 @@ public class Startup
         services.AddAutoMapper(typeof(MappingProfile));
         services.AddTransient<IDisciplineService, DisciplineService.BusinessLogic.Services.DisciplineService>();
     }
-    
+
     public static void ConfigureRepository(IServiceCollection services)
     {
         services.AddTransient<IDisciplineRepository, DisciplineRepository>();
     }
 
-    
+
     public static void ConfigureSwagger(IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfigurationExtension>();
     }
-    
+
     public static void ConfigureDataBase(IServiceCollection services, ConfigurationManager config)
     {
         var connectionString = config.GetConnectionString("DataBase");
@@ -61,22 +61,31 @@ public class Startup
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true
             };
+            x.Events = new JwtBearerEvents
+            {
+                OnChallenge = async context =>
+                {
+                    context.HandleResponse();
+                    context.Response.StatusCode = 401;
+                    await context.Response.WriteAsync("Unauthorized (Token expired or invalid)");
+                }
+            };
         });
 
     }
 
-    
+
     public static void ConfigureMiddlewares(WebApplication app)
     {
         app.UseMiddleware<ExceptionAndLoggingMiddleware>();
     }
-    
+
 
     public static void OptionsConfigure(IServiceCollection services, ConfigurationManager config)
     {
         services.Configure<JwtOption>(config.GetSection("JwtSettings"));
     }
-    
+
     public static void ConfigureCors(IServiceCollection services)
     {
         MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -85,7 +94,7 @@ public class Startup
             options.AddPolicy(name: MyAllowSpecificOrigins,
                 policy =>
                 {
-                    policy.WithOrigins("http://localhost:3000")
+                    policy.WithOrigins("http://localhost:3000", "http://frontend:3000")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });

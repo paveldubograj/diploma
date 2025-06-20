@@ -19,7 +19,7 @@ Startup.ConfigureAuth(builder.Services, config);
 
 var app = builder.Build();
 //Startup.UseMigrations(app);
-app.MapGrpcService<DisciplineGrpcService>();
+
 
 Startup.ConfigureMiddlewares(app);
 if (app.Environment.IsDevelopment())
@@ -29,6 +29,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapGrpcService<DisciplineService.API.Services.DisciplineService>();
 Startup.ConfigureCors(app);
 app.UseAuthentication();
 app.UseAuthorization();

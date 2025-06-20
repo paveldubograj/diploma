@@ -23,45 +23,68 @@ public class MatchGrpcService : IMatchGrpcService
         }));
     }
     private readonly Protos.TournamentService.TournamentServiceClient client;
-    public async void CreateMatches(List<MatchDto> matches)
+
+    public async Task CreateMatches(List<MatchDto> matches)
     {
         AddMatchesRequest req = new AddMatchesRequest();
         req.Matches.AddRange(matches.Select(m => DtoToMatch(m)));
-        await client.CreateMatchesAsync(req);
+        try
+        {
+            await client.CreateMatchesAsync(req);
+        }
+        catch (Exception ex)
+        {
+            throw new GrpcException(ErrorName.MatchServiceNotWork);
+        }
     }
 
     public async Task<MatchDto> GetMatchById(string matchId)
     {
         if(string.IsNullOrEmpty(matchId)) throw new NotFoundException(ErrorName.ProvidedIdIsNull);
-        return MatchToDto(
-            await client.GetMatchByIdAsync(
-                new GetByIdRequest()
-                {
-                    Id = matchId
-                }
-            )
-        );
+        Match match;
+        try
+        {
+            match = await client.GetMatchByIdAsync(new GetByIdRequest() { Id = matchId });
+        }
+        catch (Exception ex)
+        {
+            throw new GrpcException(ErrorName.MatchServiceNotWork);
+        }
+        return MatchToDto(match);
     }
 
     public async Task<MatchDto> GetMatchByName(string tournamentId, string name)
     {
         if(string.IsNullOrEmpty(tournamentId)) throw new NotFoundException(ErrorName.ProvidedIdIsNull);
         if(string.IsNullOrEmpty(name)) throw new NotFoundException(ErrorName.ProvidedNameIsNull);
-        return MatchToDto(
-            await client.GetMatchByRoundAsync(
-                new GetByRoundRequest(){
-                    Name = name, 
-                    TournamentId = tournamentId
-                }
-            )
-        );
+        Match match;
+        try
+        {
+            match = await client.GetMatchByRoundAsync(new GetByRoundRequest()
+            {
+                Name = name,
+                TournamentId = tournamentId
+            });
+        }
+        catch (Exception ex)
+        {
+            throw new GrpcException(ErrorName.MatchServiceNotWork);
+        }
+        return MatchToDto(match);
     }
 
     public async Task UpdateMatch(string matchId, MatchDto match)
     {
         if(string.IsNullOrEmpty(matchId)) throw new NotFoundException(ErrorName.ProvidedIdIsNull);
         if(match is null) throw new NotFoundException(ErrorName.ProvidedMatchIsNull);
-        await client.UpdateMatchAsync(DtoToMatch(match));
+        try
+        {
+            await client.UpdateMatchAsync(DtoToMatch(match));
+        }
+        catch (Exception ex)
+        {
+            throw new GrpcException(ErrorName.MatchServiceNotWork);
+        }
     }
 
         private MatchDto MatchToDto(Match match){

@@ -9,18 +9,21 @@ using NewsService.DataAccess.Repositories.Interfaces;
 using NewsService.DataAccess.Specifications;
 using NewsService.Shared.Constants;
 using NewsService.Shared.Exeptions;
+using Newtonsoft.Json;
 
 namespace NewsService.BusinessLogic.Services;
 
 public class NewsService : INewsService
 {
+    private readonly ICacheService _cacheService;
     private readonly INewsRepository _newsRepository;
     private readonly ITagRepository _tagRepository;
     private readonly IImageService _imageService;
-    private readonly IDisciplineService _disciplineService;
+    private readonly IDisciplineGrpcService _disciplineService;
     private readonly IMapper _mapper;
-    public NewsService(INewsRepository newsRepository, ITagRepository tagRepository, IMapper mapper, IImageService imageService, IDisciplineService disciplineService)
+    public NewsService(INewsRepository newsRepository, ITagRepository tagRepository, IMapper mapper, IImageService imageService, IDisciplineGrpcService disciplineService, ICacheService cacheService)
     {
+        _cacheService = cacheService;
         _newsRepository = newsRepository;
         _tagRepository = tagRepository;
         _imageService = imageService;
@@ -45,7 +48,7 @@ public class NewsService : INewsService
         {
             throw new NotFoundException(ErrorName.NewsNotFound);
         }
-        var result = _newsRepository.DeleteAsync(obj);
+        var result = await _newsRepository.DeleteAsync(obj);
         return _mapper.Map<NewsCleanDto>(result);
     }
 
@@ -55,20 +58,23 @@ public class NewsService : INewsService
         return _mapper.Map<List<NewsCleanDto>>(list);
     }
 
-    public async Task<List<NewsCleanDto>> GetByFilterAsync(NewsFilter filter, int page, int pageSize)
+    public async Task<NewsPagedResponse> GetByFilterAsync(NewsFilter filter)
     {
-        var tags = new List<Tag>();
-        if (filter.Tags is not null && filter.Tags.Count > 0) tags = await _tagRepository.GetByIdsAsync(filter.Tags);
-        NewsSpecification specification = NewsSpecification.FilterNews(filter.SearchString, filter.CategoryId);
-        var result = await _newsRepository.GetBySpecificationAsync(specification, tags, page, pageSize, filter.sortOptions);
-        return _mapper.Map<List<NewsCleanDto>>(result);
+        var serializedValue = JsonConvert.SerializeObject(filter);
+        var cache = await _cacheService.GetAsync<NewsPagedResponse>(serializedValue);
+        if (cache != null) return cache;
+        NewsSpecification specification = NewsSpecification.FilterNews(filter.SearchString, filter.CategoryId, filter.Tags);
+        var list = await _newsRepository.GetBySpecificationAsync(specification, filter.Page, filter.PageSize, filter.sortOptions);
+        var result = _mapper.Map<NewsPagedResponse>(list);
+        await _cacheService.SetAsync<NewsPagedResponse>(serializedValue, result);
+        return result;
     }
 
-    public async Task<List<NewsCleanDto>> GetByUserAsync(string userId, int page, int pageSize)
+    public async Task<NewsPagedResponse> GetByUserAsync(string userId, int page, int pageSize)
     {
         NewsSpecification specification = new NewsSpecification(c => c.AuthorId.Equals(userId));
-        var result = await _newsRepository.GetBySpecWithNoSortAsync(specification, page, pageSize);
-        return _mapper.Map<List<NewsCleanDto>>(result);
+        var result = await _newsRepository.GetBySpecificationAsync(specification, page, pageSize, null);
+        return _mapper.Map<NewsPagedResponse>(result);
     }
 
     public async Task<NewsDto> GetByIdAsync(string id)
@@ -81,19 +87,26 @@ public class NewsService : INewsService
         return _mapper.Map<NewsDto>(res);
     }
 
-    public async Task<int> GetTotalAsync()
-    {
-        return await _newsRepository.GetTotalAsync();
-    }
-
-    public async Task<NewsDto> UpdateAsync(string id, NewsUpdateDto newsDto, string userId)
+    public async Task<NewsDto> UpdateVisibilityAsync(string id, bool visibility)
     {
         var news = await _newsRepository.GetByIdAsync(id);
         if (news == null)
         {
             throw new NotFoundException(ErrorName.NewsNotFound);
         }
-        if (!news.AuthorId.Equals(userId))
+        news.Visibility = visibility;
+        var res = await _newsRepository.UpdateAsync(news);
+        return _mapper.Map<NewsDto>(res);
+    }
+
+    public async Task<NewsDto> UpdateAsync(string id, NewsUpdateDto newsDto, string userId, bool isAdmin = false)
+    {
+        var news = await _newsRepository.GetByIdAsync(id);
+        if (news == null)
+        {
+            throw new NotFoundException(ErrorName.NewsNotFound);
+        }
+        if (!news.AuthorId.Equals(userId) && !isAdmin)
         {
             throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
         }
@@ -103,14 +116,14 @@ public class NewsService : INewsService
         return _mapper.Map<NewsDto>(res);
     }
 
-    public async Task<NewsDto> AddTagAsync(string id, string tagId, string userId)
+    public async Task<NewsDto> AddTagAsync(string id, string tagId, string userId, bool isAdmin = false)
     {
         var news = await _newsRepository.GetByIdAsync(id);
         if (news == null)
         {
             throw new NotFoundException(ErrorName.NewsNotFound);
         }
-        if (!news.AuthorId.Equals(userId))
+        if (!news.AuthorId.Equals(userId) && !isAdmin)
         {
             throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
         }
@@ -124,14 +137,14 @@ public class NewsService : INewsService
         return _mapper.Map<NewsDto>(res);
     }
 
-    public async Task<NewsDto> RemoveTagAsync(string id, string tagId, string userId)
+    public async Task<NewsDto> RemoveTagAsync(string id, string tagId, string userId, bool isAdmin = false)
     {
         var news = await _newsRepository.GetByIdAsync(id);
         if (news == null)
         {
             throw new NotFoundException(ErrorName.NewsNotFound);
         }
-        if (!news.AuthorId.Equals(userId))
+        if (!news.AuthorId.Equals(userId) && !isAdmin)
         {
             throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
         }
@@ -157,7 +170,9 @@ public class NewsService : INewsService
             throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
         }
         news.ImagePath = await _imageService.SaveImage(file, id);
+        Console.WriteLine("ImagePath from news service: " + news.ImagePath);
         var res = await _newsRepository.UpdateAsync(news);
+        Console.WriteLine("ImagePath from news service after update: " + news.ImagePath);
         return _mapper.Map<NewsDto>(res);
     }
 

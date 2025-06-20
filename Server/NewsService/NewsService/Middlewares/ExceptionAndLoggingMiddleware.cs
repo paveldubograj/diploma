@@ -39,15 +39,19 @@ public class ExceptionAndLoggingMiddleware
 
         switch (exception)
         {
-            case ValidationException :
+            case ValidationException:
                 result.StatusCode = 400;
                 break;
-            
-            case NotFoundException  :
+
+            case NotFoundException:
                 result.StatusCode = 404;
                 break;
-            
-            case BadAuthorizeException  :
+
+            case BadAuthorizeException:
+                result.StatusCode = 400;
+                break;
+
+            case GrpcException:
                 result.StatusCode = 400;
                 break;
 
@@ -55,7 +59,7 @@ public class ExceptionAndLoggingMiddleware
         
         context.Response.StatusCode = result.StatusCode;
         
-        _logger.LogError($"Errors: {result.Title}");
+        _logger.LogError($"Errors: {result.Title} {exception.StackTrace}");
 
         await context.Response.WriteAsync(result.Title);
     }

@@ -61,7 +61,7 @@ public class ExceptionAndLoggingMiddleware
         
         context.Response.StatusCode = result.StatusCode;
         
-        _logger.LogError($"Errors: {result.Title}");
+        _logger.LogError($"Errors: {result.Title}, {exception.StackTrace}");
 
         await context.Response.WriteAsync(result.Title);
     }

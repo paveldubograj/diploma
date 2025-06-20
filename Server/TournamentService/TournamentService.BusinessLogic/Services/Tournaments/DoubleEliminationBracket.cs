@@ -29,7 +29,7 @@ public class DoubleEliminationBracket : IDoubleEliminationBracket
     {
         await _singleEliminationBracket.GenerateBracket(tournamentId);
         var t = _tournamentRepository.GetById(tournamentId);
-        _matchService.CreateMatches(new List<MatchDto>()
+        await _matchService.CreateMatches(new List<MatchDto>()
         {CreateMatch(
             tournamentId,
             "Final",
@@ -68,7 +68,7 @@ public class DoubleEliminationBracket : IDoubleEliminationBracket
                 res.Name);
             matches.Add(match);
         }
-        _matchService.CreateMatches(matches);
+        await _matchService.CreateMatches(matches);
     }
 
     public async Task HandleMatchResult(string matchId, string winnerId, string looserId, int winPoints, int loosePoints)

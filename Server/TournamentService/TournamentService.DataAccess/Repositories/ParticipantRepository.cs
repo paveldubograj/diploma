@@ -17,6 +17,7 @@ public class ParticipantRepository : IParticipantRepository
     }
     public async Task<Participant> AddAsync(Participant participant)
     {
+        if (string.IsNullOrEmpty(participant.UserId)) participant.UserId = string.Empty;
         var tournament = await _context.Tournaments.FindAsync(participant.TournamentId);
         if (tournament == null) throw new NotFoundException("Tournament not found");
         if((await GetAllAsync(tournament.Id)).Count >= tournament.MaxParticipants) throw new WrongCallException(ErrorName.MaxParticipants);

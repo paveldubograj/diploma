@@ -12,8 +12,9 @@ Startup.ConfigureDataBase(builder.Services, config);
 
 builder.Services.AddControllers();
 builder.Services.AddValidatorsFromAssemblyContaining<ParticipantValidator>(); 
-builder.Services.AddValidatorsFromAssemblyContaining<TournamentValidator>(); 
+builder.Services.AddValidatorsFromAssemblyContaining<TournamentValidator>();
 builder.Services.AddFluentValidationAutoValidation();
+Startup.ConfigureRedis(builder.Services, config);
 Startup.ConfigureCors(builder.Services);
 Startup.ConfigureSwagger(builder.Services);
 Startup.ConfigureAuth(builder.Services, config);
@@ -32,6 +33,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 Startup.ConfigureCors(app);
+
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();

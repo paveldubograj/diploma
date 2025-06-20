@@ -7,9 +7,6 @@ namespace MatchService.BusinessLogic.Validators;
 public class MatchUpdateDtoValidator : AbstractValidator<MatchUpdateDto>
 {
     public MatchUpdateDtoValidator(){
-        RuleFor(match => match.categoryId)
-            .NotEmpty().WithMessage("Category is required");
-
         RuleFor(match => match.participant1Id)
             .NotEmpty().WithMessage("First participant is required");
 

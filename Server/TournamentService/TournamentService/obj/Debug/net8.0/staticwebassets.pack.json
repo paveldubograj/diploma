@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/wwwroot/images/News_21f78950-d40d-4134-991e-1e4e8d4178e9_image.png",
+      "PackagePath": "staticwebassets/images/News_21f78950-d40d-4134-991e-1e4e8d4178e9_image.png"
+    },
+    {
+      "Id": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/wwwroot/images/News_3571d4ce-c77a-4ca6-bb9a-7331e7faf74d_image.png",
+      "PackagePath": "staticwebassets/images/News_3571d4ce-c77a-4ca6-bb9a-7331e7faf74d_image.png"
+    },
+    {
+      "Id": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/wwwroot/images/News_b4e63d42-2cf5-46c2-99c0-76554c1aea7d_image.jpg",
+      "PackagePath": "staticwebassets/images/News_b4e63d42-2cf5-46c2-99c0-76554c1aea7d_image.jpg"
+    },
+    {
+      "Id": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/wwwroot/images/News_c89dbbc1-8ce7-44c1-a899-6d1e225b5ad5_image.jpg",
+      "PackagePath": "staticwebassets/images/News_c89dbbc1-8ce7-44c1-a899-6d1e225b5ad5_image.jpg"
+    },
+    {
+      "Id": "/home/pavel/Documents/csh/Diploma/diploma/Server/TournamentService/TournamentService/wwwroot/images/News_c89dbbc1-8ce7-44c1-a899-6d1e225b5ad5_image.png",
+      "PackagePath": "staticwebassets/images/News_c89dbbc1-8ce7-44c1-a899-6d1e225b5ad5_image.png"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.TournamentService.API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.TournamentService.API.props",
+      "PackagePath": "build\\TournamentService.API.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.TournamentService.API.props",
+      "PackagePath": "buildMultiTargeting\\TournamentService.API.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.TournamentService.API.props",
+      "PackagePath": "buildTransitive\\TournamentService.API.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

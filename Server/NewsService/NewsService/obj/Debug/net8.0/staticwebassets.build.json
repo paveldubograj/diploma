@@ -1,11 +1,58 @@
 {
   "Version": 1,
-  "Hash": "PGMAPSFv0yGo0NHZxGY+p/oQU943rGLR6Oe7Jh2xA5Y=",
+  "Hash": "0Vc4arr95E9q/tB+O1EqYjnK3HS3Um0Fe99EiVbUoz0=",
   "Source": "NewsService.API",
   "BasePath": "_content/NewsService.API",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "NewsService.API/wwwroot",
+      "Source": "NewsService.API",
+      "ContentRoot": "/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/wwwroot/",
+      "BasePath": "_content/NewsService.API",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/wwwroot/images/News_d5d7ff33-c596-41f3-9bf5-c3710c63b8dd_image.jpg",
+      "SourceId": "NewsService.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/wwwroot/",
+      "BasePath": "_content/NewsService.API",
+      "RelativePath": "images/News_d5d7ff33-c596-41f3-9bf5-c3710c63b8dd_image.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/News_d5d7ff33-c596-41f3-9bf5-c3710c63b8dd_image.jpg"
+    },
+    {
+      "Identity": "/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/wwwroot/images/News_testim_image.jpg",
+      "SourceId": "NewsService.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/pavel/Documents/csh/Diploma/diploma/Server/NewsService/NewsService/wwwroot/",
+      "BasePath": "_content/NewsService.API",
+      "RelativePath": "images/News_testim_image.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/News_testim_image.jpg"
+    }
+  ]
 }

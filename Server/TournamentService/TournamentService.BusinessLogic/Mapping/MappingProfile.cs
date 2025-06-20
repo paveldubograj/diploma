@@ -18,6 +18,6 @@ public class MappingProfile : Profile
         CreateMap<Tournament, TournamentCleanDto>().ReverseMap();
         CreateMap<Tournament, TournamentDto>().ReverseMap();
         CreateMap<Tournament, TournamentCreateDto>().ReverseMap();
-        //CreateMap<TournamentService.BusinessLogic.Protos.Match, MatchDto>().ReverseMap();
+        CreateMap<TournamentList, TournamentPagedResponse>();
     }
 }

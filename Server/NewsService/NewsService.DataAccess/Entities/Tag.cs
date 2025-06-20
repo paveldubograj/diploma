@@ -5,7 +5,7 @@ namespace NewsService.DataAccess.Entities;
 public class Tag
 {
     public Tag(){
-        Id = new Guid().ToString();
+        Id = Guid.NewGuid().ToString();
     }
     public string Id { get; set; } 
     public string Name { get; set; } 
@@ -13,8 +13,7 @@ public class Tag
     public override bool Equals(object? obj)
     {
         if(obj is null) return false;
-        if(obj.GetType() !=  this.GetType()) return false;
-        if(!(obj as Tag).Id.Equals(Id)) return false;
-        return true;
+        if(obj.GetType() != this.GetType()) return false;
+        return (obj as Tag).Id.Equals(Id);
     }
 }

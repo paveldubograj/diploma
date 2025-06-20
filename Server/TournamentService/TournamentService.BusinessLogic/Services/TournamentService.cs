@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using TournamentService.BusinessLogic.Models.Filters;
 using TournamentService.BusinessLogic.Models.Match;
 using TournamentService.BusinessLogic.Models.Tournament;
@@ -29,6 +30,7 @@ public class TournamentService : ITournamentService
     private readonly IRoundRobinBracket _roundRobinBracket;
     private readonly IDoubleEliminationBracket _doubleEliminationBracket;
     private readonly ISwissBracket _swissBracket;
+    private readonly ICacheService _cacheService;
     private readonly IMapper _mapper;
     public TournamentService(
         ITournamentRepository tournamentRepository,
@@ -39,7 +41,8 @@ public class TournamentService : ITournamentService
         ISingleEliminationBracket singleEliminationBracket,
         IRoundRobinBracket roundRobinBracket,
         ISwissBracket swissBracket,
-        IDoubleEliminationBracket doubleEliminationBracket)
+        IDoubleEliminationBracket doubleEliminationBracket,
+        ICacheService cacheService)
     {
         _tournamentRepository = tournamentRepository;
         _participantRepository = participantRepository;
@@ -50,6 +53,7 @@ public class TournamentService : ITournamentService
         _roundRobinBracket = roundRobinBracket;
         _swissBracket = swissBracket;
         _doubleEliminationBracket = doubleEliminationBracket;
+        _cacheService = cacheService;
     }
     public async Task<TournamentDto> AddAsync(TournamentCreateDto newsDto, string ownerId)
     {
@@ -62,18 +66,18 @@ public class TournamentService : ITournamentService
         return _mapper.Map<TournamentDto>(result);
     }
 
-    public async Task<TournamentDto> DeleteAsync(string id, string userId)
+    public async Task<TournamentDto> DeleteAsync(string id, string userId, bool isAdmin = false)
     {
         var tournament = await _tournamentRepository.GetByIdAsync(id);
         if (tournament == null)
         {
             throw new NotFoundException(ErrorName.TournamentNotFound);
         }
-        if (!tournament.OwnerId.Equals(userId))
+        if (!tournament.OwnerId.Equals(userId) || !isAdmin)
         {
             throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
         }
-        var result = _tournamentRepository.DeleteAsync(tournament);
+        var result = await _tournamentRepository.DeleteAsync(tournament);
         return _mapper.Map<TournamentDto>(result);
     }
 
@@ -83,11 +87,16 @@ public class TournamentService : ITournamentService
         return _mapper.Map<List<TournamentCleanDto>>(list);
     }
 
-    public async Task<List<TournamentCleanDto>> GetByFilterAsync(TournamentFilter filter, TournamentSortOptions? options, int page, int pageSize)
+    public async Task<TournamentPagedResponse> GetByFilterAsync(TournamentFilter filter)
     {
+        var serializedValue = JsonConvert.SerializeObject(filter);
+        var cache = await _cacheService.GetAsync<TournamentPagedResponse>(serializedValue);
+        if (cache != null) return cache;
         TournamentSpecification spec = TournamentSpecification.FilterTournaments(filter.SearchString, filter.CategoryId, filter.Status, filter.Format, filter.StartTime, filter.EndTime);
-        var list = await _tournamentRepository.GetBySpecificationAsync(spec, options, page, pageSize);
-        return _mapper.Map<List<TournamentCleanDto>>(list);
+        var list = await _tournamentRepository.GetBySpecificationAsync(spec, filter.Options, filter.Page, filter.PageSize);
+        var result = _mapper.Map<TournamentPagedResponse>(list);
+        await _cacheService.SetAsync<TournamentPagedResponse>(serializedValue, result);
+        return result;
     }
 
     public async Task<TournamentDto> GetByIdAsync(string id)
@@ -99,24 +108,24 @@ public class TournamentService : ITournamentService
         }
         return _mapper.Map<TournamentDto>(tournament);
     }
-    public async Task<TournamentDto> UpdateAsync(string id, TournamentDto newsDto, string userId)
+    public async Task<TournamentDto> UpdateAsync(string id, TournamentDto newsDto, string userId, bool isAdmin = false)
     {
         var tournament = await _tournamentRepository.GetByIdAsync(id);
         if (tournament == null)
         {
             throw new NotFoundException(ErrorName.TournamentNotFound);
         }
-        if (!tournament.OwnerId.Equals(userId))
+        if (!tournament.OwnerId.Equals(userId) || !isAdmin)
         {
             throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
         }
         if (!await _disciplineService.IsDisciplineExists(tournament.DisciplineId)) throw new NotFoundException(ErrorName.DisciplineNotFound);
         var newsUp = _mapper.Map(newsDto, tournament);
-        var res = _tournamentRepository.UpdateAsync(newsUp);
+        var res = await _tournamentRepository.UpdateAsync(newsUp);
         return _mapper.Map<TournamentDto>(res);
     }
 
-    public async void SetNextRound(string id, string userId)
+    public async Task SetNextRound(string id, string userId)
     {
         var tournament = await _tournamentRepository.GetByIdAsync(id);
         if (tournament == null)
@@ -142,7 +151,7 @@ public class TournamentService : ITournamentService
             default: throw new WrongCallException(ErrorName.WrongTournamentOperationCall);
         }
     }
-    public async void SetWinnerForMatchAsync(string tournamentId, string matchId, string winnerId, string looserId, int winPoints, int loosePoints, string userId)
+    public async Task SetWinnerForMatchAsync(string tournamentId, string matchId, string winnerId, string looserId, int winPoints, int loosePoints, string userId)
     {
         var tournament = await _tournamentRepository.GetByIdAsync(tournamentId);
         if (tournament is null)
@@ -174,6 +183,7 @@ public class TournamentService : ITournamentService
             default: throw new WrongCallException(ErrorName.WrongTournamentOperationCall);
         }
     }
+
     public async Task<TournamentCleanDto> StartTournamentAsync(string tournamentId, string userId)
     {
         var tournament = await _tournamentRepository.GetByIdAsync(tournamentId);
@@ -194,7 +204,7 @@ public class TournamentService : ITournamentService
             throw new WrongCallException(ErrorName.AlreadyStarted);
         }
         tournament.Status = TournamentStatus.Ongoing;
-        GenerateBracketAsync(tournamentId, userId);
+        await GenerateBracketAsync(tournamentId, userId);
         await _tournamentRepository.UpdateAsync(tournament);
         return _mapper.Map<TournamentCleanDto>(tournament);
     }
@@ -220,7 +230,7 @@ public class TournamentService : ITournamentService
         await _tournamentRepository.UpdateAsync(tournament);
         return _mapper.Map<TournamentCleanDto>(tournament);
     }
-    public async void GenerateBracketAsync(string id, string userId)
+    public async Task GenerateBracketAsync(string id, string userId)
     {
         var tournament = await _tournamentRepository.GetByIdAsync(id);
         if (tournament == null)
@@ -238,7 +248,7 @@ public class TournamentService : ITournamentService
         switch (tournament.Format)
         {
             case TournamentFormat.Swiss:
-                SetNextRound(id, userId);
+                await SetNextRound(id, userId);
                 break;
             case TournamentFormat.SingleElimination:
                 await _singleEliminationBracket.GenerateBracket(id);
@@ -257,6 +267,7 @@ public class TournamentService : ITournamentService
     {
         return await _tournamentRepository.GetTotalAsync();
     }
+
     public async Task<TournamentDto> AddImageAsync(string id, IFormFile file, string userId)
     {
         var news = await _tournamentRepository.GetByIdAsync(id);
@@ -276,10 +287,12 @@ public class TournamentService : ITournamentService
     public async Task<TournamentDto> RemoveImageAsync(string id, string userId)
     {
         var news = await _tournamentRepository.GetByIdAsync(id);
+        Console.WriteLine("До поиска");
         if (news == null)
         {
             throw new NotFoundException(ErrorName.TournamentNotFound);
         }
+        Console.WriteLine("После поиска");
         if (!news.OwnerId.Equals(userId))
         {
             throw new BadAuthorizeException(ErrorName.YouAreNotAllowed);
@@ -290,10 +303,16 @@ public class TournamentService : ITournamentService
         return _mapper.Map<TournamentDto>(res);
     }
 
-    public async Task<List<TournamentCleanDto>> GetByOwnerAsync(string ownerId, int page, int pageSize)
+    public async Task<TournamentPagedResponse> GetByOwnerAsync(string ownerId, int page, int pageSize)
     {
         TournamentSpecification spec = new TournamentSpecification(c => c.OwnerId.Equals(ownerId));
         var list = await _tournamentRepository.GetBySpecificationAsync(spec, null, page, pageSize);
-        return _mapper.Map<List<TournamentCleanDto>>(list);
+        return _mapper.Map<TournamentPagedResponse>(list);
+    }
+
+    public async Task<TournamentPagedResponse> GetByIdsAsync(List<string> ids)
+    {
+        var list = await _tournamentRepository.GetByIdsAsync(ids);
+        return _mapper.Map<TournamentPagedResponse>(list);
     }
 }

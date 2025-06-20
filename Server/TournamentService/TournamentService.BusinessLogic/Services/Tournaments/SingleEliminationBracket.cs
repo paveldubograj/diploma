@@ -103,7 +103,7 @@ public class SingleEliminationBracket : ISingleEliminationBracket
         res.Rounds = round;
         await _tournamentRepository.UpdateAsync(res);
 
-        _matchService.CreateMatches(matches);
+        await _matchService.CreateMatches(matches);
     }
 
     public async Task<bool> HandleMatchResult(string matchId, string winnerId, string looserId, int winPoints, int loosePoints)

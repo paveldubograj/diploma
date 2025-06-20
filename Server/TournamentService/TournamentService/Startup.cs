@@ -38,6 +38,7 @@ private static string MyAllowSpecificOrigins { get; set; }
         services.AddTransient<IImageService, ImageService>();
         services.AddSingleton<IFileStorageConfig, FileStorageConfig>();
         services.AddTransient<IDisciplineGrpcService, DisciplineGrpcService>();
+        services.AddTransient<IUserGrpcService, UserGrpcService>();
     }
     
     public static void ConfigureRepository(IServiceCollection services)
@@ -58,9 +59,7 @@ private static string MyAllowSpecificOrigins { get; set; }
     {
         var connectionString = config.GetConnectionString("DataBase");
         services.AddDbContext<TournamentContext>(options =>
-            options.UseNpgsql(connectionString, b => b.MigrationsAssembly("TournamentService.API")), 
-            ServiceLifetime.Singleton, 
-            ServiceLifetime.Singleton);
+            options.UseNpgsql(connectionString, b => b.MigrationsAssembly("TournamentService.API")));
     }
     
     public static void ConfigureMiddlewares(WebApplication app)
@@ -84,8 +83,26 @@ private static string MyAllowSpecificOrigins { get; set; }
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true
             };
+            x.Events = new JwtBearerEvents
+            {
+                OnChallenge = async context =>
+                {
+                    context.HandleResponse();
+                    context.Response.StatusCode = 401;
+                    await context.Response.WriteAsync("Unauthorized (Token expired or invalid)");
+                }
+            };
         });
 
+    }
+    public static void ConfigureRedis(IServiceCollection services, ConfigurationManager config)
+    {
+        services.AddStackExchangeRedisCache(option =>
+        {
+            option.Configuration = config.GetConnectionString("Cache");
+            option.InstanceName = "tournaments";
+        });
+        services.AddSingleton<ICacheService, CacheService>();
     }
 
     public static void OptionsConfigure(IServiceCollection services, ConfigurationManager config)
@@ -103,7 +120,7 @@ private static string MyAllowSpecificOrigins { get; set; }
             options.AddPolicy(name: MyAllowSpecificOrigins,
                 policy =>
                 {
-                    policy.WithOrigins("http://localhost:3000")
+                    policy.WithOrigins("http://localhost:3000", "http://frontend:3000")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });

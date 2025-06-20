@@ -71,6 +71,14 @@
               "target": "Package",
               "version": "[2.3.0, )"
             },
+            "Microsoft.Extensions.Caching.StackExchangeRedis": {
+              "target": "Package",
+              "version": "[9.0.6, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
             "SixLabors.ImageSharp": {
               "target": "Package",
               "version": "[3.1.8, )"
@@ -293,6 +301,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.3, )"
+            },
+            "Microsoft.Extensions.Caching.StackExchangeRedis": {
+              "target": "Package",
+              "version": "[9.0.6, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

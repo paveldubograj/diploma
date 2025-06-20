@@ -17,9 +17,8 @@ public class DisciplineService : IDisciplineService
         _disciplineRepository = disciplineRepository;
         _mapper = mapper;
     }
-    public async Task<DisciplineDto> AddAsync(DisciplineDto disciplineDto)
+    public async Task<DisciplineDto> AddAsync(DisciplineCreateDto disciplineDto)
     {
-        disciplineDto.Id = new Guid().ToString();
         var obj = _mapper.Map<Discipline>(disciplineDto);
         var res = await _disciplineRepository.AddAsync(obj);
         return _mapper.Map<DisciplineDto>(res);
@@ -40,11 +39,17 @@ public class DisciplineService : IDisciplineService
         var res = await _disciplineRepository.GetAllAsync();
         return _mapper.Map<List<DisciplineCleanDto>>(res);
     }
+    public async Task<List<DisciplineDto>> GetAllAdminAsync()
+    {
+        var res = await _disciplineRepository.GetAllAsync();
+        return _mapper.Map<List<DisciplineDto>>(res);
+    }
 
     public async Task<DisciplineDto> GetByIdAsync(string id)
     {
         var obj = await _disciplineRepository.GetByIdAsync(id);
-        if(obj == null){
+        if (obj == null)
+        {
             throw new NotFoundException(ErrorName.DisciplineNotFound);
         }
         return _mapper.Map<DisciplineDto>(obj);
@@ -57,7 +62,7 @@ public class DisciplineService : IDisciplineService
             throw new NotFoundException(ErrorName.DisciplineNotFound);
         }
         var newsUp = _mapper.Map(disciplineDto, tag);
-        var res = _disciplineRepository.UpdateAsync(newsUp);
+        var res = await _disciplineRepository.UpdateAsync(newsUp);
         return _mapper.Map<DisciplineDto>(res);
     }
 }

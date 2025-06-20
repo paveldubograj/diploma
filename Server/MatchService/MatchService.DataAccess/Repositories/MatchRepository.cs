@@ -24,6 +24,11 @@ public class MatchRepository : IMatchRepository
         return match;
     }
     public async Task<List<Match>> AddRange(List<Match> matches){
+        int i = 1;
+        foreach (var el in matches)
+        {
+            Console.WriteLine(i + ". " + el.Id + " " + el.NextMatchId is null);
+        }
         _context.Set<Match>().AddRange(matches);
         await _context.SaveChangesAsync();
         return matches;
@@ -51,10 +56,12 @@ public class MatchRepository : IMatchRepository
         var entity = await _context.Matches.Where(t => t.Id.Equals(id)).FirstOrDefaultAsync();
         return entity;
     }
-    public async Task<IEnumerable<Match>> GetBySpecificationAsync(MatchSpecification spec, SortOptions? options, int page, int pageSize, CancellationToken token = default)
+    public async Task<MatchList> GetBySpecificationAsync(MatchSpecification spec, SortOptions? options, int page, int pageSize, CancellationToken token = default)
     {
+        int total = await _context.Matches.ApplySpecification(spec).CountAsync();
+
         IQueryable<Match> query = _context.Matches
-            .OrderByDescending(n => n.StartTime)
+            .AsNoTracking()
             .ApplySpecification(spec)
             .Skip((page - 1) * pageSize)
             .Take(pageSize);
@@ -83,7 +90,7 @@ public class MatchRepository : IMatchRepository
                 break;
         }
 
-        return await query.ToListAsync(cancellationToken: token);
+        return new MatchList() { Matches = await query.ToListAsync(cancellationToken: token), Total = total };
     }
     public async Task<List<Match>> GetTournamentStructureAsync(string tournamentId)
     {

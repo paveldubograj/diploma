@@ -43,7 +43,7 @@ public class RolesService : IRolesService
             throw new NotFoundException(ErrorName.UserNotFound);
         }
 
-        switch (role)
+        switch (role.ToLower())
         {
             case "user":
                 await _userRepository.AddToRoleAsync(user, RoleName.User);
@@ -75,7 +75,7 @@ public class RolesService : IRolesService
             throw new NotFoundException(ErrorName.UserNotFound);
         }
 
-        switch (role)
+        switch (role.ToLower())
         {
             case "user":
                 await _userRepository.RemoveFromRolesAsync(user, RoleName.User);

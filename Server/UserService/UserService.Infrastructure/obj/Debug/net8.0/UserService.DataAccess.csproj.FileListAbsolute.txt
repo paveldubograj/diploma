@@ -13,3 +13,6 @@
 /home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.DataAccess.pdb
 /home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.DataAccess.genruntimeconfig.cache
 /home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/ref/UserService.DataAccess.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/bin/Debug/net8.0/UserService.Shared.dll
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/bin/Debug/net8.0/UserService.Shared.pdb
+/home/pavel/Documents/csh/Diploma/diploma/Server/UserService/UserService.Infrastructure/obj/Debug/net8.0/UserService.DataAccess.csproj.CopyComplete

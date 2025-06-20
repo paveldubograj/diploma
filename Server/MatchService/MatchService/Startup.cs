@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using MatchService.BusinessLogic.Services;
 
 namespace MatchService.API;
 
@@ -66,7 +67,26 @@ public class Startup
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true
             };
+            x.Events = new JwtBearerEvents
+            {
+                OnChallenge = async context =>
+                {
+                    context.HandleResponse();
+                    context.Response.StatusCode = 401;
+                    await context.Response.WriteAsync("Unauthorized (Token expired or invalid)");
+                }
+            };
         });
+    }
+
+    public static void ConfigureRedis(IServiceCollection services, ConfigurationManager config)
+    {
+        services.AddStackExchangeRedisCache(option =>
+        {
+            option.Configuration = config.GetConnectionString("Cache");
+            option.InstanceName = "matches";
+        });
+        services.AddSingleton<ICacheService, CacheService>();
     }
 
     public static void OptionsConfigure(IServiceCollection services, ConfigurationManager config)
@@ -82,7 +102,7 @@ public class Startup
             options.AddPolicy(name: MyAllowSpecificOrigins,
                 policy =>
                 {
-                    policy.WithOrigins("http://localhost:3000")
+                    policy.WithOrigins("http://localhost:3000", "http://frontend:3000")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });

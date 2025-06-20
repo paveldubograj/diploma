@@ -19,6 +19,7 @@ import {
     Button,
     Card,
     Alert,
+    Pagination,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { hasRole } from "../../utils/auth";
@@ -40,6 +41,7 @@ const TournamentList = () => {
     const [page, setPage] = useState(1);
     const [error, setError] = useState<string | null>("");
     const [sortOption, setSortOption] = useState<string>("0");
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         try {
@@ -70,6 +72,7 @@ const TournamentList = () => {
 
     useEffect(() => {
         const loadTournaments = async () => {
+            setLoading(true);
             const filter = new URLSearchParams({
                 page: page.toString(),
                 pageSize: pageSize.toString(),
@@ -107,6 +110,8 @@ const TournamentList = () => {
                 setTotal(result.total);
             } catch (err) {
                 setError("Ошибка загрузки турниров:");
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -202,25 +207,37 @@ const TournamentList = () => {
             )}
             {error && <Alert variant="danger">{error}</Alert>}
 
-            <Row xs={1} md={2} className="g-4">
+            <Row xs={1} md={2} className="g-4 mt-2">
                 {tournaments.map((t) => (
                     <TournamentCard id={t.id} name={t.name} disciplineId={t.disciplineId} status={t.status} format={t.format} rounds={t.rounds} maxParticipants={t.maxParticipants} ownerId={t.ownerId} imagePath={t.imagePath}></TournamentCard>
                 ))}
             </Row>
-            <div className="d-flex justify-content-between align-items-center my-3">
-                <Button disabled={page === 1} onClick={() => setPage(page - 1)}>
-                Назад
-                </Button>
-                <span>
-                Страница {page} из {Math.ceil(total / pageSize)}
-                </span>
-                <Button
-                disabled={page >= Math.ceil(total / pageSize)}
-                onClick={() => setPage(page + 1)}
-                >
-                Вперёд
-                </Button>
-            </div>
+            <Pagination className="justify-content-center mt-4">
+        <Pagination.Prev
+          onClick={() => setPage(page - 1)}
+          disabled={page === 1 || loading}
+        >
+          Назад
+        </Pagination.Prev>
+
+        {Array.from({ length: (total / pageSize + 1) }, (_, i) => (
+          <Pagination.Item
+            key={i + 1}
+            active={i + 1 === page}
+            onClick={() => setPage(i + 1)}
+            disabled={loading}
+          >
+            {i + 1}
+          </Pagination.Item>
+        ))}
+
+        <Pagination.Next
+          onClick={() => setPage(page + 1)}
+          disabled={page >= (total / pageSize) || loading}
+        >
+          Вперёд
+        </Pagination.Next>
+      </Pagination>
         </Container>
     );
 };
